@@ -79,10 +79,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'HDesk',
-        'USER': 'seu_usuario',
-        'PASSWORD': 'sua_senha',
+        'USER': 'admin',
+        'PASSWORD': 'hdpass',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '3306',
     }
 }
 

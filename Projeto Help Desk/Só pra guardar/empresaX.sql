@@ -69,6 +69,6 @@ SELECT * FROM atendimento WHERE status_ = 'aberto';
 
 INSERT INTO atendimento () VALUES ();
 
-UPDATE atendimento set status_ = "Fechado" where id =1;
+UPDATE atendimento set status_ = "" where id =1;
 
 DELETE FROM atendimento WHERE id = 1;
