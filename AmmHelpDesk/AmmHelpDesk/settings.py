@@ -55,7 +55,7 @@ ROOT_URLCONF = 'AmmHelpDesk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-         'DIRS': [],                                                                # SE ALGO DER ERRADO É PORQUE N TEM NADA AQUI BURRÃO
+         'DIRS': [os.path.join(BASE_DIR,'templates')],                                                                # SE ALGO DER ERRADO É PORQUE N TEM NADA AQUI BURRÃO
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
