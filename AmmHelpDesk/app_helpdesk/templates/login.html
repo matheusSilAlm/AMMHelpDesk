@@ -15,8 +15,9 @@
     <title>Página do Usuario</title>
 </head>
 <body>
-    
+
 <body>
+  <form action="submit" method="POST">{%csrf_token%}
     <br><br><br><br>
     <div class="container">
       <div class="row">
@@ -33,7 +34,7 @@
                 <!-- <span style="color: rgb(207, 159, 0);">Soluções</span> -->
               </a> <br><br><br>             
                
-              <form action="submit" method="POST">{%csrf_token%}
+              <!-- <form action="submit" method="POST">{%csrf_token%} -->
                 <div class="form-floating mb-3">
                   <input type="text" class="form-control" id="floatingInput" placeholder="Usuário" name="username">
                   <!-- <label for="floatingInput">Email address</label> -->
@@ -54,12 +55,13 @@
                   <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">LOGIN</button>
                 </div>
                 <hr class="my-3">              
-              </form>
+              
             </div>
           </div>
         </div>
       </div>
     </div>
+  </form>
   </body>
 </body>
 </html> 
