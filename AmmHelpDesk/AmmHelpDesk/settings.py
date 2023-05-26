@@ -78,9 +78,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'HDesk',
-        'USER': 'admin',
-        'PASSWORD': 'hdpass',
-        'HOST': 'localhost',
+        'USER': 'user_desk',
+        'PASSWORD': 'Etit3gd5V1_cdRLA',
+        'HOST': '34.75.46.159',
         'PORT': '3306',
     }
 }

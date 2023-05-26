@@ -1,0 +1,44 @@
+CREATE DATABASE HDesk;
+USE HDesk;
+
+CREATE TABLE Cliente (
+    IDCliente INT PRIMARY KEY AUTO_INCREMENT,
+    NomeCliente VARCHAR(80) NOT NULL,
+    Cpf_cnpj VARCHAR(20) NOT NULL,
+    Email_Cliente VARCHAR(80) NOT NULL,
+    Telefone_Cliente VARCHAR(10) NOT NULL,
+    Assunto ENUM('NOSSOS APLICATIVOS', 'DÚVIDAS FINANCEIRAS', 'SUPORTE TÉCNICO', 'RECLAMAÇÕES', 'OUTRAS INFORMAÇÕES'),
+    Descricao TEXT(300)
+);
+
+CREATE TABLE Usuario (
+    IDUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    NomeUsuario VARCHAR(100) NOT NULL,
+    Email_Usuario VARCHAR(80) NOT NULL,
+    Setor VARCHAR(50),
+    Turno VARCHAR(1),
+    Usuario_Ativo CHAR(1)
+);
+
+CREATE TABLE Solicitacao (
+    IDSolicitacao INT PRIMARY KEY AUTO_INCREMENT,
+    IDCliente INT,
+    IDUsuario INT,
+    Assunto ENUM('NOSSOS APLICATIVOS', 'DÚVIDAS FINANCEIRAS', 'SUPORTE TÉCNICO', 'RECLAMAÇÕES', 'OUTRAS INFORMAÇÕES'),
+    Prioridade ENUM('BAIXA', 'MÉDIA', 'ALTA'),
+    Data_Solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    SolicitacaoAtivo CHAR(1),
+    FOREIGN KEY (IDUsuario) REFERENCES Usuario (IDUsuario),
+    FOREIGN KEY (IDCliente) REFERENCES Cliente (IDCliente),
+    FOREIGN KEY (Assunto) REFERENCES Solicitacao (Assunto)
+);
+
+CREATE TABLE SolicitacaoStatus (
+    IDSolicitacaoStatus INT PRIMARY KEY AUTO_INCREMENT,
+    IDSolicitacao INT,
+    IDStatus ENUM('ABERTO', 'FECHADO', 'EM ANDAMENTO'),
+    IDUsuario INT,
+    DataStatus DATETIME,
+    FOREIGN KEY (IDUsuario) REFERENCES Usuario (IDUsuario),
+    FOREIGN KEY (IDSolicitacao) REFERENCES Solicitacao (IDSolicitacao)
+);

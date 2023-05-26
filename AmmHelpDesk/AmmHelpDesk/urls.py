@@ -8,6 +8,6 @@ urlpatterns = [
     path('home/', views.solicit_pages),
     path('', RedirectView.as_view(url='/home/')),
     path('login/', views.login_user),
-    path('login/home', views.submit_login),
-    path('logout/', views.logout_user)
+    path('login/submit', views.submit_login),
+   
 ]
