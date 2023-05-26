@@ -1,66 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <title>Home HELPDESK
+  </title>
+  <style>
+    body {
+      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .baixa {
+      background-color: #aaffaa;
+      color: #000;
+    }
+
+    .media {
+      background-color: #ffffaa;
+      color: #000;
+    }
+
+    .alta {
+      background-color: #ffaaaa;
+      color: #000;
+    }
+
+    .badge {
+      font-size: 14px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    .badge-success {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .badge-info {
+      background-color: #17a2b8;
+      color: #fff;
+    }
+
+    .badge-danger {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .text-white {
+      color: #fff !important;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination-item {
+      margin: 0 5px;
+    }
+  </style>
 </head>
-
-
-<form>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="inputEmail4">Email</label>
-        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="inputPassword4">Password</label>
-        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputAddress">Address</label>
-      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-    </div>
-    <div class="form-group">
-      <label for="inputAddress2">Address 2</label>
-      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="inputCity">City</label>
-        <input type="text" class="form-control" id="inputCity">
-      </div>
-      <div class="form-group col-md-4">
-        <label for="inputState">State</label>
-        <select id="inputState" class="form-control">
-          <option selected>Selecione</option>
-          <option>NOSSOS APLICATIVOS</option>
-          <option>DÚVIDAS FINANCEIRAS</option>
-          <option>SUPORTE TÉCNICO</option>
-          <option>RECLAMAÇÕES</option>
-          <option>OUTRAS INFORMAÇÕES</option>
-
-        </select>
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputZip">Zip</label>
-        <input type="text" class="form-control" id="inputZip">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="gridCheck">
-        <label class="form-check-label" for="gridCheck">
-          Check me out
-        </label>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
-    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+<body>
   
-  
-    <br><br><br><br>
-    <button type="button" class="btn btn-success">Aberto</button>
-<button type="button" class="btn btn-danger">Fechado</button>
-<button type="button" class="btn btn-warning">Em andamento</button>
-  </form>
+  <div class="container"> <img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa" > 
+    <h1>Help Desk - Lista de Chamados</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Solicitação</th>
+          <th>Prioridade</th>
+          <th>Data</th>
+          <th>Usuário Responsável</th>
+          <th>Nome do Cliente</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
+          <td>Chamado 1</td>
+          <td><span class="badge badge-info baixa">Baixa Prioridade</span></td>
+          <td>01/05/2023</td>
+          <td>João Di Caprio Oliveira Bahia</td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-secondary">Matheus Silva de Almeirda</a></td>
+        </tr>
+        <tr>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">2</a></td>
+          <td>Chamado 2</td>
+          <td><span class="badge badge-success">Aberto Prioridade</span></td>
+          <td>05/05/2023</td>
+          <td>Carlos</td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Ana</a></td>
+        </tr>
+        <tr>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">3</a></td>
+          <td>Chamado 3</td>
+          <td><span class="badge badge-danger alta">Alta Prioridade</span></td>
+          <td>10/05/2023</td>
+          <td>Renata</td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Lucas</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" target="_blank">Responder</a> <br>
+   
+    <div class="pagination">
+      <a href="pagina1.html" class="pagination-item btn btn-secondary">1</a>
+      <a href="pagina2.html" class="pagination-item btn btn-secondary">2</a>
+      <a href="pagina3.html" class="pagination-item btn btn-secondary">3</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

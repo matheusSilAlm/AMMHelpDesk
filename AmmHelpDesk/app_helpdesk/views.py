@@ -19,7 +19,7 @@ def submit_login(request):
         usuario = authenticate(username=username, password=password)
         if usuario is not None:
             login(request, usuario)
-            return redirect('teste.html')
+            return redirect('/')
         else:
             messages.error(request, "Usuário ou senha inválidos")
     return redirect('/')
@@ -28,7 +28,7 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-    return render(request, 'teste.html')
+    return render(request, 'home.html')
 
 
 
