@@ -55,7 +55,7 @@ ROOT_URLCONF = 'AmmHelpDesk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-         'DIRS': [],                                                                # SE ALGO DER ERRADO É PORQUE N TEM NADA AQUI BURRÃO
+         'DIRS': [os.path.join(BASE_DIR,'templates')],                                                                # SE ALGO DER ERRADO É PORQUE N TEM NADA AQUI BURRÃO
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,9 +78,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'HDesk',
-        'USER': 'admin',
-        'PASSWORD': 'hdpass',
-        'HOST': 'localhost',
+        'USER': 'user_desk',
+        'PASSWORD': 'Etit3gd5V1_cdRLA',
+        'HOST': '34.75.46.159',
         'PORT': '3306',
     }
 }

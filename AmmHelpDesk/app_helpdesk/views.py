@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib import messages 
+from app_helpdesk.models import models
 
 
 def login_user(request):
@@ -18,10 +19,16 @@ def submit_login(request):
         usuario = authenticate(username=username, password=password)
         if usuario is not None:
             login(request, usuario)
-            return redirect('/')
+            return redirect('teste.html')
         else:
             messages.error(request, "Usuário ou senha inválidos")
-    return redirect('/')
+    return redirect('login.html')
+
+@login_required(login_url='/login/')
+def solicit_pages(request):
+    usuario = request.user
+    return render(request, 'teste.html')
+
 
 
 
