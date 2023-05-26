@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'AmmHelpDesk.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'HDesk',
+        'NAME': 'Hdesk',
         'USER': 'user_desk',
         'PASSWORD': 'Etit3gd5V1_cdRLA',
         'HOST': '34.75.46.159',
