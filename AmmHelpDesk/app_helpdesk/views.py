@@ -22,12 +22,14 @@ def submit_login(request):
             return redirect('teste.html')
         else:
             messages.error(request, "Usuário ou senha inválidos")
-    return redirect('login.html')
+    return redirect('/')
+
 
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
     return render(request, 'teste.html')
+
 
 
 

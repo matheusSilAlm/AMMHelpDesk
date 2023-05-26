@@ -9,5 +9,4 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/home/')),
     path('login/', views.login_user),
     path('login/submit', views.submit_login),
-   
 ]

@@ -44,12 +44,12 @@
                   <!-- <label for="floatingPassword">Password</label> -->
                 </div>
   
-              
+                {% for message in messages%}
+                   <p style="color: red">
+                     <strong>ERRO</strong> <br>{{message}}
+                   </p>
+                {% endfor %}
                 
-
-
-
-
 
                 <div class="d-grid">
                   <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">LOGIN</button>
@@ -62,6 +62,7 @@
       </div>
     </div>
   </form>
+
   </body>
 </body>
 </html> 
