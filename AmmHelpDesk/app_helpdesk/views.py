@@ -28,7 +28,7 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-    return render(request, 'home.html')  
+    return render(request, 'teste.html')  
 
 
 

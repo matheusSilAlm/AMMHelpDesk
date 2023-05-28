@@ -4,7 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/allcss.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="{% static 'css/allcss.css' %}"> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <title>Home HELPDESK</title>
   <style>
@@ -26,7 +30,7 @@
     th, td {
       padding: 10px;
       text-align: center;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #857f7f;
     }
 
     th {
@@ -37,23 +41,9 @@
       background-color: #ffffff;
     }
     tr:hover {
-      background-color: #b7d6ff;
+      background-color: #acabaa;
     }
-    .baixa {
-      background-color: #aaffaa;
-      color: #000;
-    }
-
-    .media {
-      background-color: #ffffaa;
-      color: #000;
-    }
-
-    .alta {
-      background-color: #ffaaaa;
-      color: #000;
-    }
-
+ 
     .badge {
       font-size: 14px;
       padding: 5px 10px;
@@ -63,22 +53,22 @@
     }
 
     .badge-success {
-      background-color: #ffc107;
+      background-color: #08fd00;
       color: #000;
     }
 
     .badge-info {
       background-color: #17a2b8;
-      color: #fff;
+      color: #ffffff;
     }
 
     .badge-danger {
-      background-color: #dc3545;
+      background-color: #706f70;
       color: #fff;
     }
 
     .text-white {
-      color: #fff !important;
+      color: #ffffff !important;
     }
 
     .pagination {
@@ -90,17 +80,33 @@
     .pagination-item {
       margin: 0 5px;
     }
+    .badge-warning {
+      background-color: #ffd900;
+      color: #000000;
+    }
+    .badge-primary {
+      background-color: #03aef1;
+      color: #000000;
+    }
+    .badge-media {
+      background-color: #ff9900;
+      color: #0a0a0a;
+    }
+    .badge-red {
+      background-color: #ff0000;
+      color: #000000;
+    }
   </style>
 </head>
 <body>
   
-  <div class="container"> <img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"> Help Desk 
+  <div class="container"> <a href="https://ammsolucoes.com.br/""><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
     <h1>Lista de Chamados</h1>
-
+    
     <table>
       <thead>
         <tr>
-          <th>#</th>
+          <th></th>
           <th>SOLICITAÇÃO</th>
           <th>STATUS</th>
           <th>DATA</th>
@@ -112,38 +118,39 @@
       <tbody>
         <tr>
           <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
-          <td>Chamado 1</td>
-          <td><span class="badge badge-info baixa">FECHADO</span></td>
+          <td>NOSSOS APLICATIVOS</td>
+          <td><span class="badge badge-danger">FECHADO</span></td>
           <td>01/05/2023</td>
           <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Matheus Silva de Almeirda</a></td>
-          <td><span class="badge badge-info baixa">alta FALTA MUDAR AS CORES</span></td>
+          <td><span class="badge badge-primary">BAIXA PRIORIDADE</span></td>
           <td>João Di Caprio Oliveira Bahia</td>
         </tr>
         <tr>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
-          <td>Chamado 1</td>
-          <td><span class="badge badge-info baixa">FECHADO</span></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">2</a></td>
+          <td>DÚVIDAS FINANCEIRAS</td>
+          <td><span class="badge badge-danger">FECHADO</span></td>
           <td>01/05/2023</td>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Matheus Silva de Almeirda</a></td>
-          <td><span class="badge badge-info baixa">alta FALTA MUDAR AS CORES</span></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Rafael Bahia</a></td>
+          <td><span class="badge badge-media">MÉDIA PRIORIDADE</span></td>
           <td>João Di Caprio Oliveira Bahia</td>
         </tr>
         <tr>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
-          <td>Chamado 1</td>
-          <td><span class="badge badge-info baixa">FECHADO</span></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">3</a></td>
+          <td>RECLAMAÇÕES</td>
+          <td><span class="badge badge-success">ABERTO</span></td>
           <td>01/05/2023</td>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Matheus Silva de Almeirda</a></td>
-          <td><span class="badge badge-info baixa">alta FALTA MUDAR AS CORES</span></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Vinícius Duarte</a></td>
+          <td><span class="badge badge-danger">A DEFINIR</span></td>
           <td>João Di Caprio Oliveira Bahia</td>
         </tr>
         <tr>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
-          <td>Chamado 1</td>
-          <td><span class="badge badge-info baixa">FECHADO</span></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">4</a></td>
+          <td>SUPORTE TÉCNICO</td>
+          <td><span class="badge badge-warning">EM ANDAMENTO</span></td>
+          
           <td>01/05/2023</td>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Matheus Silva de Almeirda</a></td>
-          <td><span class="badge badge-info baixa">alta FALTA MUDAR AS CORES</span></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Yasmin Miranda de Oliveira</a></td>
+          <td><span class="badge badge-red">ALTA PRIORIDADE</span></td>
           <td>João Di Caprio Oliveira Bahia</td>
         </tr>
       </tbody>
@@ -151,12 +158,29 @@
     <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" target="_blank">Responder</a> <br>
    
     <div class="pagination">
-      <a href="pagina1.html" class="pagination-item btn btn-secondary">1</a>
-      <a href="pagina2.html" class="pagination-item btn btn-secondary">2</a>
-      <a href="pagina3.html" class="pagination-item btn btn-secondary">3</a>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  
 </body>
+
+
 </html>

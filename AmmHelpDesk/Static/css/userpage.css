@@ -1,0 +1,114 @@
+body {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #857f7f;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  tr {
+    background-color: #ffffff;
+  }
+  tr:hover {
+    background-color: #b7d6ff;
+  }
+  .baixa {
+    background-color: #aaffaa;
+    color: #000;
+  }
+
+  .media {
+    background-color: #ffffaa;
+    color: #000;
+  }
+
+  .alta {
+    background-color: #ffaaaa;
+    color: #000;
+  }
+
+  .badge {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .badge-success {
+    background-color: #08fd00;
+    color: #000;
+  }
+
+  .badge-info {
+    background-color: #17a2b8;
+    color: #ffffff;
+  }
+
+  .badge-danger {
+    background-color: #706f70;
+    color: #fff;
+  }
+
+  .text-white {
+    color: #ffffff !important;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination-item {
+    margin: 0 5px;
+  }
+  .badge-warning {
+    background-color: #ffd900;
+    color: #000000;
+  }
+  .badge-primary {
+    background-color: #03aef1;
+    color: #000000;
+  }
+  .badge-media {
+    background-color: #ff9900;
+    color: #0a0a0a;
+  }
+  .badge-red {
+    background-color: #ff0000;
+    color: #000000;
+  }                               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                      /* CSS DA PAGINA DO USUÁRIO PÓS LOGIN  */
