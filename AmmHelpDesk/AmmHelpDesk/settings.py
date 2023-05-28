@@ -55,7 +55,7 @@ ROOT_URLCONF = 'AmmHelpDesk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-         'DIRS': [],
+         'DIRS': [os.path.join(BASE_DIR,'templates')],                                                                # SE ALGO DER ERRADO É PORQUE N TEM NADA AQUI BURRÃO
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'AmmHelpDesk.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'HDesk',
-        'USER': 'admin',
-        'PASSWORD': 'hdpass',
-        'HOST': 'localhost',
+        'NAME': 'Hdesk',
+        'USER': 'user_desk',
+        'PASSWORD': 'Etit3gd5V1_cdRLA',
+        'HOST': '34.75.46.159',
         'PORT': '3306',
     }
 }
@@ -108,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_paulo'
 
 USE_I18N = True
 
@@ -122,7 +122,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIFILES_DIRS = [
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 
 ]
