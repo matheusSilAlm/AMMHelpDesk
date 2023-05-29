@@ -28,7 +28,21 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-    return render(request, 'home.html')  
+    return render(request, 'teste.html')  
+
+
+def cliente_page(request):
+    if request.POST:
+        nomecliente = request.POST.get('Nome_completo')
+        Email = request.POST.get('email_cliente')
+        cpf_cnpj = request.POST.get('cpf_cnpj')
+        email_cliente = request.POST.get('email_cliente')
+        telefone_cliente = request.POST.get('telefone_cliente')
+        assunto = request.POST.get('  e aqui?????')
+        descricao = request.POST.get('descricao_forms')
+
+    return render(request, 'FormsHD.html')
+    
 
 
 
@@ -38,9 +52,18 @@ def solicit_pages(request):
 
 
 
-
-
-
+#     if request.POST:
+#         titulo = request.POST.get('titulo')
+#         data_evento = request.POST.get('data_evento')
+#         descricao = request.POST.get('descricao')
+#         usuario = request.user
+#         id_evento = request.POST.get('id_evento')
+#         if id_evento:
+#             Evento = evento.objects.get(id=id_evento)
+#             if Evento.usuario == usuario:
+#                 Evento.titulo = titulo
+#                 Evento.descricao = descricao
+#                 Evento.data_evento = data_evento
 
 
 
