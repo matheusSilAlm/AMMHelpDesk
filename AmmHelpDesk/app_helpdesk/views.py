@@ -33,13 +33,11 @@ def solicit_pages(request):
 
 def cliente_page(request):
     if request.POST:
-        nomecliente = request.POST.get('Nome_completo')
-        Email = request.POST.get('email_cliente')
+        nomecliente = request.POST.get('nomecliente')
         cpf_cnpj = request.POST.get('cpf_cnpj')
         email_cliente = request.POST.get('email_cliente')
         telefone_cliente = request.POST.get('telefone_cliente')
-        assunto = request.POST.get('  e aqui?????')
-        descricao = request.POST.get('descricao_forms')
+        descricao = request.POST.get('descricao')
 
     return render(request, 'FormsHD.html')
     
