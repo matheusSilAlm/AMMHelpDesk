@@ -95,6 +95,8 @@ class Cliente(models.Model):
         managed = True
         db_table = 'cliente'
 
+    
+
 
 # class DjangoAdminLog(models.Model):
 #     action_time = models.DateTimeField()

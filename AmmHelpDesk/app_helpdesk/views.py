@@ -28,7 +28,7 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-    return render(request, 'teste.html')  
+    return render(request, 'listpage.html')  
 
 
 def cliente_page(request):
@@ -41,27 +41,16 @@ def cliente_page(request):
 
     return render(request, 'FormsHD.html')
     
+# def cliente_submit(request):
+#     if request
+
+def hdesk_page(request):
+    nomecliente = Cliente.objects.get(id=2)
+    response = {'nomecliente':nomecliente}
+    return render(request, '/', response)
 
 
 
-
-
-
-
-
-
-#     if request.POST:
-#         titulo = request.POST.get('titulo')
-#         data_evento = request.POST.get('data_evento')
-#         descricao = request.POST.get('descricao')
-#         usuario = request.user
-#         id_evento = request.POST.get('id_evento')
-#         if id_evento:
-#             Evento = evento.objects.get(id=id_evento)
-#             if Evento.usuario == usuario:
-#                 Evento.titulo = titulo
-#                 Evento.descricao = descricao
-#                 Evento.data_evento = data_evento
 
 
 
