@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib import messages 
-from app_helpdesk.models import models
+from app_helpdesk.models import Cliente, models
+from django.shortcuts import render
 
 
 def login_user(request):
@@ -31,15 +32,27 @@ def solicit_pages(request):
     return render(request, 'listpage.html')  
 
 
-def cliente_page(request):
-    if request.POST:
-        nomecliente = request.POST.get('nomecliente')
-        cpf_cnpj = request.POST.get('cpf_cnpj')
-        email_cliente = request.POST.get('email_cliente')
-        telefone_cliente = request.POST.get('telefone_cliente')
-        descricao = request.POST.get('descricao')
 
+def cliente_page(request):
     return render(request, 'FormsHD.html')
+
+
+def cliente_page_submit(request):        
+    if request.POST:
+        dados = {}
+        dados['nomecliente'] = request.POST.get('nomecliente')
+        dados['cpf_cnpj'] = request.POST.get('cpf_cnpj')
+        dados['email_cliente']  = request.POST.get('email_cliente')
+        dados['telefone_cliente'] = request.POST.get('telefone_cliente')
+        dados['descricao'] = request.POST.get('descricao')
+        Cliente.objects.create(nomecliente=dados['nomecliente'],
+                              cpf_cnpj=int(dados['cpf_cnpj']),
+                              email_cliente=dados['email_cliente'],
+                              telefone_cliente=dados['telefone_cliente'],
+                              descricao=dados['descricao'],
+                              assunto=request.POST.get('assunto'))
+    return redirect('/')
+
     
 # def cliente_submit(request):
 #     if request

@@ -15,20 +15,20 @@
 
 
 <body style="background: linear-gradient(to right, #0c00ad, #fffefe);">
-  <div align="center" class="container" > <a href="https://ammsolucoes.com.br/""><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
+  <div align="center" class="container" > <a href="https://ammsolucoes.com.br/"><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
   <br><br><br>
     <h1 style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Informe seus dados para tirar duvidas!</h1>
   <br><br><br><br>
-  <form action="#" method="post">
+  <form action="submit" method="POST"> {% csrf_token %}
     <div class="form-group">
       
-      <input type="text" class="form-control" id="nome_completo" name="nome" placeholder="Nome_completo" required>
+      <input type="text" class="form-control" id="nomecliente" name="nomecliente" placeholder="Nome Completo" required>
     </div>
 
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email_cliente" placeholder="Email" required>
+        <input type="email" class="form-control" id="email_cliente" name="email_cliente" placeholder="Email" required>
       </div>
       <div class="form-group col-md-6">
         <label for="cpfcnpj">CPF ou CNPJ:</label>
@@ -57,8 +57,8 @@
         <option value="OUTRAS INFORMAÇÕES">OUTRAS INFORMAÇÕES</option>
       </select>
     </div>
-    <button type="submit">Enviar</button>
     <div class="alert alert-success" role="alert">
+    <button type="submit">Enviar</button>
       A simple success alert—check it out!
     </div>
   </form>
