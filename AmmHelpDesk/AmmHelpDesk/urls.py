@@ -12,7 +12,6 @@ urlpatterns = [
     path('logout/', views.logout_user),
     path('formshd/', views.cliente_page),
     path('formshd/submit', views.cliente_page_submit),
-
-    
-    
+    path('listpage/', views.cliente_novo)
+      
 ]

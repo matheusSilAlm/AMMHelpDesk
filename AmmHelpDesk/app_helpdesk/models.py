@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 
 class AppHelpdeskPessoa(models.Model):
@@ -90,10 +92,15 @@ class Cliente(models.Model):
     telefone_cliente = models.CharField(db_column='Telefone_Cliente', max_length=10)  # Field name made lowercase.
     assunto = models.CharField(db_column='Assunto', max_length=19, blank=True, null=True)  # Field name made lowercase.
     descricao = models.TextField(db_column='Descricao', blank=True, null=True)  # Field name made lowercase.
+    
+    
+    def __str__(self):
+        return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
 
     class Meta:
         managed = True
         db_table = 'cliente'
+
 
     
 

@@ -29,7 +29,10 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-    return render(request, 'listpage.html')  
+    cliente = {
+        'clientes': Cliente.objects.all()
+    }
+    return render(request, 'listpage.html',cliente)  
 
 
 
@@ -39,28 +42,47 @@ def cliente_page(request):
 
 def cliente_page_submit(request):        
     if request.POST:
-        dados = {}
-        dados['nomecliente'] = request.POST.get('nomecliente')
-        dados['cpf_cnpj'] = request.POST.get('cpf_cnpj')
-        dados['email_cliente']  = request.POST.get('email_cliente')
-        dados['telefone_cliente'] = request.POST.get('telefone_cliente')
-        dados['descricao'] = request.POST.get('descricao')
-        Cliente.objects.create(nomecliente=dados['nomecliente'],
-                              cpf_cnpj=int(dados['cpf_cnpj']),
-                              email_cliente=dados['email_cliente'],
-                              telefone_cliente=dados['telefone_cliente'],
-                              descricao=dados['descricao'],
-                              assunto=request.POST.get('assunto'))
+        Cliente.objects.create(
+        nomecliente = request.POST.get('nomecliente'),
+        cpf_cnpj = request.POST.get('cpf_cnpj'),
+        email_cliente  = request.POST.get('email_cliente'),
+        telefone_cliente = request.POST.get('telefone_cliente'),
+        descricao = request.POST.get('descricao'),
+        assunto = request.POST.get('assunto'))
+    
+       
     return redirect('/')
+        # dados = {}
+        # dados['nomecliente'] = request.POST.get('nomecliente')
+        # dados['cpf_cnpj'] = request.POST.get('cpf_cnpj')
+        # dados['email_cliente']  = request.POST.get('email_cliente')
+        # dados['telefone_cliente'] = request.POST.get('telefone_cliente')
+        # dados['descricao'] = request.POST.get('descricao')
+        # Cliente.objects.create(nomecliente=dados['nomecliente'],
+        #                       cpf_cnpj=int(dados['cpf_cnpj']),
+        #                       email_cliente=dados['email_cliente'],
+        #                       telefone_cliente=dados['telefone_cliente'],
+        #                       descricao=dados['descricao'],
+        #                       assunto=request.POST.get('assunto'))
+    #   return redirect('/')
 
     
 # def cliente_submit(request):
 #     if request
 
-def hdesk_page(request):
-    nomecliente = Cliente.objects.get(id=2)
-    response = {'nomecliente':nomecliente}
-    return render(request, '/', response)
+def cliente_novo(request):
+    novo_cliente = Cliente()
+    novo_cliente.nomecliente = request.POST.get('nomecliente')
+    novo_cliente.assunto = request.POST.get('assunto')
+    #Data fica como? aula dio
+    #Usuário - Tem que 
+    #Status tem que deixar Aberto...
+    #Prioridade tem que deixar A definir...
+
+    cliente = {
+        'cliente': Cliente.objects.all()
+    }
+    return render(request, '/', cliente)
 
 
 

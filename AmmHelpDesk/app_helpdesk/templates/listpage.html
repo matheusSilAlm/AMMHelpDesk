@@ -102,7 +102,6 @@
   </style>
 </head>
 <body>
-  <b>{{cliente.Cliente}}</b>
 <div class="container"> <a href="https://ammsolucoes.com.br/"><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
   <h1>Lista de Chamados</h1>
     <table>
@@ -118,9 +117,25 @@
         </tr>
       </thead>
       <tbody>
+
+
+        
+        <ul style="font-size: 20px;">
+          {% for cliente in clientes %}
+      <p>
+          <li>
+              <div >
+               {{cliente.nomecliente}}  
+               </div>
+           </li>
+      </p>
+          {% endfor %}
+      </ul>
         <!-- colocar o FOR pra gerar uma lista onde aparecam as pessoas cadastradas no sistema  -->
-        <tr>  
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
+        
+
+        
+          <!-- <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">1</a></td>
             <td>NOSSOS APLICATIVOS</td>
               <td><span class="badge badge-danger">FECHADO</span></td>
             <td>01/05/2023</td>
@@ -154,8 +169,9 @@
           <td>01/05/2023</td>
           <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Yasmin Miranda de Oliveira</a></td>
           <td><span class="badge badge-red">ALTA PRIORIDADE</span></td>
-          <td>João Di Caprio Oliveira Bahia</td>
-        </tr> ###############
+          <td>João Di Caprio Oliveira Bahia</td> -->
+          
+        
       </tbody>
     </table>
     <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" target="_blank">Responder</a> <br>
