@@ -156,7 +156,7 @@ class Solicitacao(models.Model):
     idcliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='IDCliente', blank=True, null=True)  # Field name made lowercase.
     idusuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='IDUsuario', blank=True, null=True)  # Field name made lowercase.
     assunto = models.CharField(db_column='Assunto', max_length=19, blank=True, null=True)  # Field name made lowercase.
-    prioridade = models.CharField(db_column='Prioridade', max_length=5, blank=True, null=True)  # Field name made lowercase.
+    prioridade = models.CharField(db_column='Prioridade', max_length=20, blank=True, null=True)  # Field name made lowercase.
     data_solicitacao = models.DateTimeField(db_column='Data_Solicitacao', blank=True, null=True)  # Field name made lowercase.
     solicitacaoaativo = models.CharField(db_column='SolicitacaoaAtivo', max_length=1, blank=True, null=True)  # Field name made lowercase.
 

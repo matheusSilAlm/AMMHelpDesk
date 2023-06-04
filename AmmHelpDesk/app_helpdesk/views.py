@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from app_helpdesk.models import Cliente, Solicitacao, Solicitacaostatus, models
 from django.shortcuts import render
+from django.db import transaction
+from django.http import HttpResponse
 
 
 def login_user(request):
@@ -39,25 +41,28 @@ def solicit_pages(request):
 def cliente_page(request):
     return render(request, 'FormsHD.html')
 
+            ########################################################################################################
 
-def cliente_page_submit(request):        
-    if request.POST:
-        Cliente.objects.create(
-        nomecliente = request.POST.get('nomecliente'),
-        cpf_cnpj = request.POST.get('cpf_cnpj'),
-        email_cliente  = request.POST.get('email_cliente'),
-        telefone_cliente = request.POST.get('telefone_cliente'),
-        descricao = request.POST.get('descricao'),
-        assunto = request.POST.get('assunto')
-        )
-        Solicitacao.objects.create(
-        prioridade=request.POST.get('prioridade')
-        )
-        Solicitacaostatus.objects.create(
-        idstatus=request.POST.get('idstatus')
-        )
+# def cliente_page_submit(request):        
+#     if request.POST:
+#         Cliente.objects.create(
+#         nomecliente = request.POST.get('nomecliente'),
+#         cpf_cnpj = request.POST.get('cpf_cnpj'),
+#         email_cliente  = request.POST.get('email_cliente'),
+#         telefone_cliente = request.POST.get('telefone_cliente'),
+#         descricao = request.POST.get('descricao'),
+#         assunto = request.POST.get('assunto')
+#         )
+#         Solicitacao.objects.create(
+#         prioridade=request.POST.get('prioridade')
+#         )
+#         Solicitacaostatus.objects.create(
+#         idstatus=request.POST.get('idstatus')
+#         )
         
-    return redirect('/')
+#     return redirect('/')
+
+    ########################################################################################################
         # dados = {}
         # dados['nomecliente'] = request.POST.get('nomecliente')
         # dados['cpf_cnpj'] = request.POST.get('cpf_cnpj')
@@ -73,8 +78,6 @@ def cliente_page_submit(request):
     #   return redirect('/')
 
     
-# def cliente_submit(request):
-#     if request
 
 def cliente_novo(request):
     novo_cliente = Cliente()
@@ -100,6 +103,30 @@ def atender_cliente(request, idcliente):
 
 
 
+def cliente_page_submit(request):
+    if request.method == 'POST':
+        nomecliente = request.POST.get('nomecliente')
+        cpf_cnpj = request.POST.get('cpf_cnpj')
+        email_cliente = request.POST.get('email_cliente')
+        telefone_cliente = request.POST.get('telefone_cliente')
+        descricao = request.POST.get('descricao')
+        assunto = request.POST.get('assunto')
 
+        with transaction.atomic():
+            cliente = Cliente.objects.create(
+                nomecliente=nomecliente,
+                cpf_cnpj=cpf_cnpj,
+                email_cliente=email_cliente,
+                telefone_cliente=telefone_cliente,
+                descricao=descricao,
+                assunto=assunto
+            )
 
+            Solicitacao.objects.create(
+                prioridade='A DEFINIR'
+            )
+            Solicitacaostatus.objects.create(
+                idstatus='ABERTO'
+            )        
+    return HttpResponse('Dados salvos com sucesso!')
 
