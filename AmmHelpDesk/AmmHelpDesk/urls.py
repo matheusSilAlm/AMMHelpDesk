@@ -7,11 +7,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.solicit_pages),
     path('', RedirectView.as_view(url='/home/')),
+    path('home/pagecliente/<int:idcliente>/', views.atender_cliente),
     path('login/', views.login_user),
     path('login/submit', views.submit_login),
     path('logout/', views.logout_user),
     path('formshd/', views.cliente_page),
     path('formshd/submit', views.cliente_page_submit),
-    path('listpage/', views.cliente_novo)
+    path('listpage/', views.cliente_novo),
       
 ]

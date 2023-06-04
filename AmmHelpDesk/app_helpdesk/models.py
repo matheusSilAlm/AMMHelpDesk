@@ -87,9 +87,10 @@ class AppHelpdeskPessoa(models.Model):
 class Cliente(models.Model):
     idcliente = models.AutoField(db_column='IDCliente', primary_key=True)  # Field name made lowercase.
     nomecliente = models.CharField(db_column='NomeCliente', max_length=80)  # Field name made lowercase.
-    cpf_cnpj = models.IntegerField(db_column='Cpf_cnpj')  # Field name made lowercase.
+    cpf_cnpj = models.CharField(db_column='Cpf_cnpj',max_length=20)  # Field name made lowercase.
+    datacriacao = models.DateTimeField(auto_now=True)
     email_cliente = models.CharField(db_column='Email_Cliente', max_length=80)  # Field name made lowercase.
-    telefone_cliente = models.CharField(db_column='Telefone_Cliente', max_length=10)  # Field name made lowercase.
+    telefone_cliente = models.CharField(db_column='Telefone_Cliente', max_length=20)  # Field name made lowercase.
     assunto = models.CharField(db_column='Assunto', max_length=19, blank=True, null=True)  # Field name made lowercase.
     descricao = models.TextField(db_column='Descricao', blank=True, null=True)  # Field name made lowercase.
     

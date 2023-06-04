@@ -27,28 +27,23 @@
 
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email_cliente" name="email_cliente" placeholder="Email" required>
+               <input type="email" class="form-control" id="email_cliente" name="email_cliente" placeholder="Email" required>
       </div>
       <div class="form-group col-md-6">
-        <label for="cpfcnpj">CPF ou CNPJ:</label>
-        <input type="text" class="form-control" id="cpfcnpj" name="cpf_cnpj" placeholder="CPF ou CNPJ" required>
+              <input type="text" class="form-control" id="cpfcnpj" name="cpf_cnpj" placeholder="CPF ou CNPJ" required>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="telefone">Telefone:</label>
-      <input type="text" class="form-control" id="telefone" name="telefone_cliente" placeholder="Telefone" required>
+        <input type="text" class="form-control" id="telefone" name="telefone_cliente" placeholder="Telefone" required maxlength="20">
     </div>
 
     <div class="form-group">
-      <label for="descricao">Descrição (até 300 caracteres):</label>
-      <textarea class="form-control" id="descricao" name="descricao" placeholder="Descrição" maxlength="300" required></textarea>
+           <textarea class="form-control" id="descricao" name="descricao" placeholder="Descrição (até 300 caracteres)" maxlength="300" required></textarea>
     </div>
 
     <div class="form-group">
-      <label for="assunto">Assunto:</label>
-      <select class="form-control" id="assunto" name="assunto" required>
+        <select class="form-control" id="assunto" name="assunto" required>
         <option value="">Selecione o assunto</option>
         <option value="NOSSOS APLICATIVOS">NOSSOS APLICATIVOS</option>
         <option value="DÚVIDAS FINANCEIRAS">DÚVIDAS FINANCEIRAS</option>
@@ -59,8 +54,8 @@
     </div>
     <div class="alert alert-success" role="alert">
     <button type="submit">Enviar</button>
-      A simple success alert—check it out!
     </div>
+    <p hidden><input type="text" id="prioridade" name="prioridade" >BAIXA</p>
   </form>
 </body>
 

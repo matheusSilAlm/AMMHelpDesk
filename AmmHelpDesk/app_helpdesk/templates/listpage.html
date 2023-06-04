@@ -105,6 +105,7 @@
 <div class="container"> <a href="https://ammsolucoes.com.br/"><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
   <h1>Lista de Chamados</h1>
     <table>
+        
       <thead>
         <tr>
           <th></th>
@@ -115,22 +116,22 @@
             <th>PRIORIDADE</th>
           <th>USUÁRIO RESPONSÁVEL</th>
         </tr>
+        {% for cliente in clientes %}
+        <td><a href="pagecliente/id={{cliente.idcliente}}" type="button" class="btn btn-outline-dark">{{cliente.idcliente}}</a></td>
+        <td>{{cliente.assunto}}</td>
+        <td><span class="badge badge-success">ABERTO</span></td>
+        <td>{{cliente.datacriacao}}</td>
+        <td>{{cliente.nomecliente}}</td>
+        <td><span class="badge badge-danger">A DEFINIR</span></td>
+        <td>João Di Caprio Oliveira Bahia</td>
       </thead>
       <tbody>
 
 
         
         <ul style="font-size: 20px;">
-          {% for cliente in clientes %}
-      <p>
-          <li>
-              <div >
-               {{cliente.nomecliente}}  
-               </div>
-           </li>
-      </p>
-          {% endfor %}
-      </ul>
+          
+     
         <!-- colocar o FOR pra gerar uma lista onde aparecam as pessoas cadastradas no sistema  -->
         
 
@@ -139,7 +140,7 @@
             <td>NOSSOS APLICATIVOS</td>
               <td><span class="badge badge-danger">FECHADO</span></td>
             <td>01/05/2023</td>
-          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark">Matheus Silva de Almeirda</a></td>
+          <td><a href="outra_pagina.html" type="button" class="btn btn-outline-dark"> {{cliente.nomecliente}}  </a></td>
           <td><span class="badge badge-primary">BAIXA PRIORIDADE</span></td>
           <td>João Di Caprio Oliveira Bahia</td>
         </tr>
@@ -171,7 +172,7 @@
           <td><span class="badge badge-red">ALTA PRIORIDADE</span></td>
           <td>João Di Caprio Oliveira Bahia</td> -->
           
-        
+        {% endfor %}
       </tbody>
     </table>
     <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" target="_blank">Responder</a> <br>

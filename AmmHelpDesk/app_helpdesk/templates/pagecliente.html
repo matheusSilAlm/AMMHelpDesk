@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Detalhes do Chamado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .detail-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    .response-form {
+      margin-top: 30px;
+    }
+
+    .response-form textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    .response-form button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .response-form button:hover {
+      background-color: #45a049;
+    }
+
+    .response-form .hidden {
+      display: none;
+    }
+
+    .status-btn-group button,
+    .priority-btn-group button {
+      margin-right: 10px;
+    }
+
+    .status-btn-group button.active,
+    .priority-btn-group button.active {
+      background-color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Detalhes do Chamado</h1>
+
+  <div class="detail-group">
+    <label for="cliente">Cliente:</label>
+    <span id="cliente"></span>
+  </div>
+
+  <div class="detail-group">
+    <label for="solicitacao">Solicitação:</label>
+    <span id="solicitacao"></span>
+  </div>
+
+  <div class="detail-group">
+    <label for="email">E-mail:</label>
+    <span id="email"></span>
+  </div>
+
+  <div class="detail-group">
+    <label for="assunto">Assunto:</label>
+    <span id="assunto"></span>
+  </div>
+
+  <div class="detail-group">
+    <label for="descricao">Descrição:</label>
+    <span id="descricao"></span>
+  </div>
+
+  <div class="detail-group">
+    <label for="data">Data do Chamado:</label>
+    <span id="data"></span>
+  </div>
+
+  <div class="response-form">
+    <button id="responderBtn" onclick="toggleRespostaForm()">Responder</button>
+    <div id="respostaForm" class="hidden">
+      <textarea id="resposta" placeholder="Digite sua resposta..."></textarea>
+      <button onclick="enviarResposta()">Enviar</button>
+    </div>
+  </div>
+
+  <div class="status-btn-group">
+    <label for="status">Status:</label>
+    <button onclick="setStatus('Aberto')">Aberto</button>
+    <button onclick="setStatus('Em Andamento')">Em Andamento</button>
+    <button onclick="setStatus('Fechado')">Fechado</button>
+  </div>
+
+  <div class="priority-btn-group">
+    <label for="prioridade">Prioridade:</label>
+    <button onclick="setPrioridade('Alta')">Alta</button>
+    <button onclick="setPrioridade('Média')">Média</button>
+    <button onclick="setPrioridade('Baixa')">Baixa</button>
+    <button onclick="setPrioridade('A Definir')">A Definir</button>
+  </div>
+
+  <script>
+    function toggleRespostaForm() {
+      var respostaForm = document.getElementById("respostaForm");
+      respostaForm.classList.toggle("hidden");
+    }
+
+    function enviarResposta() {
+      var resposta = document.getElementById("resposta").value;
+      // Faça algo com a resposta, como enviá-la para um servidor ou armazená-la em algum lugar
+      alert("Resposta enviada: " + resposta);
+    }
+
+    function setStatus(status) {
+      // Faça algo com o status selecionado, como atualizar o status no servidor ou armazená-lo em algum lugar
+      alert("Status definido como: " + status);
+    }
+
+    function setPrioridade(prioridade) {
+      // Faça algo com a prioridade selecionada, como atualizar a prioridade no servidor ou armazená-la em algum lugar
+      alert("Prioridade definida como: " + prioridade);
+    }
+  </script>
+
+  <script>
+    // Exemplo de código para recuperar os dados do chamado (você pode substituí-los com os dados que deseja exibir)
+
+    var chamado = {
+      cliente: "Nome do Cliente",
+      solicitacao: "Solicitação do Cliente",
+      email: "cliente@example.com",
+      assunto: "Assunto do Chamado",
+      descricao: "Descrição do Chamado",
+      data: "2023-05-31"
+    };
+
+    // Preenche os campos com os dados do chamado
+
+    document.getElementById("cliente").textContent = chamado.cliente;
+    document.getElementById("solicitacao").textContent = chamado.solicitacao;
+    document.getElementById("email").textContent = chamado.email;
+    document.getElementById("assunto").textContent = chamado.assunto;
+    document.getElementById("descricao").textContent = chamado.descricao;
+    document.getElementById("data").textContent = chamado.data;
+  </script>
+
+  
+
+</body>
+
+</html>
+
