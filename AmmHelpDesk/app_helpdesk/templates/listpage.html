@@ -116,14 +116,17 @@
             <th>PRIORIDADE</th>
           <th>USUÁRIO RESPONSÁVEL</th>
         </tr>
-        {% for cliente in clientes %}
+        {% for cliente in clientes %} 
         <td><a href="pagecliente/id={{cliente.idcliente}}" type="button" class="btn btn-outline-dark">{{cliente.idcliente}}</a></td>
         <td>{{cliente.assunto}}</td>
-        <td><span class="badge badge-success">ABERTO</span></td>
+        
+        <td><span class="badge badge-success">{{cliente.status}}</span></td>
+        
         <td>{{cliente.datacriacao}}</td>
         <td>{{cliente.nomecliente}}</td>
-        <td><span class="badge badge-danger">A DEFINIR</span></td>
-        <td>João Di Caprio Oliveira Bahia</td>
+        <td><span class="badge badge-danger">{{cliente.prioridade}}</span></td>
+        
+        <td>Usuario Amm ()</td>
       </thead>
       <tbody>
 

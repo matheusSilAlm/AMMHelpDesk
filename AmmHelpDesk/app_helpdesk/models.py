@@ -160,6 +160,8 @@ class Solicitacao(models.Model):
     data_solicitacao = models.DateTimeField(db_column='Data_Solicitacao', blank=True, null=True)  # Field name made lowercase.
     solicitacaoaativo = models.CharField(db_column='SolicitacaoaAtivo', max_length=1, blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return self.idsolicitacao, self.idcliente, self.idusuario, self.assunto, self.prioridad, self.data_solicitacao, self.solicitacaoaativo
     class Meta:
         managed = True
         db_table = 'solicitacao'
@@ -172,6 +174,8 @@ class Solicitacaostatus(models.Model):
     idusuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='IDUsuario', blank=True, null=True)  # Field name made lowercase.
     datastatus = models.DateTimeField(db_column='DataStatus', blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return self.idsolicitacaostatus, self.idsolicitacao, self.idstatus, self.idusuario, self.datastatus
     class Meta:
         managed = True
         db_table = 'solicitacaostatus'

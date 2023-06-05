@@ -7,13 +7,15 @@ from django.shortcuts import render
 from django.db import transaction
 from django.http import HttpResponse
 
-
+#Usuário faz login na pagina.
 def login_user(request):
     return render(request, 'login.html')
 
+#Usuário faz logout na pagina.
 def logout_user(request):
     logout(request)
     return redirect('/')
+
 
 def submit_login(request):
     if request.POST:
@@ -31,9 +33,18 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
+    arr_cliente = Cliente.objects.all()
+    
+    for index, cliente in enumerate(arr_cliente, start=0):
+        v_solicitacao = Solicitacao.objects.get(idcliente=arr_cliente[index].idcliente)
+        v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
+        arr_cliente[index].prioridade = v_solicitacao.prioridade
+        arr_cliente[index].status = v_solicitacaostatus.idstatus
+    
     cliente = {
-        'clientes': Cliente.objects.all()
+        'clientes': arr_cliente
     }
+    
     return render(request, 'listpage.html',cliente)  
 
 
@@ -89,6 +100,8 @@ def cliente_novo(request):
     }
     return render(request, '/', cliente)
 
+
+
 @login_required(login_url='/login/')
 def atender_cliente(request, idcliente):
     if idcliente:
@@ -111,6 +124,8 @@ def cliente_page_submit(request):
         telefone_cliente = request.POST.get('telefone_cliente')
         descricao = request.POST.get('descricao')
         assunto = request.POST.get('assunto')
+        
+
 
         with transaction.atomic():
             cliente = Cliente.objects.create(
@@ -122,11 +137,15 @@ def cliente_page_submit(request):
                 assunto=assunto
             )
 
-            Solicitacao.objects.create(
+            solicitacao = Solicitacao.objects.create(
+                assunto=assunto,
+                idcliente=cliente,
                 prioridade='A DEFINIR'
             )
-            Solicitacaostatus.objects.create(
-                idstatus='ABERTO'
-            )        
+            solicitacaostatus = Solicitacaostatus.objects.create(
+                idstatus='ABERTO',
+                idsolicitacao=solicitacao
+            )
+                 
     return HttpResponse('Dados salvos com sucesso!')
 
