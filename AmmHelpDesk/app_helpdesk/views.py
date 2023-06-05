@@ -103,14 +103,17 @@ def cliente_novo(request):
 
 
 @login_required(login_url='/login/')
-def atender_cliente(request, idcliente):
+def atender_cliente(request):
+    idcliente = request.POST.get('id')
+    dados = {}
     if idcliente:
-        cliente=Cliente.objects.all()
-
-
-   
-
-    return render(request, 'pagecliente.html')
+        dados['cliente']= cliente.objects.get(idcliente=idcliente,
+                                              nomecliente=nomecliente,
+                                              email_cliente=email_cliente,
+                                              telefone_cliente=telefone_cliente,
+                                              descricao=descricao,
+                                              assunto=assunto)
+    return render(request, 'pagecliente.html',dados)
 
 
 

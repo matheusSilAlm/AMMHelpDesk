@@ -117,7 +117,7 @@
           <th>USUÁRIO RESPONSÁVEL</th>
         </tr>
         {% for cliente in clientes %} 
-        <td><a href="pagecliente/id={{cliente.idcliente}}" type="button" class="btn btn-outline-dark">{{cliente.idcliente}}</a></td>
+        <td><a href="pagecliente/?id={{cliente.idcliente}}" type="button" class="btn btn-outline-dark">{{cliente.idcliente}}</a></td>
         <td>{{cliente.assunto}}</td>
         
         <td><span class="badge badge-success">{{cliente.status}}</span></td>
