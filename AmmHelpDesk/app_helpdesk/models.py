@@ -97,6 +97,7 @@ class Cliente(models.Model):
     
     def __str__(self):
         return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
+    
 
     class Meta:
         managed = True
@@ -162,6 +163,9 @@ class Solicitacao(models.Model):
 
     def __str__(self):
         return self.idsolicitacao, self.idcliente, self.idusuario, self.assunto, self.prioridad, self.data_solicitacao, self.solicitacaoaativo
+    
+    
+    
     class Meta:
         managed = True
         db_table = 'solicitacao'

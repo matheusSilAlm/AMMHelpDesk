@@ -104,15 +104,12 @@ def cliente_novo(request):
 
 @login_required(login_url='/login/')
 def atender_cliente(request):
-    idcliente = request.POST.get('id')
+    idcliente = request.GET.get('id')
     dados = {}
     if idcliente:
-        dados['cliente']= cliente.objects.get(idcliente=idcliente,
-                                              nomecliente=nomecliente,
-                                              email_cliente=email_cliente,
-                                              telefone_cliente=telefone_cliente,
-                                              descricao=descricao,
-                                              assunto=assunto)
+        dados['cliente']= Cliente.objects.get(idcliente=idcliente)
+        
+        Cliente.objects.filter(idcliente=idcliente).update()
     return render(request, 'pagecliente.html',dados)
 
 
