@@ -6,6 +6,7 @@ from app_helpdesk.models import Cliente, Solicitacao, Solicitacaostatus, models
 from django.shortcuts import render
 from django.db import transaction
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 #Usuário faz login na pagina.
 def login_user(request):
@@ -35,6 +36,7 @@ def solicit_pages(request):
     usuario = request.user
     arr_cliente = Cliente.objects.all()
     
+
     for index, cliente in enumerate(arr_cliente, start=0):
         v_solicitacao = Solicitacao.objects.get(idcliente=arr_cliente[index].idcliente)
         v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
@@ -45,7 +47,12 @@ def solicit_pages(request):
         'clientes': arr_cliente
     }
     
-    return render(request, 'listpage.html',cliente)  
+   
+    paginator = Paginator(arr_cliente, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'listpage.html', {'page_obj':page_obj})  
 
 
 
