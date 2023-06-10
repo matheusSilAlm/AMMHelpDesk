@@ -140,11 +140,7 @@
   </div>
 
   <div class="response-form">
-    <button id="responderBtn" onclick="toggleRespostaForm()">Responder</button>
-    <div id="respostaForm" class="hidden">
-      <textarea id="resposta" placeholder="Digite sua resposta..."></textarea>
-      <button onclick="enviarResposta()">Enviar</button>
-    </div>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" class="btn btn-primary my-2">Responder</a>
   </div>
 
   <div class="status-btn-group">
@@ -170,7 +166,7 @@
 
     function enviarResposta() {
       var resposta = document.getElementById("resposta").value;
-      // Faça algo com a resposta, como enviá-la para um servidor ou armazená-la em algum lugar
+      
       alert("Resposta enviada: " + resposta);
     }
 
@@ -205,4 +201,3 @@
 </body>
 
 </html>
-
