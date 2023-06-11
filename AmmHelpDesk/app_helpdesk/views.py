@@ -59,42 +59,6 @@ def solicit_pages(request):
 def cliente_page(request):
     return render(request, 'FormsHD.html')
 
-            ########################################################################################################
-
-# def cliente_page_submit(request):        
-#     if request.POST:
-#         Cliente.objects.create(
-#         nomecliente = request.POST.get('nomecliente'),
-#         cpf_cnpj = request.POST.get('cpf_cnpj'),
-#         email_cliente  = request.POST.get('email_cliente'),
-#         telefone_cliente = request.POST.get('telefone_cliente'),
-#         descricao = request.POST.get('descricao'),
-#         assunto = request.POST.get('assunto')
-#         )
-#         Solicitacao.objects.create(
-#         prioridade=request.POST.get('prioridade')
-#         )
-#         Solicitacaostatus.objects.create(
-#         idstatus=request.POST.get('idstatus')
-#         )
-        
-#     return redirect('/')
-
-    ########################################################################################################
-        # dados = {}
-        # dados['nomecliente'] = request.POST.get('nomecliente')
-        # dados['cpf_cnpj'] = request.POST.get('cpf_cnpj')
-        # dados['email_cliente']  = request.POST.get('email_cliente')
-        # dados['telefone_cliente'] = request.POST.get('telefone_cliente')
-        # dados['descricao'] = request.POST.get('descricao')
-        # Cliente.objects.create(nomecliente=dados['nomecliente'],
-        #                       cpf_cnpj=int(dados['cpf_cnpj']),
-        #                       email_cliente=dados['email_cliente'],
-        #                       telefone_cliente=dados['telefone_cliente'],
-        #                       descricao=dados['descricao'],
-        #                       assunto=request.POST.get('assunto'))
-    #   return redirect('/')
-
     
 
 def cliente_novo(request):
@@ -116,10 +80,28 @@ def atender_cliente(request):
     if idcliente:
         dados['cliente']= Cliente.objects.get(idcliente=idcliente)
         
-        Cliente.objects.filter(idcliente=idcliente).update()
+        
     return render(request, 'pagecliente.html',dados)
 
+@login_required(login_url='/login/')
+def update_cliente(request,idcliente):
+    statuscliente = request.GET.get('status')
+    prioridadecliente = request.GET.get('prioridade')
 
+    if statuscliente:
+        v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
+        v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
+        v_solicitacaostatus.idstatus = statuscliente
+        v_solicitacaostatus.save()
+    
+        return redirect ('/')
+    
+    elif prioridadecliente:
+        v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
+        v_solicitacao.prioridade = prioridadecliente
+        v_solicitacao.save()
+        return redirect ('/')
+        
 
 
 

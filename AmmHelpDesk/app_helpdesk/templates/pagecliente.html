@@ -139,23 +139,23 @@
     <span id="descricao">{{cliente.descricao}}</span>
   </div>
 
-  <div class="response-form">
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" class="btn btn-primary my-2">Responder</a>
-  </div>
-
   <div class="status-btn-group">
     <label for="status">Status:</label>
-    <button onclick="setStatus('Aberto')">Aberto</button>
-    <button onclick="setStatus('Em Andamento')">Em Andamento</button>
-    <button onclick="setStatus('Fechado')">Fechado</button>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?status=ABERTO">Aberto</a>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?status=EM ANDAMENTO">Em Andamento</a>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?status=FECHADO">Fechado</a>
   </div>
-
+<br>
   <div class="priority-btn-group">
     <label for="prioridade">Prioridade:</label>
-    <button onclick="setPrioridade('Alta')">Alta</button>
-    <button onclick="setPrioridade('Média')">Média</button>
-    <button onclick="setPrioridade('Baixa')">Baixa</button>
-    <button onclick="setPrioridade('A Definir')">A Definir</button>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?prioridade=ALTA">Alta</a>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?prioridade=MEDIA">Média</a>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?prioridade=BAIXA">Baixa</a>
+    <a class = "btn btn-info" href="updatecliente/{{cliente.idcliente}}/?prioridade=A DEFINIR">A Definir</a>
+  </div>
+
+  <div class="response-form">
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" class="btn btn-primary my-2">Responder</a>
   </div>
 
   <script>
