@@ -162,7 +162,13 @@ class Solicitacao(models.Model):
     solicitacaoaativo = models.CharField(db_column='SolicitacaoaAtivo', max_length=1, blank=True, null=True)  # Field name made lowercase.
 
     def __str__(self):
-        return self.idsolicitacao, self.idcliente, self.idusuario, self.assunto, self.prioridad, self.data_solicitacao, self.solicitacaoaativo
+        return self.idsolicitacao
+
+    def cor_status(self):
+        if self.assunto == 'ABERTO':
+            return True
+        else:
+            return False
     
     
     

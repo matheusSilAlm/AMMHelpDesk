@@ -61,12 +61,12 @@
     }
 
     .badge-info {
-      background-color: #17a2b8;
+      background-color: #646464;
       color: #ffffff;
     }
 
     .badge-danger {
-      background-color: #706f70;
+      background-color: #d60f0f;
       color: #fff;
     }
 
@@ -120,13 +120,12 @@
         <td><a href="pagecliente/?id={{cliente.idcliente}}" type="button" class="btn btn-outline-dark">{{cliente.idcliente}}</a></td>
         <td>{{cliente.assunto}}</td>
         
-        <td><span class="badge badge-success">{{cliente.status}}</span></td>
+        <td><span class="{% if cliente.status == 'ABERTO' %}badge badge-success""{% elif cliente.status == 'FECHADO' %}badge badge-info""{% elif cliente.status == 'EM ANDAMENTO' %}badge badge-warning"{% endif %}>{{cliente.status}}</span></td>
         
         <td>{{cliente.datacriacao}}</td>
         <td>{{cliente.nomecliente}}</td>
-        <td><span class="badge badge-danger">{{cliente.prioridade}}</span></td>
-        
-        <td>Usuario Amm ()</td>
+        <td><span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger""{% elif cliente.prioridade == 'MEDIA' %}badge badge-media""{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary""{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info"{% endif %}>{{cliente.prioridade}}</span></td>    
+        <td>Usuario Amm</td>
       </thead>
       <tbody>
         
@@ -136,27 +135,32 @@
         {% endfor %}
       </tbody>
     </table>
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@example.com" target="_blank">Responder</a> <br>
+ 
    
     
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+    {% if page_obj.has_other_pages %}
+<div class="btn-group; pagination" role="group" aria-label="Item pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
+    {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% for page_number in page_obj.paginator.page_range %}
+        {% if page_obj.number == page_number %}
+            <button class="btn btn-outline-primary active">
+                <span>{{ page_number }} <span class="sr-only">(Atual)</span></span>
+            </button>
+        {% else %}
+            <a href="?page={{ page_number }}" class="btn btn-outline-primary">
+                {{ page_number }}
+            </a>
         {% endif %}
-    </span>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">&raquo;</a>
+    {% endif %}
 </div>
-
+{% endif %}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
   

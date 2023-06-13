@@ -34,9 +34,9 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-    arr_cliente = Cliente.objects.all()
-    
 
+    arr_cliente = Cliente.objects.all() and Cliente.objects.order_by('-idcliente')
+    
     for index, cliente in enumerate(arr_cliente, start=0):
         v_solicitacao = Solicitacao.objects.get(idcliente=arr_cliente[index].idcliente)
         v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
@@ -47,8 +47,7 @@ def solicit_pages(request):
         'clientes': arr_cliente
     }
     
-   
-    paginator = Paginator(arr_cliente, 3)
+    paginator = Paginator(arr_cliente, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -84,7 +83,7 @@ def atender_cliente(request):
     return render(request, 'pagecliente.html',dados)
 
 @login_required(login_url='/login/')
-def update_cliente(request,idcliente):
+def update_cliente(request, idcliente):
     statuscliente = request.GET.get('status')
     prioridadecliente = request.GET.get('prioridade')
 
@@ -94,14 +93,13 @@ def update_cliente(request,idcliente):
         v_solicitacaostatus.idstatus = statuscliente
         v_solicitacaostatus.save()
     
-        return redirect ('/')
-    
-    elif prioridadecliente:
+    if prioridadecliente:
         v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
         v_solicitacao.prioridade = prioridadecliente
         v_solicitacao.save()
-        return redirect ('/')
-        
+        return redirect('/')
+    
+    return redirect(request.path_info) 
 
 
 
@@ -136,5 +134,5 @@ def cliente_page_submit(request):
                 idsolicitacao=solicitacao
             )
                  
-    return HttpResponse('Dados salvos com sucesso!')
+    return  render(request, 'formshd.html')
 
