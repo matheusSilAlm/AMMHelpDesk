@@ -103,7 +103,8 @@ class Cliente(models.Model):
         managed = True
         db_table = 'cliente'
 
-
+    def get_data_criacao(self):
+        return self.datacriacao.strftime('%d/%m/%Y - %H:%M')
     
 
 

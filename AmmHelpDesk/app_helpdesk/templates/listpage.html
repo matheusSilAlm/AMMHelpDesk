@@ -104,38 +104,49 @@
 <body>
 <div class="container"> <a href="https://ammsolucoes.com.br/"><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
   <h1>Lista de Chamados</h1>
-    <table>
-      
-      <thead>
-        <tr>
-          <th></th>
-            <th>SOLICITAÇÃO</th>
-              <th>STATUS</th>
-                <th>DATA</th>
-              <th>NOME DO CLIENTE</th>
-            <th>PRIORIDADE</th>
-          <th>USUÁRIO RESPONSÁVEL</th>
-        </tr>
-        {% for cliente in page_obj %}
-        <td><a href="pagecliente/?id={{cliente.idcliente}}" type="button" class="btn btn-outline-dark">{{cliente.idcliente}}</a></td>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>SOLICITAÇÃO</th>
+        <th>STATUS</th>
+        <th>DATA</th>
+        <th>NOME DO CLIENTE</th>
+        <th>PRIORIDADE</th>
+        <th>USUÁRIO RESPONSÁVEL</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cliente in page_obj %}
+      <tr>
+        <td>
+          <button class="btn d-inline-flex align-items-center border-0" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">{{cliente.idcliente}}</button>
+        </td>
         <td>{{cliente.assunto}}</td>
-        
-        <td><span class="{% if cliente.status == 'ABERTO' %}badge badge-success""{% elif cliente.status == 'FECHADO' %}badge badge-info""{% elif cliente.status == 'EM ANDAMENTO' %}badge badge-warning"{% endif %}>{{cliente.status}}</span></td>
-        
-        <td>{{cliente.datacriacao}}</td>
+        <td>
+          <span class="{% if cliente.status == 'ABERTO' %}badge badge-success{% elif cliente.status == 'FECHADO' %}badge badge-info{% elif cliente.status == 'EM ANDAMENTO' %}badge badge-warning{% endif %}">{{cliente.status}}</span>
+        </td>
+        <td>{{cliente.get_data_criacao}}</td>
         <td>{{cliente.nomecliente}}</td>
-        <td><span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger""{% elif cliente.prioridade == 'MEDIA' %}badge badge-media""{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary""{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info"{% endif %}>{{cliente.prioridade}}</span></td>    
+        <td>
+          <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
+        </td>
         <td>Usuario Amm</td>
-      </thead>
-      <tbody>
-        
-        <ul style="font-size: 20px;">
-       
-        
-        {% endfor %}
-      </tbody>
-    </table>
- 
+      </tr>
+      <tr>
+        <td colspan="7" class="p-0">
+          <ul class="list-unstyled ps-3 collapse" id="contents-collapse-{{cliente.idcliente}}">
+            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">Email: {{cliente.email_cliente}}</a></li>
+            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">Telefone: {{cliente.telefone_cliente}}</a></li>
+            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">{{cliente.email_cliente}}</a></li>
+            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">{{cliente.descricao}}</a></li>
+          </ul>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
    
     
     {% if page_obj.has_other_pages %}
