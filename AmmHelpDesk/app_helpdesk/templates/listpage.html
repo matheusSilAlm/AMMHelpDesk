@@ -53,21 +53,25 @@
       border-radius: 20px;
       display: inline-block;
       margin-bottom: 5px;
+      text-decoration: none;
     }
 
     .badge-success {
       background-color: #08fd00;
       color: #000;
+      font-size: medium;
     }
 
     .badge-info {
       background-color: #646464;
       color: #ffffff;
+      font-size: medium;
     }
 
     .badge-danger {
       background-color: #d60f0f;
       color: #fff;
+      font-size: medium;
     }
 
     .text-white {
@@ -86,18 +90,25 @@
     .badge-warning {
       background-color: #ffd900;
       color: #000000;
+      font-size:medium;
     }
     .badge-primary {
       background-color: #03aef1;
       color: #000000;
+      font-size: medium;
     }
     .badge-media {
       background-color: #ff9900;
       color: #0a0a0a;
+      font-size: medium;
     }
     .badge-red {
       background-color: #ff0000;
       color: #000000;
+      font-size: medium;
+    }
+    .a {
+      text-decoration: none;
     }
   </style>
 </head>
@@ -118,35 +129,106 @@
     </thead>
     <tbody>
       {% for cliente in page_obj %}
-      <tr>
+      <tr class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
         <td>
-          <button class="btn d-inline-flex align-items-center border-0" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">{{cliente.idcliente}}</button>
+          <span>{{cliente.idcliente}}</span>
         </td>
         <td>{{cliente.assunto}}</td>
         <td>
-          <span class="{% if cliente.status == 'ABERTO' %}badge badge-success{% elif cliente.status == 'FECHADO' %}badge badge-info{% elif cliente.status == 'EM ANDAMENTO' %}badge badge-warning{% endif %}">{{cliente.status}}</span>
+          <button class="btn btn-status" data-bs-toggle="modal" data-bs-target="#status-popup-{{cliente.idcliente}}">
+            <span class="{% if cliente.status == 'ABERTO' %}badge badge-success{% elif cliente.status == 'FECHADO' %}badge badge-info{% elif cliente.status == 'EM ANDAMENTO' %}badge badge-warning{% endif %}">{{cliente.status}}</span>
+          </button>
         </td>
         <td>{{cliente.get_data_criacao}}</td>
         <td>{{cliente.nomecliente}}</td>
         <td>
-          <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
+          <button class="btn btn-prioridade" data-bs-toggle="modal" data-bs-target="#priority-popup-{{cliente.idcliente}}">
+            <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
+          </button>
         </td>
         <td>Usuario Amm</td>
       </tr>
       <tr>
         <td colspan="7" class="p-0">
           <ul class="list-unstyled ps-3 collapse" id="contents-collapse-{{cliente.idcliente}}">
-            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">Email: {{cliente.email_cliente}}</a></li>
-            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">Telefone: {{cliente.telefone_cliente}}</a></li>
-            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">{{cliente.email_cliente}}</a></li>
-            <li><a class="d-inline-flex align-items-center rounded text-decoration-none">{{cliente.descricao}}</a></li>
+            <li>
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="fw-bold">Email: {{cliente.email_cliente}}</span>
+              </div>
+            </li>
+            <li>
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="fw-bold">Telefone: {{cliente.telefone_cliente}}</span>
+              </div>
+            </li>
+            <li>
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="fw-bold">CPF ou CNPJ: {{cliente.cpf_cnpj}}</span>
+              </div>
+            </li>
+            <li>
+              <div class="rounded border p-3">
+                <span class="fw-bold">Descrição:</span>
+                <br>
+                <span>{{cliente.descricao}}</span>
+              </div>
+            </li>
           </ul>
         </td>
       </tr>
+      <!-- Status Popup -->
+      <div class="modal fade" id="status-popup-{{cliente.idcliente}}" tabindex="-1" aria-labelledby="status-popup-{{cliente.idcliente}}-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="status-popup-{{cliente.idcliente}}-label">Status atual: {{cliente.status}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="status-btn-group">
+                <label for="status" style="font-size: larger;">Status:</label>
+                <div style="text-align: center;">
+                  <a class="badge badge-danger" href="updatecliente/{{cliente.idcliente}}/?status=FECHADO">FECHADO</a>
+                  <a class="badge badge-warning" href="updatecliente/{{cliente.idcliente}}/?status=EM%20ANDAMENTO">EM ANDAMENTO</a>
+                  <a class="badge badge-success" href="updatecliente/{{cliente.idcliente}}/?status=ABERTO">ABERTO</a>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- Priority Popup -->
+      <div class="modal fade" id="priority-popup-{{cliente.idcliente}}" tabindex="-1" aria-labelledby="priority-popup-{{cliente.idcliente}}-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="priority-popup-{{cliente.idcliente}}-label">Prioridade atual: {{cliente.prioridade}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="priority-btn-group">
+                <label for="priority">Prioridade:</label>
+                <div style="text-align: center;">
+                  
+                  <a class="badge badge-danger" href="updatecliente/{{cliente.idcliente}}/?prioridade=ALTA">Alta</a>
+                  <a class="badge badge-media" href="updatecliente/{{cliente.idcliente}}/?prioridade=MEDIA">Média</a>
+                  <a class="badge badge-primary" href="updatecliente/{{cliente.idcliente}}/?prioridade=BAIXA">Baixa</a>
+                  <a class="badge badge-info" href="updatecliente/{{cliente.idcliente}}/?prioridade=A%20DEFINIR">A Definir</a>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
       {% endfor %}
     </tbody>
+    
   </table>
-  
+</div>
    
     
     {% if page_obj.has_other_pages %}

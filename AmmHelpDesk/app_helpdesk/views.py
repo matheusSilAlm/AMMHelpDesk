@@ -34,7 +34,8 @@ def submit_login(request):
 @login_required(login_url='/login/')
 def solicit_pages(request):
     usuario = request.user
-
+    statuscliente = request.GET.get('status')
+    prioridadecliente = request.GET.get('prioridade')
     arr_cliente = Cliente.objects.all() and Cliente.objects.order_by('-idcliente')
     
     for index, cliente in enumerate(arr_cliente, start=0):
@@ -46,7 +47,12 @@ def solicit_pages(request):
     cliente = {
         'clientes': arr_cliente
     }
+
+
     
+    
+
+
     paginator = Paginator(arr_cliente, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -92,7 +98,7 @@ def update_cliente(request, idcliente):
         v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
         v_solicitacaostatus.idstatus = statuscliente
         v_solicitacaostatus.save()
-    
+        return redirect('/')
     if prioridadecliente:
         v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
         v_solicitacao.prioridade = prioridadecliente

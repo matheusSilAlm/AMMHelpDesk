@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+<div align="right">
+<a href="/logout">Sair</a>
+</div>
+<title>Home HELPDESK</title>
+<style>
+body {
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+padding: 20px;
+}
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #857f7f;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr {
+  background-color: #ffffff;
+}
+tr:hover {
+  background-color: #acabaa;
+}
+
+.badge {
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.badge-success {
+  background-color: #08fd00;
+  color: #000;
+}
+
+.badge-info {
+  background-color: #17a2b8;
+  color: #ffffff;
+}
+
+.badge-danger {
+  background-color: #706f70;
+  color: #fff;
+}
+
+.text-white {
+  color: #ffffff !important;
+}
+
+.btn {
+  margin-right: 10px;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #000;
+}
+
+
+</style>
+</head>
+<body>
+<h1>Lista de Chamados</h1>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Cliente</th>
+<th>Descrição</th>
+<th>Status</th>
+<th>Prioridade</th>
+<th>Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Cliente 1</td>
+<td>Descrição 1</td>
+<td>
+<span class="badge badge-success" data-status="1">Aberto</span>
+</td>
+<td>
+<span class="badge badge-info" data-priority="1">Baixa</span>
+</td>
+<td>
+<button class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal" onclick="setChamado(1)">Detalhes</button>
+</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Cliente 2</td>
+<td>Descrição 2</td>
+<td>
+<span class="badge badge-success" data-status="2">Aberto</span>
+</td>
+<td>
+<span class="badge badge-info" data-priority="2">Média</span>
+</td>
+<td>
+<button class="btn btn-primary" data-toggle="modal" data-target="#detalhesModal" onclick="setChamado(2)">Detalhes</button>
+</td>
+</tr>
+</tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="detalhesModal" tabindex="-1" role="dialog" aria-labelledby="detalhesModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="detalhesModalLabel">Detalhes do Chamado</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<div class="modal-body">
+<div id="chamadoId" style="display:none;"></div>
+<div id="chamadoCliente" class="form-group">
+<label for="cliente">Cliente:</label>
+<input type="text" class="form-control" id="cliente" readonly>
+</div>
+<div id="chamadoDescricao" class="form-group">
+<label for="descricao">Descrição:</label>
+<textarea class="form-control" id="descricao" rows="3" readonly></textarea>
+</div>
+<div id="chamadoStatus" class="form-group">
+<label for="status">Status:</label>
+<select class="form-control" id="status" onchange="setStatus(this.value)">
+<option value="Aberto">Aberto</option>
+<option value="Fechado">Fechado</option>
+<option value="Em Andamento">Em Andamento</option>
+</select>
+</div>
+<div id="chamadoPrioridade" class="form-group">
+<label for="prioridade">Prioridade:</label>
+<select class="form-control" id="prioridade" onchange="setPrioridade(this.value)">
+<option value="Baixa">Baixa</option>
+<option value="Média">Média</option>
+<option value="Alta">Alta</option>
+</select>
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+var chamadoId;
+
+
+function setChamado(id) {
+  chamadoId = id;
+  var cliente = document.getElementById('chamadoCliente');
+  var descricao = document.getElementById('chamadoDescricao');
+  var status = document.getElementById('chamadoStatus');
+  var prioridade = document.getElementById('chamadoPrioridade');
+
+  cliente.querySelector('input').value = document.querySelector('tr:nth-child(' + (id + 1) + ') td:nth-child(2)').textContent;
+  descricao.querySelector('textarea').value = document.querySelector('tr:nth-child(' + (id + 1) + ') td:nth-child(3)').textContent;
+
+  var statusBadge = document.querySelector('tr:nth-child(' + (id + 1) + ') td:nth-child(4) span');
+  status.querySelector('select').value = statusBadge.dataset.status;
+
+  var prioridadeBadge = document.querySelector('tr:nth-child(' + (id + 1) + ') td:nth-child(5) span');
+  prioridade.querySelector('select').value = prioridadeBadge.dataset.priority;
+}
+
+function setStatus(status) {
+  var statusBadge = document.querySelector('tr:nth-child(' + (chamadoId + 1) + ') td:nth-child(4) span');
+  statusBadge.textContent = status;
+  if (status === 'Aberto') {
+    statusBadge.classList.remove('badge-info', 'badge-danger');
+    statusBadge.classList.add('badge-success');
+  } else if (status === 'Fechado') {
+    statusBadge.classList.remove('badge-success', 'badge-danger');
+    statusBadge.classList.add('badge-info');
+  } else {
+    statusBadge.classList.remove('badge-success', 'badge-info');
+    statusBadge.classList.add('badge-danger');
+  }
+}
+
+function setPrioridade(prioridade) {
+  var prioridadeBadge = document.querySelector('tr:nth-child(' + (chamadoId + 1) + ') td:nth-child(5) span');
+  prioridadeBadge.textContent = prioridade;
+  if (prioridade === 'Baixa') {
+    prioridadeBadge.classList.remove('badge-info', 'badge-warning', 'badge-danger');
+    prioridadeBadge.classList.add('badge-success');
+  } else if (prioridade === 'Média') {
+    prioridadeBadge.classList.remove('badge-success', 'badge-warning', 'badge-danger');
+    prioridadeBadge.classList.add('badge-info');
+  } else {
+    prioridadeBadge.classList.remove('badge-success', 'badge-info', 'badge-warning');
+    prioridadeBadge.classList.add('badge-danger');
+  }
+}
+
+function salvar() {
+  var cliente = document.getElementById('chamadoCliente').querySelector('input').value;
+  var descricao = document.getElementById('chamadoDescricao').querySelector('textarea').value;
+  var status = document.getElementById('chamadoStatus').querySelector('select').value;
+  var prioridade = document.getElementById('chamadoPrioridade').querySelector('select').value;
+
+  document.querySelector('tr:nth-child(' + (chamadoId + 1) + ') td:nth-child(2)').textContent = cliente;
+  document.querySelector('tr:nth-child(' + (chamadoId + 1) + ') td:nth-child(3)').textContent = descricao;
+  setStatus(status);
+  setPrioridade(prioridade);
+
+  $('#detalhesModal').modal('hide');
+}
+
+
+
+</script>
+</body>
+</html>
