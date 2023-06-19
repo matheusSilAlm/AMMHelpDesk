@@ -17,7 +17,6 @@ def logout_user(request):
     logout(request)
     return redirect('/')
 
-
 def submit_login(request):
     if request.POST:
         username = request.POST.get('username')
@@ -29,7 +28,6 @@ def submit_login(request):
         else:
             messages.error(request, "Usuário ou senha inválidos")
     return redirect('/')
-
 
 @login_required(login_url='/login/')
 def solicit_pages(request):
@@ -48,23 +46,14 @@ def solicit_pages(request):
         'clientes': arr_cliente
     }
 
-
-    
-    
-
-
     paginator = Paginator(arr_cliente, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'listpage.html', {'page_obj':page_obj})  
 
-
-
 def cliente_page(request):
     return render(request, 'FormsHD.html')
-
-    
 
 def cliente_novo(request):
     novo_cliente = Cliente()
@@ -75,8 +64,6 @@ def cliente_novo(request):
         'cliente': Cliente.objects.all()
     }
     return render(request, '/', cliente)
-
-
 
 @login_required(login_url='/login/')
 def atender_cliente(request):
@@ -106,8 +93,6 @@ def update_cliente(request, idcliente):
         return redirect('/')
     
     return redirect(request.path_info) 
-
-
 
 def cliente_page_submit(request):
     if request.method == 'POST':
