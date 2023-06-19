@@ -111,6 +111,33 @@
     .a {
       text-decoration: none;
     }
+    .response-form {
+      margin-top: 30px;
+    }
+
+    .response-form textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    .response-form button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .response-form button:hover {
+      background-color: #45a049;
+    }
+
+    .response-form .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -120,12 +147,12 @@
     <thead>
       <tr>
         <th></th>
-        <th>SOLICITAÇÃO</th>
+        <th>ASSUNTO</th>
         <th>STATUS</th>
         <th>DATA</th>
         <th>NOME DO CLIENTE</th>
         <th>PRIORIDADE</th>
-        <th>DELETAR | ENVIAR FAQ</th>
+        <th>AÇÕES</th>
       </tr>
     </thead>
     <tbody>
@@ -147,26 +174,29 @@
             <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
           </button>
         </td>
-        <td><button class="fa-regular fa-circle-xmark fa-xl" style="color: #ff0000; outline: none; border: 0px solid white; background-color: transparent;"></button>|<button class="fa-solid fa-upload fa-lg" style=" outline: none; border: 0px solid white; background-color: transparent;"></button></td>
+        <td><button title="Deletar" class="fa-solid fa-trash" style="outline: none; border: 0px solid white; background-color: transparent;"></button>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp<button title="Enviar para o FAQ" class="fa-solid fa-upload fa-lg" style=" outline: none; border: 0px solid white; background-color: transparent;"></button></td>
       </tr>
       <tr>
+        
         <td colspan="7" class="p-0">
+          
           <ul class="list-unstyled ps-3 collapse" id="contents-collapse-{{cliente.idcliente}}">
+            
             <li>
               <div class="d-flex justify-content-between align-items-start">
                 <span class="fw-bold">Email: {{cliente.email_cliente}}</span>
               </div>
-            </li>
+            </li><br>
             <li>
               <div class="d-flex justify-content-between align-items-start">
                 <span class="fw-bold">Telefone: {{cliente.telefone_cliente}}</span>
               </div>
-            </li>
+            </li><br>
             <li>
               <div class="d-flex justify-content-between align-items-start">
                 <span class="fw-bold">CPF ou CNPJ: {{cliente.cpf_cnpj}}</span>
               </div>
-            </li>
+            </li><br>
             <li>
               <div class="rounded border p-3">
                 <span class="fw-bold">Descrição:</span>
@@ -174,6 +204,13 @@
                 <span>{{cliente.descricao}}</span>
               </div>
             </li>
+            <div class="response-form">
+              <button id="responderBtn" onclick="toggleRespostaForm()">Responder</button>
+              <div id="respostaForm" class="hidden">
+                <textarea id="resposta" placeholder="Digite sua resposta..."></textarea>
+                <button onclick="enviarResposta()">Enviar</button>
+              </div>
+            </div>
           </ul>
         </td>
       </tr>
@@ -257,7 +294,19 @@
 {% endif %}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-  
+
+  <script>
+    function toggleRespostaForm() {
+      var respostaForm = document.getElementById("respostaForm");
+      respostaForm.classList.toggle("hidden");
+    }
+
+    function enviarResposta() {
+      var resposta = document.getElementById("resposta").value;
+      // Faça algo com a resposta, como enviá-la para um servidor ou armazená-la em algum lugar
+      alert("Resposta enviada: " + resposta);
+    }
+  </script>
 </body>
 
 
