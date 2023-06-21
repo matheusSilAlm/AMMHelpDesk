@@ -174,7 +174,11 @@
             <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
           </button>
         </td>
-        <td><button title="Deletar" class="fa-solid fa-trash" style="outline: none; border: 0px solid white; background-color: transparent;"></button>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp<button title="Enviar para o FAQ" class="fa-solid fa-upload fa-lg" style=" outline: none; border: 0px solid white; background-color: transparent;"></button></td>
+        <td>
+            <button title="Deletar" class="fa-solid fa-trash" style="outline: none; border: 0px solid white; background-color: transparent;"></button>
+              &nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+            <button title="Enviar para o FAQ" class="fa-solid fa-upload fa-lg" style=" outline: none; border: 0px solid white; background-color: transparent;"></button>
+        </td>
       </tr>
       <tr>
         <td colspan="7" class="p-0">
@@ -229,6 +233,7 @@
                   <a class="badge badge-danger" href="updatecliente/{{cliente.idcliente}}/?status=FECHADO">FECHADO</a>
                   <a class="badge badge-warning" href="updatecliente/{{cliente.idcliente}}/?status=EM%20ANDAMENTO">EM ANDAMENTO</a>
                   <a class="badge badge-success" href="updatecliente/{{cliente.idcliente}}/?status=ABERTO">ABERTO</a>
+                  <a class="badge badge-danger" href="updatecliente/{{cliente.idcliente}}/?status=EXCLUIR">EXCLUIR</a>
                 </div>
               </div>
             </div>
@@ -261,7 +266,7 @@
           </div>
         </div>
       </div>
-    
+
       {% endfor %}
     </tbody>
     
@@ -307,6 +312,10 @@
       alert("Resposta enviada: " + resposta);
     }
   </script>
+  <script>
+    var elemento = document.getElementById("meuElemento");
+    elemento.remove();
+ </script>
 </body>
 
 

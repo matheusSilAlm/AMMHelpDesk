@@ -95,8 +95,8 @@ class Cliente(models.Model):
     descricao = models.TextField(db_column='Descricao', blank=True, null=True)  # Field name made lowercase.
     
     
-    def __str__(self):
-        return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
+    # def __str__(self):
+    #     return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
     
 
     class Meta:
