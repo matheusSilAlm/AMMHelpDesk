@@ -97,8 +97,8 @@ class Cliente(models.Model):
 
     
     
-    def __str__(self):
-        return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
+    # def __str__(self):
+    #     return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
     
 
     class Meta:
