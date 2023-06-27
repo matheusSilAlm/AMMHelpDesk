@@ -7,6 +7,9 @@ from django.shortcuts import render
 from django.db import transaction
 from django.http import HttpResponse
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
+
+
 
 #Usuário faz login na pagina.
 def login_user(request):
@@ -79,6 +82,7 @@ def atender_cliente(request):
 def update_cliente(request, idcliente):
     statuscliente = request.GET.get('status')
     prioridadecliente = request.GET.get('prioridade')
+    resposta_usuario = request.POST.get('resposta_usuario')
 
     if statuscliente:
         v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
@@ -91,8 +95,22 @@ def update_cliente(request, idcliente):
         v_solicitacao.prioridade = prioridadecliente
         v_solicitacao.save()
         return redirect('/')
-    
+    if request.method == 'POST':
+        cliente = Cliente.objects.get(idcliente=idcliente)
+        cliente.resposta_usuario = resposta_usuario
+        cliente.save()
+        
+        # # Enviar e-mail para o cliente
+        # subject = 'Resposta ao seu chamado'
+        # message = f'Olá {cliente.nomecliente},\n\nSua solicitação foi respondida.\n\nResposta: {resposta_usuario}\n\nAtenciosamente,\nEquipe de suporte'
+        # from_email = 'teushiftz@gmail.com'  # E-mail remetente
+        # to_email = cliente.email_cliente  # E-mail do cliente
+        # send_mail(subject, message, from_email, [to_email])
+        return redirect('/')
+
     return redirect(request.path_info) 
+
+
 
 def cliente_page_submit(request):
     if request.method == 'POST':
@@ -126,4 +144,5 @@ def cliente_page_submit(request):
             )
                  
     return  render(request, 'formshd.html')
+
 

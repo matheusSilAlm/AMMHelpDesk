@@ -124,7 +124,7 @@ USE_TZ = False
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static')
+    os.path.join(BASE_DIR,'Static')
 
 ]
 
@@ -132,3 +132,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'teushiftz@gmail.com'
+EMAIL_HOST_PASSWORD = 'qJHEgf15'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

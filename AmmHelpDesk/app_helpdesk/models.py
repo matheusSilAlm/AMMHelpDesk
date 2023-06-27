@@ -93,6 +93,8 @@ class Cliente(models.Model):
     telefone_cliente = models.CharField(db_column='Telefone_Cliente', max_length=20)  # Field name made lowercase.
     assunto = models.CharField(db_column='Assunto', max_length=19, blank=True, null=True)  # Field name made lowercase.
     descricao = models.TextField(db_column='Descricao', blank=True, null=True)  # Field name made lowercase.
+    resposta_usuario = models.TextField(db_column='Resposta_chamado', blank=True, null=True)
+
     
     
     def __str__(self):

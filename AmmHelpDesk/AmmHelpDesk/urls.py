@@ -14,6 +14,7 @@ urlpatterns = [
     path('formshd/submit', views.cliente_page_submit),
     path('listpage/', views.cliente_novo),
     path('home/pagecliente/', views.atender_cliente),  
-    # path('home/updatecliente/<int:idcliente>/', views.update_cliente)   
+    path('home/updatecliente/<int:idcliente>/', views.update_cliente),
+    
       
 ]
