@@ -159,7 +159,7 @@
         <th>DATA</th>
         <th>NOME DO CLIENTE</th>
         <th>PRIORIDADE</th>
-        
+        <th>ENVIAR PARA FAQ</th>
       </tr>
     </thead>
     <tbody>
@@ -181,7 +181,9 @@
             <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
           </button>
         </td>
-        
+        <td>
+          <i class="fa-solid fa-upload"></i>
+        </td>
       </tr>
       <tr>
         <td colspan="7" class="p-0">
@@ -234,6 +236,7 @@
                 {% endif %}
               </div>
             </li>
+            
           </ul>
         </td>
       </tr>

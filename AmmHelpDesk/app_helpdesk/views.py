@@ -8,10 +8,14 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
+from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.conf import settings
 
+ 
 
-
-#Usuário faz login na pagina.
+# Usuário faz login na pagina.
 def login_user(request):
     return render(request, 'login.html')
 
@@ -100,12 +104,14 @@ def update_cliente(request, idcliente):
         cliente.resposta_usuario = resposta_usuario
         cliente.save()
         
-        # # Enviar e-mail para o cliente
-        # subject = 'Resposta ao seu chamado'
-        # message = f'Olá {cliente.nomecliente},\n\nSua solicitação foi respondida.\n\nResposta: {resposta_usuario}\n\nAtenciosamente,\nEquipe de suporte'
-        # from_email = 'teushiftz@gmail.com'  # E-mail remetente
-        # to_email = cliente.email_cliente  # E-mail do cliente
-        # send_mail(subject, message, from_email, [to_email])
+        # Enviar e-mail para o cliente
+        subject = f'Resposta ao seu chamado: {cliente.assunto}' 
+        message = f'Olá {cliente.nomecliente},\n\nSua solicitação foi respondida.\n\nSua descrição do chamado: {cliente.descricao}\n\n\n\nResposta: {resposta_usuario}\n\nAtenciosamente,\nEquipe de suporte'
+        from_email = 'teushiftz@gmail.com'  # E-mail remetente
+        to_email = cliente.email_cliente  # E-mail do cliente
+        send_mail(subject, message, from_email, [to_email])
+    
+        
         return redirect('/')
 
     return redirect(request.path_info) 
