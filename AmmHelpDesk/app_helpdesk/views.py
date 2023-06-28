@@ -87,7 +87,8 @@ def update_cliente(request, idcliente):
     statuscliente = request.GET.get('status')
     prioridadecliente = request.GET.get('prioridade')
     resposta_usuario = request.POST.get('resposta_usuario')
-
+    faq_enviar = request.POST.get('faq_enviado')
+    
     if statuscliente:
         v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
         v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
@@ -98,6 +99,11 @@ def update_cliente(request, idcliente):
         v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
         v_solicitacao.prioridade = prioridadecliente
         v_solicitacao.save()
+        return redirect('/')
+    if faq_enviar:
+        v_faq_enviar = Cliente.objects.get(idcliente=idcliente)
+        v_faq_enviar = faq_enviar
+        faq_enviar.save()
         return redirect('/')
     if request.method == 'POST':
         cliente = Cliente.objects.get(idcliente=idcliente)
@@ -113,6 +119,7 @@ def update_cliente(request, idcliente):
     
         
         return redirect('/')
+    
 
     return redirect(request.path_info) 
 
@@ -152,3 +159,7 @@ def cliente_page_submit(request):
     return  render(request, 'formshd.html')
 
 
+def faq_amm(request):
+    cliente = Cliente.objects.all()
+    dados = {'clientes': cliente}
+    return render(request, 'FAQ.html', dados)

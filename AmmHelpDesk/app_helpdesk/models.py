@@ -94,7 +94,7 @@ class Cliente(models.Model):
     assunto = models.CharField(db_column='Assunto', max_length=19, blank=True, null=True)  # Field name made lowercase.
     descricao = models.TextField(db_column='Descricao', blank=True, null=True)  # Field name made lowercase.
     resposta_usuario = models.TextField(db_column='Resposta_chamado', blank=True, null=True)
-
+    faq_enviar = models.TextField(db_column='Faq_Enviado', blank=True, null=True)
     
     
     # def __str__(self):
