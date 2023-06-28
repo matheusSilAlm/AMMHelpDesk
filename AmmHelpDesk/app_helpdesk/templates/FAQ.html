@@ -87,7 +87,7 @@
                            
                             
                             <!-- BEGIN NEW TICKET -->
-                            <a href="FormsHD.html"  type="button" class="btn btn-success pull-right">New Issue</a>
+                            <a href="/formshd"  type="button" class="btn btn-success pull-right">New Issue</a>
                             <div class="modal fade" id="newIssue" tabindex="-1" role="dialog" aria-labelledby="newIssue" aria-hidden="true">
                                 <div class="modal-wrapper">
                                     <div class="modal-dialog">
@@ -126,7 +126,7 @@
                              
                             <div class="row">
                                 {% for cliente in clientes %}
-                                {% if cliente.resposta_usuario %}
+                                {% if cliente.faq_enviar %}
                                 <!-- BEGIN TICKET CONTENT -->
                                 <div class="col-md-12">
                                     <ul class="list-group fa-padding">
