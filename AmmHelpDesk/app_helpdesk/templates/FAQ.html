@@ -4,6 +4,7 @@
 
   <title>Página de Perguntas Frequentes (FAQ)</title>
     <head>
+        <script src="https://kit.fontawesome.com/538f723e9c.js" crossorigin="anonymous"></script>
     <link href="{% static "css/FAQ.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -55,9 +56,6 @@
                         <div class="grid-body">
                             <br><br><br><br><br><h2>FAQ Amm</h2>
                             <br>
-                            
-                            
-                            
                             <p><strong>Palavras-Chaves</strong></p>
                             <ul class="support-label">
                                 <li><a style="text-decoration: none;" href="#"><span class="bg-blue">&nbsp;</span>&nbsp;&nbsp;&nbsp;NOSSOS APLICATIVOS</a></li>
@@ -70,122 +68,76 @@
                     </div>
                 </div>
                 <!-- END NAV TICKET -->
-                <!-- BEGIN TICKET -->
                 
+                <!-- BEGIN TICKET -->
                 <div class="col-md-9">
                     <div class="grid support-content">
-                         <div class="grid-body">
-                             <h2>Issues</h2>
-                             
-                             <hr>
-                             <br><br><br><br>
-                             <div class="btn-group">
-                                <h2 type="button" class="btn btn-default active">Perguntas Frequentes</h2>
-                                
+                        <div class="grid-body">
+                            <h2>Issues</h2>
+                            <hr>
+                            <br><br><br><br>
+                            <div class="btn-group">
+                                <h3 >Perguntas Frequentes</h3>
                             </div>
-                             
-                           
-                            
                             <!-- BEGIN NEW TICKET -->
-                            <a href="/formshd"  type="button" class="btn btn-success pull-right">New Issue</a>
-                            <div class="modal fade" id="newIssue" tabindex="-1" role="dialog" aria-labelledby="newIssue" aria-hidden="true">
-                                <div class="modal-wrapper">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-blue">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 class="modal-title"><i class="fa fa-pencil"></i> Create New Issue</h4>
-                                            </div>
-                                            <form action="#" method="post">
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <input name="subject" type="text" class="form-control" placeholder="Subject">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input name="department" type="text" class="form-control" placeholder="Department">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <textarea name="message" class="form-control" placeholder="Please detail your issue or question" style="height: 120px;"></textarea>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="file" name="attachment">
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-                                                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Create</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END NEW TICKET -->
-                             
-                            <div class="padding"></div>
-                             
-                            <div class="row">
-                                {% for cliente in clientes %}
+                            <a href="/formshd" type="button" class="btn btn-success pull-right">Novo Chamado</a>
+                        </div>
+                        <!-- END NEW TICKET -->
+                
+                       
+                
+                        <div >
+                            {% for cliente in clientes %}
                                 {% if cliente.faq_enviar %}
-                                <!-- BEGIN TICKET CONTENT -->
-                                <div class="col-md-12">
-                                    <ul class="list-group fa-padding">
                                     
-                                        <li class="list-group-item" data-toggle="modal" data-target="#issue">
-                                            <div class="media">
-                                                <i class="fa fa-cog pull-left"></i>
-                                                <div class="media-body">
-                                                    <strong>   {{ cliente.nomecliente }}</strong> <span class="label label-danger">{{cliente.assunto}}</span><span class="number pull-right"># 13698</span>
-                                                    <p> {{cliente.descricao}}</p>
-                                                    <p class="info"> <i class="fa fa-comments"></i> Amm Usuário: {{ cliente.resposta_usuario }}  <a href="#">2 comments</a></p>
+                                        <!-- BEGIN TICKET CONTENT -->
+                                        <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
+                                            <ul class="list-group fa-padding">
+                                                <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
+                                                    <div class="media">
+                                                    
+                                                        <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
+                                                            &nbsp&nbsp{{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                            <br><br>
+                                                            <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                        
-                                        
-                                    </ul>
-                                    
-                                    
-                                    <div class="modal fade" id="issue" tabindex="-1" role="dialog" aria-labelledby="issue" aria-hidden="true">
-                                        <div class="modal-wrapper">
+                                            </li>
+                                        </ul>
+                    
+                                        <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-blue">
+                                                        <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                        <h4 class="modal-title"><i class="fa fa-cog"></i> Add drag and drop config import closes</h4>
                                                     </div>
                                                     <form action="#" method="post">
-                                                        <div class="modal-body">
+                                                        <div class="modal-body text-left">
                                                             <div class="row">
-                                                                <div class="col-md-2">
-                                                                    <img src="assets/img/user/avatar01.png" class="img-circle" alt="" width="50">
-                                                                </div>
-                                                                <div class="col-md-10">
-                                                                    <p>{{ cliente.nomecliente }} <strong>{{cliente.assunto}}</strong>  {{cliente.get_data_criacao}}</p>
-                                                                    <p>{{ cliente.descricao }}</p>
-                                                                    
+                                                                <div class="col-md-12">
+                                                                    <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
+                                                                    <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="row support-content-comment">
-                                                                <div class="col-md-2">
-                                                                    <img src="assets/img/user/avatar02.png" class="img-circle" alt="" width="50">
-                                                                </div>
-                                                                <div class="col-md-10">
-                                                                    <p>Posted by <a href="#">ehernandez</a> on 16/06/2014 at 14:12</p>
-                                                                    <p>{{ cliente.resposta_usuario }}</p>
-                                                                    <a href="#"><span class="fa fa-reply"></span> &nbsp;Post a reply</a>
+                                                                <div class="col-md-12">
+                                                                    <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
+                                                                        <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                                                            <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {% endif %}
+                                        
+                                        
+                                        
+                                        {% endif %}
                                     {% endfor %}
                                     <!-- END DETAIL TICKET -->
                                 </div>
@@ -197,7 +149,8 @@
                 <!-- END TICKET -->
             </div>
         </section>
-        </div>
+    </div>
+    
   
 </body>
 </html>

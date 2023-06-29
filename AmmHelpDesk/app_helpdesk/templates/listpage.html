@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://kit.fontawesome.com/538f723e9c.js" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://kit.fontawesome.com/538f723e9c.js" crossorigin="anonymous"></script>
@@ -143,13 +144,50 @@
     .hidden {
   display: none;
 }
+.custom-navbar {
+    height: 105px;
+    font-weight: 900;
+    box-sizing: border-box;
+    font-size: 20px;
+    line-height: inherit;
+    white-space: nowrap;
+    font-style: normal;
+    text-align: center;
+    box-sizing: border-box;
+}
 
   </style>
-  
 </head>
 <body>
-<div class="container"> <a href="https://ammsolucoes.com.br/"><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
-  <h1>Lista de Chamados</h1>
+  <nav style="background-color: #05091f;" class="navbar navbar-expand fixed-top navbar-dark custom-navbar">
+    <div><a style="text-decoration: none;" href="https://ammsolucoes.com.br/">
+        <img src="{% static 'img/AmmLOGO.webp' %}" alt="Logo - Empresa" style="margin-left: 15px;"> 
+        
+        <span style="color: #ffa41b; font-family: 'Barlow', sans-serif; font-size: 20px;">
+            <b> Soluções</b>
+        </span>
+    </a>
+    </div>
+   
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link active" href="/FAQ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspFAQ</a>
+        </li> 
+      </ul>
+      
+      
+        <button class="btn btn-outline-danger my-2 my-sm-0; textnone" ><span style="text-align: right;">        
+          <a 
+          style="text-decoration: none"
+          type="/logout">Sair</a>
+      </span></button>
+      
+    </div>
+</nav>
+
+<div class="container"><br><br><br><br>
+  <h1>Lista de Chamados</h1><br>
   <table>
     <thead>
       <tr>
@@ -158,8 +196,7 @@
         <th>STATUS</th>
         <th>DATA</th>
         <th>NOME DO CLIENTE</th>
-        <th>PRIORIDADE</th>
-        <th>ENVIAR PARA FAQ</th>
+        <th>PRIORIDADE</th>        
       </tr>
     </thead>
     <tbody>
@@ -207,8 +244,7 @@
                 <span class="fw-bold">Descrição:</span>
                 <br>
                 <span>{{cliente.descricao}}</span>
-                <br>
-                <a class="fa-solid fa-upload" href="updatecliente/{{cliente.idcliente}}/?faq_enviado=ENVIAR"></a>
+                <br>              
               </div>
             </li>
             <br>
@@ -230,9 +266,15 @@
                 <span class="fw-bold">Resposta:</span>
                 <br>
                 {% if cliente.resposta_usuario %}
-                  <span>{{cliente.resposta_usuario}}</span>
+                  <span>{{cliente.resposta_usuario}}</span><br><br>
+                  <div class="rounded border p-3">
+                  <span class="fw-bold">Enviar para o FAQ Amm</span> <br>
+                  <a class="fa-solid fa-upload" href="updatecliente/{{cliente.idcliente}}/?faq_enviado=ENVIAR"></a>
+                </div>
                 {% else %}
                   <span>Nenhuma resposta enviada.</span>
+                  <br>
+                
                 {% endif %}
               </div>
             </li>
