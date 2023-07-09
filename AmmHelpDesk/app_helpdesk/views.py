@@ -10,11 +10,14 @@ from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from bs4 import BeautifulSoup
+from django.templatetags.static import static
+import os
+from email.mime.image import MIMEImage
 
- 
 
 # Usuário faz login na pagina.
 def login_user(request):
@@ -114,7 +117,6 @@ def update_cliente(request, idcliente):
         cliente = Cliente.objects.get(idcliente=idcliente)
         resposta_usuario = request.POST.get('resposta_usuario')
         cliente.resposta_usuario = resposta_usuario
-        
 
         # Renderizar o template do e-mail
         context = {
@@ -124,6 +126,17 @@ def update_cliente(request, idcliente):
         html_message = render_to_string('pageclienteX.html', context)
         text_message = strip_tags(html_message)
 
+        # Anexar a imagem embutida ao e-mail
+        image_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'AmmLOGO.webp')
+        with open(image_path, 'rb') as f:
+            image_data = f.read()
+        image = MIMEImage(image_data)
+        image.add_header('Content-ID', '<logo_image>')
+        image.add_header('Content-Disposition', 'inline', filename='AmmLOGO.webp')
+
+        # Atualizar o conteúdo do e-mail para incluir a imagem embutida
+        html_message = html_message.replace('src="logo_image"', f'src="cid:logo_image"')
+
         # Enviar e-mail para o cliente
         subject = f'Resposta ao seu chamado: {cliente.assunto}' 
         from_email = 'teushiftz@gmail.com'  # E-mail remetente
@@ -131,6 +144,7 @@ def update_cliente(request, idcliente):
 
         email = EmailMultiAlternatives(subject, text_message, from_email, [to_email])
         email.attach_alternative(html_message, "text/html")
+        email.attach(image)
 
         email.send()
         cliente.save()
