@@ -16,7 +16,7 @@
     <a href="/logout">Sair</a>
   </div>
   <title>Home HELPDESK</title>
- 
+  <script src="https://cdn.tiny.cloud/1/55kan25uluq2mpo7m704qthllfdnob0rxhzeoc0l8hjkx1nt/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <style>
     
     body {
@@ -178,9 +178,9 @@
       
       
         <button class="btn btn-outline-danger my-2 my-sm-0; textnone" ><span style="text-align: right;">        
-          <a 
-          style="text-decoration: none"
-          type="/logout">Sair</a>
+          <div align="right">
+            <a href="/logout">Sair</a>
+          </div>
       </span></button>
       
     </div>
@@ -224,7 +224,7 @@
       <tr>
         <td colspan="7" class="p-0">
           <ul class="list-unstyled ps-3 collapse" id="contents-collapse-{{cliente.idcliente}}">
-            <li>
+            <li><br>
               <div class="d-flex justify-content-between align-items-start">
                 <span class="fw-bold">Email: {{cliente.email_cliente}}</span>
               </div>
@@ -243,30 +243,18 @@
               <div class="rounded border p-3">
                 <span class="fw-bold">Descrição:</span>
                 <br>
-                <span>{{cliente.descricao}}</span>
+                <span>{{cliente.descricao }}</span>
                 <br>              
               </div>
             </li>
             <br>
-            <li>
-              <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#reply-collapse-{{cliente.idcliente}}">Responder</button>
-              <br>
-              <div class="collapse" id="reply-collapse-{{cliente.idcliente}}">
-                <form action="updatecliente/{{cliente.idcliente}}/" method="POST"> {% csrf_token %}
-                  <div class="input-group mt-3">
-                    <input type="text" class="form-control" id="resposta_usuario" name="resposta_usuario" maxlength="300" placeholder="Digite sua resposta aqui..." aria-label="Resposta" required></input>
-                    <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
-                  </div>
-                </form>
-              </div>
-            </li>
-            <br>
+            
             <li id="resposta-section">
               <div class="rounded border p-3"><br>
                 <span class="fw-bold">Resposta:</span>
                 <br>
                 {% if cliente.resposta_usuario %}
-                  <span>{{cliente.resposta_usuario}}</span><br><br>
+                  <span>{{cliente.resposta_usuario | safe}}</span><br><br>
                   <div class="rounded border p-3">
                   <span class="fw-bold">Enviar para o FAQ Amm</span> <br>
                   <a class="fa-solid fa-upload" href="updatecliente/{{cliente.idcliente}}/?faq_enviado=ENVIAR"></a>
@@ -274,7 +262,20 @@
                 {% else %}
                   <span>Nenhuma resposta enviada.</span>
                   <br>
-                
+                  <li><br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#reply-collapse-{{cliente.idcliente}}">Responder</button>
+              <br>
+              <div class="collapse" id="reply-collapse-{{cliente.idcliente}}">
+                <form action="updatecliente/{{cliente.idcliente}}/" method="POST">
+                  {% csrf_token %}
+                  <div class="input-group mt-3">
+                    <textarea class="form-control tinymce" id="resposta_usuario" name="resposta_usuario" required></textarea>
+                    <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
+                  </div>
+                </form>
+              </div>
+            </li>
+            <!-- </li>   PARE AQUI  -->
                 {% endif %}
               </div>
             </li>
@@ -282,7 +283,19 @@
           </ul>
         </td>
       </tr>
-      
+      <script>
+        tinymce.init({
+          selector: 'textarea',
+          plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          tinycomments_mode: 'embedded',
+          tinycomments_author: 'Author name',
+          mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+          ]
+        });
+      </script>
       
       <!-- Status Popup -->
       <div class="modal fade" id="status-popup-{{cliente.idcliente}}" tabindex="-1" aria-labelledby="status-popup-{{cliente.idcliente}}-label" aria-hidden="true">

@@ -12,6 +12,7 @@ from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from bs4 import BeautifulSoup
 
  
 
@@ -111,22 +112,31 @@ def update_cliente(request, idcliente):
     
     if request.method == 'POST':
         cliente = Cliente.objects.get(idcliente=idcliente)
+        resposta_usuario = request.POST.get('resposta_usuario')
         cliente.resposta_usuario = resposta_usuario
-        cliente.save()
         
+
+        # Renderizar o template do e-mail
+        context = {
+            'cliente': cliente,
+            'resposta_usuario': resposta_usuario,
+        }
+        html_message = render_to_string('pageclienteX.html', context)
+        text_message = strip_tags(html_message)
+
         # Enviar e-mail para o cliente
         subject = f'Resposta ao seu chamado: {cliente.assunto}' 
-        message = f'Olá {cliente.nomecliente},\n\nSua solicitação foi respondida.\n\nSua descrição do chamado: {cliente.descricao}\n\n\n\nResposta: {resposta_usuario}\n\nAtenciosamente,\nEquipe de suporte'
         from_email = 'teushiftz@gmail.com'  # E-mail remetente
         to_email = cliente.email_cliente  # E-mail do cliente
-        send_mail(subject, message, from_email, [to_email])
-    
-        
+
+        email = EmailMultiAlternatives(subject, text_message, from_email, [to_email])
+        email.attach_alternative(html_message, "text/html")
+
+        email.send()
+        cliente.save()
         return redirect('/')
-    
 
-    return redirect(request.path_info) 
-
+    return redirect(request.path_info)
 
 
 def cliente_page_submit(request):
