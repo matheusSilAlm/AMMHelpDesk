@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<htmlstyle>
 
   <title>Página de Perguntas Frequentes (FAQ)</title>
     <head>
@@ -29,8 +29,50 @@
     text-align: center;
     box-sizing: border-box;
 }
+.button-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        .button-item {
+            margin: 10px;
+        }
 
+        .button {
+            width: 200px;
+            height: 50px;
+            background-color: #f2f2f2;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .button.selected {
+            background-color: #0066ff;
+            color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        }
 </style>   
 </head>
 
@@ -56,25 +98,14 @@
                 <div class="col-md-3">
                     <div class="grid support">
                         <div class="grid-body">
-                            <br><br><br><br><br><h2>FAQ Amm</h2>
+                            <br><br><br><br><br><h1 >FAQ Amm</h1>
                             <br>
-                            <p><strong>Palavras-Chaves</strong></p>
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">NOSSOS APLICATIVOS</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">DÚVIDAS FINANCEIRAS</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                  <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">SUPORTE TÉCNICO</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                  <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">RECLAMAÇÕES</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="settings2-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings2" aria-selected="false">OUTRAS INFORMAÇÕES</button>
-                                  </li>
+                            <ul class="button-list">
+                                <li class="button-item"><button class="button" onclick="toggleVisibility(1)">NOSSOS APLICATIVOS</button></li>
+                                <li class="button-item"><button class="button" onclick="toggleVisibility(2)">DÚVIDAS FINANCEIRAS</button></li>
+                                <li class="button-item"><button class="button" onclick="toggleVisibility(3)">SUPORTE TÉCNICO</button></li>
+                                <li class="button-item"><button class="button" onclick="toggleVisibility(4)">RECLAMAÇÕES</button></li>
+                                <li class="button-item"><button class="button" onclick="toggleVisibility(5)">OUTRAS INFORMAÇÕES</button></li>
                             </ul>
                         </div>
                     </div>
@@ -85,24 +116,18 @@
                 <div class="col-md-9">
                     <div class="grid support-content">
                         <div class="grid-body">
-                            
                             <hr>
                             <br><br><br><br>
-                            <div class="btn-group">
-                                <h3 >Perguntas Frequentes</h3>
+                            <div class="btn-group" >
+                                <h2 >Perguntas Frequentes</h2>
                             </div>
                             <!-- BEGIN NEW TICKET -->
                             <a href="/formshd" type="button" class="btn btn-success pull-right">Novo Chamado</a>
                         </div>
                         <!-- END NEW TICKET -->
-
-
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div>
+                                    <div id="content1">
                                     {% for cliente in clientes %}
-                                        {% if cliente.faq_enviar %}
-                                        {%  if cliente.assunto == 'NOSSOS APLICATIVOS' %}
+                                        {% if cliente.faq_enviar and cliente.assunto == 'NOSSOS APLICATIVOS' %}
                                                 <!-- BEGIN TICKET CONTENT -->
                                                 <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
                                                     <ul class="list-group fa-padding">
@@ -110,7 +135,7 @@
                                                             <div class="media">
                                                             
                                                                 <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                    &nbsp&nbsp{{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                    &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
                                                                     <br><br>
                                                                     <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
                                                             </div>
@@ -147,253 +172,225 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                                
-                                                {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
                                             <!-- END DETAIL TICKET -->
                                         </div>
                                         <!-- END TICKET CONTENT -->
+                                        {% endif %}
+                                        {% endfor %}
                                     </div>
-                            </div>
-                            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <div >
+                            
+                                    <div id="content2" class="hidden">
                                         {% for cliente in clientes %}
-                                        {% if cliente.faq_enviar %}
-                                        {% if cliente.assunto == 'DÚVIDAS FINANCEIRAS' %}
-
-                                                <!-- BEGIN TICKET CONTENT -->
-                                                <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
-                                                    <ul class="list-group fa-padding">
-                                                        <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
-                                                            <div class="media">
-                                                            
-                                                                <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                    &nbsp&nbsp{{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
-                                                                    <br><br>
-                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                            {% if cliente.faq_enviar and cliente.assunto == 'DÚVIDAS FINANCEIRAS' %}
+                                                    <!-- BEGIN TICKET CONTENT -->
+                                                    <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
+                                                        <ul class="list-group fa-padding">
+                                                            <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
+                                                                <div class="media">
+                                                                
+                                                                    <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
+                                                                        &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                        <br><br>
+                                                                        <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                            
-                                                <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-blue">
-                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                            </div>
-                                                            <form action="#" method="post">
-                                                                <div class="modal-body text-left">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                        </li>
+                                                    </ul>
+                                
+                                                    <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-blue">
+                                                                    <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                </div>
+                                                                <form action="#" method="post">
+                                                                    <div class="modal-body text-left">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
+                                                                                <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row support-content-comment">
+                                                                            <div class="col-md-12">
+                                                                                <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
+                                                                                    <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row support-content-comment">
-                                                                        <div class="col-md-12">
-                                                                            <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
-                                                                        </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
                                                                     </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
-                                                                </div>
-                                                            </form>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                
-                                                
-                                                {% endif %}
-                                                {% endif %}
+                                                <!-- END DETAIL TICKET -->
+                                            </div>
+                                            <!-- END TICKET CONTENT -->
+                                            {% endif %}
                                             {% endfor %}
-                                            <!-- END DETAIL TICKET -->
                                         </div>
-                                        <!-- END TICKET CONTENT -->
-                                    </div>
-                            </div>
-                            <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
-                                <div >
-                                    {% for cliente in clientes %}
-                                        {% if cliente.faq_enviar %}
-                                        {% if cliente.assunto == 'SUPORTE TÉCNICO' %}
-                                                <!-- BEGIN TICKET CONTENT -->
-                                                <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
-                                                    <ul class="list-group fa-padding">
-                                                        <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
-                                                            <div class="media">
-                                                            
-                                                                <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                    &nbsp&nbsp{{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
-                                                                    <br><br>
-                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                            
-                                                <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-blue">
-                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                            </div>
-                                                            <form action="#" method="post">
-                                                                <div class="modal-body text-left">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row support-content-comment">
-                                                                        <div class="col-md-12">
-                                                                            <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
-                                                                        </div>
+                                        <div id="content3" class="hidden">
+                                            {% for cliente in clientes %}
+                                                {% if cliente.faq_enviar and cliente.assunto == 'SUPORTE TÉCNICO' %}
+                                                        <!-- BEGIN TICKET CONTENT -->
+                                                        <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
+                                                            <ul class="list-group fa-padding">
+                                                                <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
+                                                                    <div class="media">
+                                                                    
+                                                                        <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
+                                                                            &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                            <br><br>
+                                                                            <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
                                                                     </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+                                                            </li>
+                                                        </ul>
+                                    
+                                                        <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header bg-blue">
+                                                                        <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                    </div>
+                                                                    <form action="#" method="post">
+                                                                        <div class="modal-body text-left">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
+                                                                                    <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row support-content-comment">
+                                                                                <div class="col-md-12">
+                                                                                    <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
+                                                                                        <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
-                                                            </form>
+                                                            </div>
                                                         </div>
+                                                    <!-- END DETAIL TICKET -->
+                                                </div>
+                                                <!-- END TICKET CONTENT -->
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div id="content4" class="hidden">
+                                                {% for cliente in clientes %}
+                                                    {% if cliente.faq_enviar and cliente.assunto == 'RECLAMAÇÕES' %}
+                                                         <!-- BEGIN TICKET CONTENT -->
+                                                            <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
+                                                                <ul class="list-group fa-padding">
+                                                                    <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
+                                                                        <div class="media">
+                                                                        
+                                                                            <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
+                                                                                &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                                <br><br>
+                                                                                <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                        
+                                                            <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header bg-blue">
+                                                                            <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                        </div>
+                                                                        <form action="#" method="post">
+                                                                            <div class="modal-body text-left">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
+                                                                                        <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row support-content-comment">
+                                                                                    <div class="col-md-12">
+                                                                                        <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
+                                                                                            <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <!-- END DETAIL TICKET -->
                                                     </div>
+                                                    <!-- END TICKET CONTENT -->
+                                                    {% endif %}
+                                                    {% endfor %}
                                                 </div>
-                                                
-                                                
-                                                {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                            <!-- END DETAIL TICKET -->
-                                        </div>
-                                        <!-- END TICKET CONTENT -->
-                                    </div>
-                            </div>
-                            <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                                <div >
-                                    {% for cliente in clientes %}
-                                        {% if cliente.faq_enviar %}
-                                        {% if cliente.assunto == 'RECLAMAÇÕES' %}
-                                                <!-- BEGIN TICKET CONTENT -->
-                                                <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
-                                                    <ul class="list-group fa-padding">
-                                                        <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
-                                                            <div class="media">
-                                                            
-                                                                <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                    &nbsp&nbsp{{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
-                                                                    <br><br>
-                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                            
-                                                <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-blue">
-                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                            </div>
-                                                            <form action="#" method="post">
-                                                                <div class="modal-body text-left">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                <div id="content5" class="hidden">
+                                                    {% for cliente in clientes %}
+                                                        {% if cliente.faq_enviar and cliente.assunto == 'OUTRAS INFORMAÇÕES' %}
+                                                                <!-- BEGIN TICKET CONTENT -->
+                                                                <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
+                                                                    <ul class="list-group fa-padding">
+                                                                        <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
+                                                                            <div class="media">
+                                                                            
+                                                                                <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
+                                                                                    &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                                    <br><br>
+                                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row support-content-comment">
-                                                                        <div class="col-md-12">
-                                                                            <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                    </li>
+                                                                </ul>
+                                            
+                                                                <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header bg-blue">
+                                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                            </div>
+                                                                            <form action="#" method="post">
+                                                                                <div class="modal-body text-left">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
+                                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row support-content-comment">
+                                                                                        <div class="col-md-12">
+                                                                                            <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
+                                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
-                                                                </div>
-                                                            </form>
+                                                            <!-- END DETAIL TICKET -->
                                                         </div>
+                                                        <!-- END TICKET CONTENT -->
+                                                        {% endif %}
+                                                        {% endfor %}
                                                     </div>
-                                                </div>
-                                                
-                                                
-                                                {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                            <!-- END DETAIL TICKET -->
-                                        </div>
-                                        <!-- END TICKET CONTENT -->
-                                    </div>
-                            </div>
-                            <div class="tab-pane" id="settings2" role="tabpanel" aria-labelledby="settings2-tab">
-                                <div >
-                                    {% for cliente in clientes %}
-                                        {% if cliente.faq_enviar %}
-                                        {% if cliente.assunto == 'OUTRAS INFORMAÇÕES' %}
-                                                <!-- BEGIN TICKET CONTENT -->
-                                                <div id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
-                                                    <ul class="list-group fa-padding">
-                                                        <li class="list-group-item" data-toggle="modal" data-target="#issue-{{cliente.idcliente}}">
-                                                            <div class="media">
-                                                            
-                                                                <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                    &nbsp&nbsp{{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
-                                                                    <br><br>
-                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                            
-                                                <div class="modal fade" id="issue-{{cliente.idcliente}}" tabindex="-1" role="dialog" aria-labelledby="issue-{{cliente.idcliente}}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-blue">
-                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                            </div>
-                                                            <form action="#" method="post">
-                                                                <div class="modal-body text-left">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row support-content-comment">
-                                                                        <div class="col-md-12">
-                                                                            <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default text-right" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                
-                                                {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                            <!-- END DETAIL TICKET -->
-                                        </div>
-                                        <!-- END TICKET CONTENT -->
-                                    </div>
-                            </div>
                           </div>
 
                         </div>
@@ -404,11 +401,28 @@
         </section>
     </div>
     
-<script>
-        var firstTabEl = document.querySelector('#myTab li:last-child a')
-        var firstTab = new bootstrap.Tab(firstTabEl)
-      
-        firstTab.show()
-</script>
+    <script>
+        function toggleVisibility(contentId) {
+            // Esconde todos os conteúdos
+            for (let i = 1; i <= 5; i++) {
+                const content = document.getElementById(`content${i}`);
+                content.classList.add("hidden");
+            }
+
+            // Remove a classe "selected" de todos os botões
+            const buttons = document.querySelectorAll(".button");
+            buttons.forEach(button => {
+                button.classList.remove("selected");
+            });
+
+            // Exibe o conteúdo correspondente ao botão clicado
+            const selectedContent = document.getElementById(`content${contentId}`);
+            selectedContent.classList.remove("hidden");
+
+            // Destaca o botão selecionado
+            const selectedButton = document.querySelector(`.button-item:nth-child(${contentId}) .button`);
+            selectedButton.classList.add("selected");
+        }
+    </script>
 </body>
 </html>
