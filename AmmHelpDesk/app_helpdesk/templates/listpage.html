@@ -255,10 +255,24 @@
                 <br>
                 {% if cliente.resposta_usuario %}
                   <span>{{cliente.resposta_usuario | safe}}</span><br><br>
-                  <div class="rounded border p-3">
-                  <span class="fw-bold">Enviar para o FAQ Amm</span> <br>
-                  <a class="fa-solid fa-upload" href="updatecliente/{{cliente.idcliente}}/?faq_enviado=ENVIAR"></a>
+                <div class="rounded border p-3">
+                  <span class="fw-bold">Enviar FAQ Amm</span>&nbsp&nbsp
+                  <a class="fa-solid fa-upload" href="updatecliente/{{cliente.idcliente}}/?faq_enviado=ENVIAR"></a> <br>
+
+                  <span class="fw-bold">Editar resposta</span>&nbsp&nbsp
+                  <a type="button" class="fa-solid fa-pen-to-square" style="color: #0861fd;" data-bs-toggle="collapse" data-bs-target="#reply-collapse-{{cliente.idcliente}}"></a>
+                  <div class="collapse" id="reply-collapse-{{cliente.idcliente}}">
+                    <form action="updatecliente/{{cliente.idcliente}}/" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="input-group mt-3">
+                        <textarea class="form-control tinymce" id="resposta_usuario" name="resposta_usuario" required></textarea>
+                        <input type="file" name="anexo"><br>
+                        <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
+               
                 {% else %}
                   <span>Nenhuma resposta enviada.</span>
                   <br>
@@ -266,14 +280,16 @@
               <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#reply-collapse-{{cliente.idcliente}}">Responder</button>
               <br>
               <div class="collapse" id="reply-collapse-{{cliente.idcliente}}">
-                <form action="updatecliente/{{cliente.idcliente}}/" method="POST">
+                <form action="updatecliente/{{cliente.idcliente}}/" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                   <div class="input-group mt-3">
                     <textarea class="form-control tinymce" id="resposta_usuario" name="resposta_usuario" required></textarea>
+                    <input type="file" name="anexo"> <br>
                     <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
                   </div>
                 </form>
               </div>
+              
             </li>
             <!-- </li>   PARE AQUI  -->
                 {% endif %}

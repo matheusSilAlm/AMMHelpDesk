@@ -135,9 +135,9 @@
                                                             <div class="media">
                                                             
                                                                 <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                    &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                    &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto | safe}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
                                                                     <br><br>
-                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao | safe}}</strong></p>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -155,13 +155,13 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao | safe}}</p>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row support-content-comment">
                                                                         <div class="col-md-12">
                                                                             <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario | safe}}</strong></p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -189,9 +189,9 @@
                                                                 <div class="media">
                                                                 
                                                                     <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                        &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                        &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto | safe}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
                                                                         <br><br>
-                                                                        <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                        <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao | safe}}</strong></p>
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -201,7 +201,7 @@
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header bg-blue">
-                                                                    <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                    <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto | safe}}</h4>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                                 </div>
                                                                 <form action="#" method="post">
@@ -209,13 +209,13 @@
                                                                         <div class="row">
                                                                             <div class="col-md-12">
                                                                                 <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                                <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                                <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao | safe}}</p>
                                                                             </div>
                                                                         </div>
                                                                         <div class="row support-content-comment">
                                                                             <div class="col-md-12">
                                                                                 <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                    <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                    <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario | safe}}</strong></p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -242,9 +242,9 @@
                                                                     <div class="media">
                                                                     
                                                                         <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                            &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                            &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto | safe}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
                                                                             <br><br>
-                                                                            <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                            <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao | safe}}</strong></p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -254,7 +254,7 @@
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header bg-blue">
-                                                                        <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                        <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto | safe}}</h4>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                                     </div>
                                                                     <form action="#" method="post">
@@ -268,7 +268,7 @@
                                                                             <div class="row support-content-comment">
                                                                                 <div class="col-md-12">
                                                                                     <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                        <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                        <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario | safe}}</strong></p>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -295,9 +295,9 @@
                                                                         <div class="media">
                                                                         
                                                                             <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                                &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                                &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto | safe}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
                                                                                 <br><br>
-                                                                                <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                                <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{cliente.descricao | safe}}</strong></p>
                                                                         </div>
                                                                     </div>
                                                                 </li>
@@ -307,7 +307,7 @@
                                                                 <div class="modal-dialog">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header bg-blue">
-                                                                            <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                            <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto | safe}}</h4>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                                         </div>
                                                                         <form action="#" method="post">
@@ -315,13 +315,13 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                                        <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                                        <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao | safe}}</p>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row support-content-comment">
                                                                                     <div class="col-md-12">
                                                                                         <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                            <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                            <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario | safe}}</strong></p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -348,9 +348,9 @@
                                                                             <div class="media">
                                                                             
                                                                                 <div class="media-body"><i class="fa-solid fa-person-circle-question"></i>
-                                                                                    &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
+                                                                                    &nbsp;&nbsp; {{ cliente.nomecliente }} <span class="label label-danger"><strong>{{cliente.assunto | safe}}:</strong></span><span class="number pull-right">{{cliente.datacriacao}}</span>
                                                                                     <br><br>
-                                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{ cliente.descricao }}</strong></p>
+                                                                                    <p><strong><i class="fa-solid fa-comment-dots"></i>&nbsp&nbsp&nbsp{{cliente.descricao | safe}}</strong></p>
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -360,7 +360,7 @@
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
                                                                             <div class="modal-header bg-blue">
-                                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto}}</h4>
+                                                                                <h4 class="modal-title text-left"><i class="fa fa-comments"></i>&nbsp;&nbsp;{{cliente.assunto | safe}}</h4>
                                                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                                             </div>
                                                                             <form action="#" method="post">
@@ -368,13 +368,13 @@
                                                                                     <div class="row">
                                                                                         <div class="col-md-12">
                                                                                             <p><i class="fa-solid fa-person-circle-question"></i>&nbsp;&nbsp;{{ cliente.nomecliente }}&nbsp;&nbsp;{{cliente.get_data_criacao}}</p>
-                                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao }}</p>
+                                                                                            <p><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;{{ cliente.descricao | safe}}</p>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row support-content-comment">
                                                                                         <div class="col-md-12">
                                                                                             <p class="info"><i class="fa-solid fa-user"></i><strong>&nbsp;&nbsp;Amm Usuário:</strong><br><br>
-                                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario}}</strong></p>
+                                                                                                <strong><i class="fa-regular fa-comment"></i></i>&nbsp;&nbsp;{{cliente.resposta_usuario | safe}}</strong></p>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
