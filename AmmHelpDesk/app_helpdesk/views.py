@@ -19,6 +19,7 @@ from django.templatetags.static import static
 from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email import encoders
+from django.db.models import Q
 
 
 # Usuário faz login na pagina.
@@ -196,6 +197,16 @@ def cliente_page_submit(request):
 
 
 def faq_amm(request):
-    cliente = Cliente.objects.all()
-    dados = {'clientes': cliente}
+    query = request.GET.get('q')  # Obtém o parâmetro de pesquisa da URL
+
+    if query:
+        # Realize a pesquisa no banco de dados usando a sua lógica
+        clientes = Cliente.objects.filter(
+            Q(assuntoicontains=query) | Q(descricaoicontains=query)
+        )
+    else:
+        # Se nenhum parâmetro de pesquisa for fornecido, retorne todos os clientes
+        clientes = Cliente.objects.all()
+
+    dados = {'clientes': clientes, 'query': query}
     return render(request, 'FAQ.html', dados)
