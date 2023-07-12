@@ -202,7 +202,7 @@ def faq_amm(request):
     if query:
         # Realize a pesquisa no banco de dados usando a sua lógica
         clientes = Cliente.objects.filter(
-            Q(assuntoicontains=query) | Q(descricaoicontains=query)
+            Q(assunto__icontains=query) | Q(descricao__icontains=query)
         )
     else:
         # Se nenhum parâmetro de pesquisa for fornecido, retorne todos os clientes

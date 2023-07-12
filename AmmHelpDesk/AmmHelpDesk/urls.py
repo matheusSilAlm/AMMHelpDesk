@@ -15,5 +15,5 @@ urlpatterns = [
     path('listpage/', views.cliente_novo),
     path('home/pagecliente/', views.atender_cliente),  
     path('home/updatecliente/<int:idcliente>/', views.update_cliente),   
-    path('FAQ/', views.faq_amm)
+    path('FAQ/', views.faq_amm, name='FAQ')
 ]
