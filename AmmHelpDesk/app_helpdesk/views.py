@@ -20,7 +20,7 @@ from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email import encoders
 from django.db.models import Q
-
+import base64
 
 # Usuário faz login na pagina.
 def login_user(request):
@@ -119,44 +119,71 @@ def update_cliente(request, idcliente):
     
     if request.method == 'POST':
         cliente = Cliente.objects.get(idcliente=idcliente)
-        resposta_usuario = request.POST.get('resposta_usuario')
+        resposta_usuario = request.POST.get('resposta_usuario_' + str(idcliente))
         cliente.resposta_usuario = resposta_usuario
 
-        # Renderizar o template do e-mail
+        if "img" in resposta_usuario:
+            resp = resposta_usuario.split('"')
+            src = resp[1]
+            resp[1] = 'cid:image_teste'
+            resposta_usuario = ''.join(resp)
+
+
+        subject = f'Resposta ao seu chamado: {cliente.assunto}' 
+        from_email = 'teushiftz@gmail.com'  
+        to_email = cliente.email_cliente  
+
         context = {
             'cliente': cliente,
             'resposta_usuario': resposta_usuario,
         }
+
         html_message = render_to_string('pageclienteX.html', context)
+        html_message = html_message.replace('src="logo_image"', f'src="cid:logo_image"')
         text_message = strip_tags(html_message)
 
-        # Anexar a imagem embutida ao e-mail
+        email = EmailMultiAlternatives(subject, text_message, from_email, [to_email])
+        email.attach_alternative(html_message, "text/html")        
+
         image_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'amm-navbar-fnt.png')
         with open(image_path, 'rb') as f:
             image_data = f.read()
         image = MIMEImage(image_data)
         image.add_header('Content-ID', '<logo_image>')
         image.add_header('Content-Disposition', 'inline', filename='amm-navbar-fnt.png')
-
-        # Atualizar o conteúdo do e-mail para incluir a imagem embutida
-        html_message = html_message.replace('src="logo_image"', f'src="cid:logo_image"')
-
-        # Enviar e-mail para o cliente
-        subject = f'Resposta ao seu chamado: {cliente.assunto}' 
-        from_email = 'teushiftz@gmail.com'  
-        to_email = cliente.email_cliente  
-
-        email = EmailMultiAlternatives(subject, text_message, from_email, [to_email])
-        email.attach_alternative(html_message, "text/html")
         email.attach(image)
 
-        # Processar o anexo enviado pelo usuário, se existir
+        resp = src.split(",")[1]
+        decoded_data=base64.b64decode((resp))
+        
+        format_file = src.split(";")[0].split('/')[1]
+
+        image_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'teste.' + str(format_file))
+        img_file = open(image_path, 'wb')
+        img_file.write(decoded_data)
+        img_file.close()
+
+        with open(image_path, 'rb') as f:
+            image_data = f.read()
+        image = MIMEImage(image_data)
+        image.add_header('Content-ID', '<image_teste>')
+        image.add_header('Content-Disposition', 'inline', filename='teste.' + str(format_file))
+        email.attach(image)
+        
+
+        
         anexo = request.FILES.get('anexo')
         if anexo:
             email.attach(anexo.name, anexo.read(), anexo.content_type)
 
+        # email.send()
+
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
         email.send()
         cliente.save()
+        # return render(request, 'teste.html', {'resposta_usuario':src})
         return redirect('/')
 
     return redirect(request.path_info)

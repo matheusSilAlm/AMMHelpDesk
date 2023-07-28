@@ -15,7 +15,9 @@
     <a href="/logout">Sair</a>
   </div>
   <title>Home HELPDESK</title>
-  <script src="https://cdn.tiny.cloud/1/55kan25uluq2mpo7m704qthllfdnob0rxhzeoc0l8hjkx1nt/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  
+
+  <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
   <style>
     
     body {
@@ -40,14 +42,14 @@
     }
 
     th {
-      background-color: #f2f2f2;
+      background-color: #505973;
     }
 
     tr {
-      background-color: #ffffff;
+      background-color: #343d55;
     }
     tr:hover {
-      background-color: #acabaa;
+      background-color: #cfcdcd4f;
     }
  
     .badge {
@@ -154,10 +156,15 @@
     text-align: center;
     box-sizing: border-box;
 }
+.flex-container {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+  }
 
   </style>
 </head>
-<body>
+<body style="background-color: #161D31;">
   <nav style="background-color: #05091f;" class="navbar navbar-expand fixed-top navbar-dark custom-navbar">
     <div><a style="text-decoration: none;" href="https://ammsolucoes.com.br/">
         <img src="{% static 'img/AmmLOGO.webp' %}" alt="Logo - Empresa" style="margin-left: 15px;"> 
@@ -186,7 +193,7 @@
 </nav>
 
 <div class="container"><br><br><br><br>
-  <h1>Lista de Chamados</h1><br>
+  <h1 style="color: #B4B7BD;">Lista de Chamados</h1><br>
   <table>
     <thead>
       <tr>
@@ -195,12 +202,13 @@
         <th>STATUS</th>
         <th>DATA</th>
         <th>NOME DO CLIENTE</th>
-        <th>PRIORIDADE</th>        
+        <th>PRIORIDADE</th>   
+        <th></th>     
       </tr>
     </thead>
     <tbody>
       {% for cliente in page_obj %}
-      <tr id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
+      <tr style="color: #B4B7BD;" id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
         <td>
           <span>{{cliente.idcliente}}</span>
         </td>
@@ -242,8 +250,10 @@
               <div class="rounded border p-3">
                 <span class="fw-bold">Descrição:</span>
                 <br>
-                <span>{{cliente.descricao }}</span>
-                <br>              
+                <div class="flex-container">
+                <span>{{cliente.descricao | safe}}</span>
+                </div>
+                <br>
               </div>
             </li>
             <br>
@@ -264,14 +274,15 @@
                     <form action="updatecliente/{{cliente.idcliente}}/" method="POST" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="input-group mt-3">
-                        <textarea class="form-control tinymce" id="resposta_usuario" name="resposta_usuario" required></textarea>
+                        <textarea  name="resposta_usuario_{{cliente.idcliente}}" required></textarea>
+                        <br>
                         <input type="file" name="anexo"><br>
                         <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
                       </div>
                     </form>
                   </div>
                 </div>
-               
+                
                 {% else %}
                   <span>Nenhuma resposta enviada.</span>
                   <br>
@@ -282,7 +293,7 @@
                 <form action="updatecliente/{{cliente.idcliente}}/" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                   <div class="input-group mt-3">
-                    <textarea class="form-control tinymce" id="resposta_usuario" name="resposta_usuario" required></textarea>
+                    <textarea  name="resposta_usuario_{{cliente.idcliente}}" required></textarea>
                     <input type="file" name="anexo"> <br>
                     <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
                   </div>
@@ -298,19 +309,11 @@
           </ul>
         </td>
       </tr>
+
       <script>
-        tinymce.init({
-          selector: 'textarea',
-          plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
-          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-          tinycomments_mode: 'embedded',
-          tinycomments_author: 'Author name',
-          mergetags_list: [
-            { value: 'First.Name', title: 'First Name' },
-            { value: 'Email', title: 'Email' },
-          ]
-        });
+        CKEDITOR.replace('resposta_usuario_{{cliente.idcliente}}');
       </script>
+      
       
       <!-- Status Popup -->
       <div class="modal fade" id="status-popup-{{cliente.idcliente}}" tabindex="-1" aria-labelledby="status-popup-{{cliente.idcliente}}-label" aria-hidden="true">
@@ -391,8 +394,8 @@
 </div>
 {% endif %}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-
+  
+ 
   <script>
     function recarregarPagina() {
       location.reload();
