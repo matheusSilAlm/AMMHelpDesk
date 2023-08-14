@@ -21,6 +21,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from django.db.models import Q
 import base64
+import re
 
 # Usuário faz login na pagina.
 def login_user(request):
@@ -103,13 +104,13 @@ def update_cliente(request, idcliente):
         v_solicitacaostatus.save()
         return redirect('/')
     
-    if prioridadecliente:
+    elif prioridadecliente:
         v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
         v_solicitacao.prioridade = prioridadecliente
         v_solicitacao.save()
         return redirect('/')
     
-    if faq_enviar:
+    elif faq_enviar:
         v_faq_enviar = Cliente.objects.get(idcliente=idcliente)
         v_faq_enviar.faq_enviar = faq_enviar
         v_faq_enviar.save()
@@ -117,17 +118,33 @@ def update_cliente(request, idcliente):
         return redirect('/')
     
     
-    if request.method == 'POST':
+    elif request.method == 'POST':
         cliente = Cliente.objects.get(idcliente=idcliente)
         resposta_usuario = request.POST.get('resposta_usuario_' + str(idcliente))
         cliente.resposta_usuario = resposta_usuario
+    
+        pattern = r'<img src="([^"]+)" />'
+        matches = re.findall(pattern, resposta_usuario)
 
-        if "img" in resposta_usuario:
+        image_email = []
+        for idx, src in enumerate(matches):
             resp = resposta_usuario.split('"')
-            src = resp[1]
-            resp[1] = 'cid:image_teste'
-            resposta_usuario = ''.join(resp)
+            data = resp[1]    
+            image_id = f'cid:image_teste{idx + 1}'
+            
+            resposta_usuario = resposta_usuario.replace(src, image_id)
 
+            resp = src.split(",")
+
+            format_file = resp[0].split(";")[0].split('/')[1]
+
+            image = {
+                'binario': resp[1],
+                'format': format_file,
+                'file_name':f'image_teste{idx + 1}'
+            }
+    
+            image_email.append(image)
 
         subject = f'Resposta ao seu chamado: {cliente.assunto}' 
         from_email = 'teushiftz@gmail.com'  
@@ -143,34 +160,31 @@ def update_cliente(request, idcliente):
         text_message = strip_tags(html_message)
 
         email = EmailMultiAlternatives(subject, text_message, from_email, [to_email])
-        email.attach_alternative(html_message, "text/html")        
+        email.attach_alternative(html_message, "text/html")
 
         image_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'amm-navbar-fnt.png')
         with open(image_path, 'rb') as f:
             image_data = f.read()
-        image = MIMEImage(image_data)
+        image = MIMEImage(image_data, _subtype='png')
         image.add_header('Content-ID', '<logo_image>')
         image.add_header('Content-Disposition', 'inline', filename='amm-navbar-fnt.png')
         email.attach(image)
 
-        resp = src.split(",")[1]
-        decoded_data=base64.b64decode((resp))
-        
-        format_file = src.split(";")[0].split('/')[1]
+        for idx, src in enumerate(image_email):
+            image_data = base64.b64decode(src['binario'])
 
-        image_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'teste.' + str(format_file))
-        img_file = open(image_path, 'wb')
-        img_file.write(decoded_data)
-        img_file.close()
+            image_path = os.path.join(settings.BASE_DIR, 'static', 'img', f'{src["file_name"]}.{src["format"]}')
+            img_file = open(image_path, 'wb')
+            img_file.write(image_data)
+            img_file.close()
 
-        with open(image_path, 'rb') as f:
-            image_data = f.read()
-        image = MIMEImage(image_data)
-        image.add_header('Content-ID', '<image_teste>')
-        image.add_header('Content-Disposition', 'inline', filename='teste.' + str(format_file))
-        email.attach(image)
-        
-
+            with open(image_path, 'rb') as f:
+                image_data = f.read()
+            image = MIMEImage(image_data)
+            image.add_header('Content-ID', f'<{src["file_name"]}>')
+            image.add_header('Content-Disposition', 'inline', filename=f'{src["file_name"]}.{src["format"]}')
+            email.attach(image)
+  
         
         anexo = request.FILES.get('anexo')
         if anexo:
@@ -183,7 +197,7 @@ def update_cliente(request, idcliente):
 
         email.send()
         cliente.save()
-        # return render(request, 'teste.html', {'resposta_usuario':src})
+        # return render(request, 'teste.html', {'resposta_usuario':''.join(image_email)})
         return redirect('/')
 
     return redirect(request.path_info)

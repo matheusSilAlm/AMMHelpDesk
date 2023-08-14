@@ -32,9 +32,9 @@
             <td bgcolor="#ffffff" style="padding: 40px 30px;">
                 <h2 style="margin-bottom: 20px;">Resposta ao chamado</h2>
                 <p style="margin-bottom: 10px;"><b>Olá {{ cliente.nomecliente }},</b></p>
-                <p style="margin-bottom: 10px;">Sua solicitação foi respondida. Nº: 0025{{cliente.idcliente}}</p>
+                <p style="margin-bottom: 10px;">Sua solicitação foi respondida. Nº: 000{{cliente.idcliente}}</p>
                 
-                <p style="margin-bottom: 20px;">Resposta:</p>
+                <!-- <p style="margin-bottom: 20px;">Resposta:</p> {{resposta_usuario.image_urls}} -->
                 <div style="font-weight: bold; margin-bottom: 20px;">{{ resposta_usuario | safe }}</div>
                 <p style="margin-bottom: 10px;">Atenciosamente,</p>
                 <p style="margin-bottom: 20px;">Equipe de suporte</p>
