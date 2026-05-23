@@ -22,6 +22,7 @@ from email import encoders
 from django.db.models import Q
 import base64
 import re
+from app_helpdesk.forms import ClienteForm, LoginForm, RespostaForm
 
 # Usuário faz login na pagina.
 def login_user(request):
@@ -34,14 +35,18 @@ def logout_user(request):
 
 def submit_login(request):
     if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        usuario = authenticate(username=username, password=password)
-        if usuario is not None:
-            login(request, usuario)
-            return redirect('/')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            usuario = authenticate(username=username, password=password)
+            if usuario is not None:
+                login(request, usuario)
+                return redirect('/')
+            else:
+                messages.error(request, "Usuário ou senha inválidos")
         else:
-            messages.error(request, "Usuário ou senha inválidos")
+            messages.error(request, "Dados inválidos no formulário.")
     return redirect('/')
 
 @login_required(login_url='/login/')
@@ -120,13 +125,17 @@ def update_cliente(request, idcliente):
     
     elif request.method == 'POST':
         cliente = Cliente.objects.get(idcliente=idcliente)
-        resposta_usuario = request.POST.get('resposta_usuario_' + str(idcliente))
-        cliente.resposta_usuario = resposta_usuario
+        resposta = request.POST.get('resposta_usuario_' + str(idcliente))
+        form = RespostaForm({'resposta_usuario': resposta})
+        
+        if form.is_valid():
+            resposta_usuario = form.cleaned_data.get('resposta_usuario') or ''
+            cliente.resposta_usuario = resposta_usuario
+        
+            pattern = r'<img src="([^"]+)" />'
+            matches = re.findall(pattern, resposta_usuario)
     
-        pattern = r'<img src="([^"]+)" />'
-        matches = re.findall(pattern, resposta_usuario)
-
-        image_email = []
+            image_email = []
         for idx, src in enumerate(matches):
             resp = resposta_usuario.split('"')
             data = resp[1]    
@@ -199,41 +208,47 @@ def update_cliente(request, idcliente):
         cliente.save()
         # return render(request, 'teste.html', {'resposta_usuario':''.join(image_email)})
         return redirect('/')
+        
+        else:
+            messages.error(request, "Erro no formulário de resposta.")
+            return redirect('/')
 
     return redirect(request.path_info)
 
 
 def cliente_page_submit(request):
     if request.method == 'POST':
-        nomecliente = request.POST.get('nomecliente')
-        cpf_cnpj = request.POST.get('cpf_cnpj')
-        email_cliente = request.POST.get('email_cliente')
-        telefone_cliente = request.POST.get('telefone_cliente')
-        descricao = request.POST.get('descricao')
-        assunto = request.POST.get('assunto')
-        
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            nomecliente = form.cleaned_data['nomecliente']
+            cpf_cnpj = form.cleaned_data['cpf_cnpj']
+            email_cliente = form.cleaned_data['email_cliente']
+            telefone_cliente = form.cleaned_data['telefone_cliente']
+            descricao = form.cleaned_data['descricao']
+            assunto = form.cleaned_data['assunto']
 
+            with transaction.atomic():
+                cliente = Cliente.objects.create(
+                    nomecliente=nomecliente,
+                    cpf_cnpj=cpf_cnpj,
+                    email_cliente=email_cliente,
+                    telefone_cliente=telefone_cliente,
+                    descricao=descricao,
+                    assunto=assunto
+                )
 
-        with transaction.atomic():
-            cliente = Cliente.objects.create(
-                nomecliente=nomecliente,
-                cpf_cnpj=cpf_cnpj,
-                email_cliente=email_cliente,
-                telefone_cliente=telefone_cliente,
-                descricao=descricao,
-                assunto=assunto
-            )
-
-            solicitacao = Solicitacao.objects.create(
-                assunto=assunto,
-                idcliente=cliente,
-                prioridade='A DEFINIR'
-            )
-            solicitacaostatus = Solicitacaostatus.objects.create(
-                idstatus='ABERTO',
-                idsolicitacao=solicitacao
-            )
-                 
+                solicitacao = Solicitacao.objects.create(
+                    assunto=assunto,
+                    idcliente=cliente,
+                    prioridade='A DEFINIR'
+                )
+                solicitacaostatus = Solicitacaostatus.objects.create(
+                    idstatus='ABERTO',
+                    idsolicitacao=solicitacao
+                )
+        else:
+            messages.error(request, "Por favor, corrija os erros no formulário.")
+            
     return  render(request, 'formshd.html')
 
 
