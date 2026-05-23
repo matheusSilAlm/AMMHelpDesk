@@ -130,11 +130,11 @@ Conforme documentado em [2026-05-22-helpdesk-refactor-design.md](file:///C:/User
 Atualmente, o projeto está configurado para executar com MySQL:
 1. Instale os requisitos atuais:
    ```bash
-   pip install -r requirements.tx
+   pip install -r requirements/development.txt
    ```
 2. Inicie o servidor Django local:
    ```bash
-   python AmmHelpDesk/manage.py runserver
+   python manage.py runserver
    ```
 3. Acesse a aplicação em: `http://127.0.0.1:8000/`
 
