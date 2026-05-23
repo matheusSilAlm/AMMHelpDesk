@@ -1,2 +1,26 @@
-AmmHelpDesk/runtime/
-AmmHelpDesk/AmmHelpDesk/settings.py
+# Django / Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+
+# Environments
+.env
+.env.local
+.env.*
+.venv/
+env/
+venv/
+ENV/
+
+# OS/Editor
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+
+# Project specific
+/static_collected/
+/media/
+/logs/
+*.log

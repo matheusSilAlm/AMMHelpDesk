@@ -1,0 +1,25 @@
+# Tarefas — Refatoração do AMMHelpDesk (Fase 1)
+
+- [x] Reestruturação física de arquivos e pastas
+  - [x] Mover todo o conteúdo de `AmmHelpDesk/` para a raiz do repositório
+  - [x] Renomear o diretório de configurações `AmmHelpDesk` para `config`
+  - [x] Renomear a pasta de estáticos `Static` para `static`
+  - [x] Apagar diretório intermediário vazio
+- [x] Segurança e Configuração do Ambiente (.env)
+  - [x] Criar arquivo `.env` na raiz do projeto contendo as credenciais expostas
+  - [x] Criar arquivo `.env.example` na raiz para fins de versionamento
+  - [x] Atualizar `.gitignore` para garantir que o `.env` nunca seja versionado
+- [x] Dependências e Requisitos
+  - [x] Renomear `requirements.tx` para `requirements.txt`
+  - [x] Adicionar `python-decouple` ao `requirements.txt`
+- [x] Ajuste e Integração do Django Settings
+  - [x] Integrar `decouple` no arquivo `config/settings.py`
+  - [x] Substituir credenciais expostas de Banco e E-mail por chamadas dinâmicas do `.env`
+  - [x] Atualizar caminhos de diretórios (`BASE_DIR`, `STATICFILES_DIRS`, `TEMPLATES`)
+  - [x] Atualizar `ROOT_URLCONF` e `WSGI_APPLICATION` / `ASGI_APPLICATION` para referenciar o módulo `config`
+- [x] Atualização dos scripts de entrada
+  - [x] Atualizar `manage.py` na raiz para apontar para `config.settings`
+  - [x] Atualizar `config/wsgi.py` e `config/asgi.py`
+- [x] Verificação e Testes
+  - [x] Executar o comando runserver localmente na raiz do projeto
+  - [x] Validar a leitura correta das credenciais de banco e e-mail via decoupling
