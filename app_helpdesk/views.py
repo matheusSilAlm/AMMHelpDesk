@@ -22,6 +22,8 @@ from email import encoders
 from django.db.models import Q
 import base64
 import re
+import logging
+logger = logging.getLogger('app_helpdesk')
 from app_helpdesk.forms import ClienteForm, LoginForm, RespostaForm
 
 # Usuário faz login na pagina.
@@ -54,13 +56,19 @@ def solicit_pages(request):
     usuario = request.user
     statuscliente = request.GET.get('status')
     prioridadecliente = request.GET.get('prioridade')
-    arr_cliente = Cliente.objects.all() and Cliente.objects.order_by('-idcliente')
-    
-    for index, cliente in enumerate(arr_cliente, start=0):
-        v_solicitacao = Solicitacao.objects.get(idcliente=arr_cliente[index].idcliente)
-        v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
-        arr_cliente[index].prioridade = v_solicitacao.prioridade
-        arr_cliente[index].status = v_solicitacaostatus.idstatus
+    arr_cliente = list(Cliente.objects.order_by('-idcliente').prefetch_related(
+        'solicitacao_set__solicitacaostatus_set'
+    ))
+
+    for cliente in arr_cliente:
+        solicitacao = cliente.solicitacao_set.first()
+        if solicitacao:
+            cliente.prioridade = solicitacao.prioridade
+            status_obj = solicitacao.solicitacaostatus_set.first()
+            cliente.status = status_obj.idstatus if status_obj else 'ABERTO'
+        else:
+            cliente.prioridade = 'A DEFINIR'
+            cliente.status = 'ABERTO'
     
     cliente = {
         'clientes': arr_cliente
@@ -90,9 +98,10 @@ def atender_cliente(request):
     idcliente = request.GET.get('id')
     dados = {}
     if idcliente:
-        dados['cliente']= Cliente.objects.get(idcliente=idcliente)
-        
-        
+        dados['cliente'] = Cliente.objects.filter(idcliente=idcliente).first()
+        if not dados['cliente']:
+            return HttpResponse("Chamado não encontrado.", status=404)
+
     return render(request, 'pagecliente.html',dados)
 
 @login_required(login_url='/login/')
@@ -103,28 +112,33 @@ def update_cliente(request, idcliente):
     resposta_usuario = request.POST.get('resposta_usuario')
     
     if statuscliente:
-        v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
-        v_solicitacaostatus = Solicitacaostatus.objects.get(idsolicitacao=v_solicitacao.idsolicitacao)
+        v_solicitacao = Solicitacao.objects.filter(idcliente=idcliente).first()
+        if not v_solicitacao: return redirect('/')
+        v_solicitacaostatus = Solicitacaostatus.objects.filter(idsolicitacao=v_solicitacao.idsolicitacao).first()
+        if not v_solicitacaostatus: return redirect('/')
         v_solicitacaostatus.idstatus = statuscliente
         v_solicitacaostatus.save()
         return redirect('/')
     
     elif prioridadecliente:
-        v_solicitacao = Solicitacao.objects.get(idcliente=idcliente)
+        v_solicitacao = Solicitacao.objects.filter(idcliente=idcliente).first()
+        if not v_solicitacao: return redirect('/')
         v_solicitacao.prioridade = prioridadecliente
         v_solicitacao.save()
         return redirect('/')
     
     elif faq_enviar:
-        v_faq_enviar = Cliente.objects.get(idcliente=idcliente)
+        v_faq_enviar = Cliente.objects.filter(idcliente=idcliente).first()
+        if not v_faq_enviar: return redirect('/')
         v_faq_enviar.faq_enviar = faq_enviar
         v_faq_enviar.save()
-        
+
         return redirect('/')
     
     
     elif request.method == 'POST':
-        cliente = Cliente.objects.get(idcliente=idcliente)
+        cliente = Cliente.objects.filter(idcliente=idcliente).first()
+        if not cliente: return redirect('/')
         resposta = request.POST.get('resposta_usuario_' + str(idcliente))
         form = RespostaForm({'resposta_usuario': resposta})
         
@@ -199,12 +213,14 @@ def update_cliente(request, idcliente):
         if anexo:
             email.attach(anexo.name, anexo.read(), anexo.content_type)
 
-        # email.send()
-
         if os.path.exists(image_path):
             os.remove(image_path)
 
-        email.send()
+        try:
+            email.send()
+        except Exception as e:
+            logger.error("Falha ao enviar email para %s: %s", cliente.email_cliente, e)
+
         cliente.save()
         # return render(request, 'teste.html', {'resposta_usuario':''.join(image_email)})
         return redirect('/')
