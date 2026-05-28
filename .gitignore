@@ -24,3 +24,7 @@ Desktop.ini
 /media/
 /logs/
 *.log
+
+# Logs
+logs/*.log
+logs/helpdesk.log
