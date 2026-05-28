@@ -1,18 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import EmailValidator, RegexValidator
 
+_phone_validator = RegexValidator(r'^\+?[\d\s\-\(\)]{8,20}$', 'Telefone inválido')
 
 
 class AppHelpdeskPessoa(models.Model):
     idpessoa = models.IntegerField(db_column='IDPessoa', primary_key=True)  # Field name made lowercase.
     nomepessoa = models.CharField(db_column='NomePessoa', max_length=80)  # Field name made lowercase.
     cpf_cnpj = models.CharField(db_column='Cpf_cnpj', max_length=14)  # Field name made lowercase.
-    email = models.CharField(db_column='Email', max_length=80)  # Field name made lowercase.
-    telefone = models.CharField(db_column='Telefone', max_length=10)  # Field name made lowercase.
+    email = models.CharField(db_column='Email', max_length=80, validators=[EmailValidator()])  # Field name made lowercase.
+    telefone = models.CharField(db_column='Telefone', max_length=10, validators=[_phone_validator])  # Field name made lowercase.
+
+    def __str__(self):
+        return self.nomepessoa
 
     class Meta:
         managed = True
         db_table = 'app_helpdesk_pessoa'
+        verbose_name = 'Pessoa'
+        verbose_name_plural = 'Pessoas'
 
 
 # class AuthGroup(models.Model):
@@ -89,25 +96,24 @@ class Cliente(models.Model):
     nomecliente = models.CharField(db_column='NomeCliente', max_length=80)  # Field name made lowercase.
     cpf_cnpj = models.CharField(db_column='Cpf_cnpj',max_length=20)  # Field name made lowercase.
     datacriacao = models.DateTimeField(auto_now=True)
-    email_cliente = models.CharField(db_column='Email_Cliente', max_length=80)  # Field name made lowercase.
-    telefone_cliente = models.CharField(db_column='Telefone_Cliente', max_length=20)  # Field name made lowercase.
+    email_cliente = models.CharField(db_column='Email_Cliente', max_length=80, validators=[EmailValidator()])  # Field name made lowercase.
+    telefone_cliente = models.CharField(db_column='Telefone_Cliente', max_length=20, validators=[_phone_validator])  # Field name made lowercase.
     assunto = models.CharField(db_column='Assunto', max_length=19, blank=True, null=True)  # Field name made lowercase.
     descricao = models.TextField(db_column='Descricao', blank=True, null=True)  # Field name made lowercase.
     resposta_usuario = models.TextField(db_column='Resposta_chamado', blank=True, null=True)
     faq_enviar = models.CharField(db_column='Faq_Enviado', max_length=19 , blank=True, null=True)
-    
-    
-    # def __str__(self):
-    #     return self.nomecliente, self.cpf_cnpj, self.email_cliente, self.telefone_cliente, self.assunto, self.descricao
-    
+
+    def __str__(self):
+        return f"{self.nomecliente} — {self.assunto or 'Sem assunto'}"
 
     class Meta:
         managed = True
         db_table = 'cliente'
+        verbose_name = 'Cliente'
+        verbose_name_plural = 'Clientes'
 
     def get_data_criacao(self):
         return self.datacriacao.strftime('%d/%m/%Y - %H:%M')
-    
 
 
 # class DjangoAdminLog(models.Model):
@@ -165,19 +171,19 @@ class Solicitacao(models.Model):
     solicitacaoaativo = models.CharField(db_column='SolicitacaoaAtivo', max_length=1, blank=True, null=True)  # Field name made lowercase.
 
     def __str__(self):
-        return self.idsolicitacao
+        return str(self.idsolicitacao)
 
     def cor_status(self):
         if self.assunto == 'ABERTO':
             return True
         else:
             return False
-    
-    
-    
+
     class Meta:
         managed = True
         db_table = 'solicitacao'
+        verbose_name = 'Solicitação'
+        verbose_name_plural = 'Solicitações'
 
 
 class Solicitacaostatus(models.Model):
@@ -188,20 +194,28 @@ class Solicitacaostatus(models.Model):
     datastatus = models.DateTimeField(db_column='DataStatus', blank=True, null=True)  # Field name made lowercase.
 
     def __str__(self):
-        return self.idsolicitacaostatus, self.idsolicitacao, self.idstatus, self.idusuario, self.datastatus
+        return f"{self.idstatus} — {self.idsolicitacao_id}"
+
     class Meta:
         managed = True
         db_table = 'solicitacaostatus'
+        verbose_name = 'Status de Solicitação'
+        verbose_name_plural = 'Status de Solicitações'
 
 
 class Usuario(models.Model):
     idusuario = models.AutoField(db_column='IDUsuario', primary_key=True)  # Field name made lowercase.
     nomeusuario = models.CharField(db_column='NomeUsuario', max_length=100)  # Field name made lowercase.
-    email_usuario = models.CharField(db_column='Email_Usuario', max_length=80)  # Field name made lowercase.
+    email_usuario = models.CharField(db_column='Email_Usuario', max_length=80, validators=[EmailValidator()])  # Field name made lowercase.
     setor = models.CharField(db_column='Setor', max_length=50, blank=True, null=True)  # Field name made lowercase.
     turno = models.CharField(db_column='Turno', max_length=1, blank=True, null=True)  # Field name made lowercase.
     usuario_ativo = models.CharField(db_column='Usuario_Ativo', max_length=1, blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return self.nomeusuario
+
     class Meta:
         managed = True
         db_table = 'usuario'
+        verbose_name = 'Usuário'
+        verbose_name_plural = 'Usuários'
