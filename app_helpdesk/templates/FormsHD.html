@@ -1,70 +1,150 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
 
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/cliente.css' %}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-    <title>Formulário de Help Desk</title>
-  <script>
-    function exibirAlerta() {
-        alert("AMM Soluções agradece seu chamado. Pressione 'Ok' para confirmar");
+{% block title %}Abrir Chamado — AMM HelpDesk{% endblock %}
+
+{% block navbar %}
+  <!-- Minimal public navbar without options to confuse public users -->
+  <nav class="bg-navy border-b border-navy-border/50 fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-opacity-95">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="https://ammsolucoes.com.br/" class="flex items-center space-x-2 group">
+          <img class="h-8 w-auto transition-transform duration-300 group-hover:scale-105" src="{% static 'img/AmmLOGO.webp' %}" alt="AMM Logo">
+          <span class="text-amber font-bold text-xl tracking-wide font-sans transition-colors duration-300 group-hover:text-amber/90">
+            Soluções
+          </span>
+        </a>
+        <a href="/FAQ" class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center space-x-1 border border-navy-border bg-navy-light/40">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i>
+          <span>Voltar ao FAQ</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block extra_head %}
+  <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+  <style>
+    /* Styling CKEditor inside dark theme */
+    .cke_chrome {
+      border-radius: 0.75rem !important;
+      border: 1px solid #334155 !important;
+      overflow: hidden;
     }
-</script>
-</head>
+  </style>
+{% endblock %}
 
+{% block content %}
+<div class="max-w-3xl mx-auto mt-6">
+  <!-- Header Card -->
+  <div class="bg-gradient-to-r from-blue/20 to-sky-600/10 border border-navy-border/50 rounded-2xl p-6 sm:p-8 mb-8 backdrop-blur-sm text-center">
+    <img src="{% static 'img/logoammlogin.png' %}" alt="AMM Logo" class="h-16 mx-auto mb-4 object-contain">
+    <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Formulário de Suporte</h1>
+    <p class="text-slate-400 text-sm mt-2 max-w-lg mx-auto">
+      Preencha as informações abaixo para abrir um chamado de suporte técnico. Nossa equipe responderá o mais breve possível.
+    </p>
+  </div>
 
-<body style="background:  #6B73E3; background-size: cover;">
-  <div align="center" class="container" > <a href="https://ammsolucoes.com.br/"><img src= "{% static 'img/logoammlogin.png' %}" alt="Logo - Empresa"></a> 
-  <br><br><br>
-    <h1 style="font-family: 'Barlow';font-style: normal; font-weight: 500;font-size: 64px;line-height: 77px;display: flex;align-items: center; text-align: right;color: #060A24;">&nbsp&nbsp&nbspInforme seus dados para tirar duvidas!</h1>
-  <br><br>
-  <form action="submit" method="POST"> {% csrf_token %}
-    <div class="form-group">
-      <input type="text" class="form-control" id="nomecliente" name="nomecliente" placeholder="Nome Completo" required>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group col-md-6">
-            <input type="text" class="form-control" id="telefone" name="telefone_cliente" placeholder="Telefone" required maxlength="20">
+  <!-- Form Card -->
+  <div class="bg-navy-light/30 border border-navy-border/30 rounded-2xl p-6 sm:p-8 shadow-xl">
+    <form action="submit" method="POST" onsubmit="return confirmarEnvio(event);" class="space-y-6">
+      {% csrf_token %}
+      
+      <!-- Nome -->
+      <div>
+        <label for="nomecliente" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Nome Completo</label>
+        <input type="text" 
+               id="nomecliente" 
+               name="nomecliente" 
+               placeholder="Seu nome completo" 
+               required
+               class="block w-full bg-navy/60 border border-navy-border/80 rounded-xl py-3 px-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all text-sm">
       </div>
-      <div class="form-group col-md-6">
-              <input type="text" class="form-control" id="cpfcnpj" name="cpf_cnpj" placeholder="CPF ou CNPJ" required>
+
+      <!-- Telefone & CPF/CNPJ -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="telefone" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Telefone / WhatsApp</label>
+          <input type="text" 
+                 id="telefone" 
+                 name="telefone_cliente" 
+                 placeholder="(00) 00000-0000" 
+                 maxlength="20" 
+                 required
+                 class="block w-full bg-navy/60 border border-navy-border/80 rounded-xl py-3 px-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all text-sm">
+        </div>
+        <div>
+          <label for="cpfcnpj" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">CPF ou CNPJ</label>
+          <input type="text" 
+                 id="cpfcnpj" 
+                 name="cpf_cnpj" 
+                 placeholder="Somente números" 
+                 required
+                 class="block w-full bg-navy/60 border border-navy-border/80 rounded-xl py-3 px-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all text-sm">
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-              <input type="email" class="form-control" id="email_cliente" name="email_cliente" placeholder="Email" required>
-    </div>
+      <!-- Email -->
+      <div>
+        <label for="email_cliente" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">E-mail para contato</label>
+        <input type="email" 
+               id="email_cliente" 
+               name="email_cliente" 
+               placeholder="exemplo@empresa.com" 
+               required
+               class="block w-full bg-navy/60 border border-navy-border/80 rounded-xl py-3 px-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all text-sm">
+      </div>
 
-    <div class="form-group">
-      <select class="form-control" id="assunto" name="assunto" required>
-      <option value="">Selecione o assunto</option>
-      <option value="NOSSOS APLICATIVOS">NOSSOS APLICATIVOS</option>
-      <option value="DÚVIDAS FINANCEIRAS">DÚVIDAS FINANCEIRAS</option>
-      <option value="SUPORTE TÉCNICO">SUPORTE TÉCNICO</option>
-      <option value="RECLAMAÇÕES">RECLAMAÇÕES</option>
-      <option value="OUTRAS INFORMAÇÕES">OUTRAS INFORMAÇÕES</option>
-    </select>
-    </div>
-    
-    <div class="form-group">
-     <textarea textarea class="form-control" id="descricao" name="descricao" placeholder="Descrição (até 300 caracteres)" maxlength="300"></textarea>
-    </div>
+      <!-- Assunto -->
+      <div>
+        <label for="assunto" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Assunto do Chamado</label>
+        <select id="assunto" 
+                name="assunto" 
+                required
+                class="block w-full bg-navy/60 border border-navy-border/80 rounded-xl py-3 px-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all text-sm appearance-none cursor-pointer">
+          <option value="" disabled selected>Selecione um assunto</option>
+          <option value="NOSSOS APLICATIVOS">NOSSOS APLICATIVOS</option>
+          <option value="DÚVIDAS FINANCEIRAS">DÚVIDAS FINANCEIRAS</option>
+          <option value="SUPORTE TÉCNICO">SUPORTE TÉCNICO</option>
+          <option value="RECLAMAÇÕES">RECLAMAÇÕES</option>
+          <option value="OUTRAS INFORMAÇÕES">OUTRAS INFORMAÇÕES</option>
+        </select>
+      </div>
 
-    <div class="alert alert-success" role="alert">
-    <button onclick="exibirAlerta()" type="submit">Enviar</button>
-    </div>
-    
-  </form>
-</body>
+      <!-- Descrição -->
+      <div>
+        <label for="descricao" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Detalhes da Solicitação</label>
+        <textarea id="descricao" name="descricao" placeholder="Descreva sua solicitação com detalhes..." maxlength="300"></textarea>
+      </div>
+
+      <!-- Submit Section -->
+      <div class="pt-4">
+        <button type="submit" 
+                class="w-full bg-gradient-to-r from-blue to-sky-600 hover:from-blue/90 hover:to-sky-600/90 text-white font-semibold rounded-xl py-3.5 shadow-lg shadow-blue/20 transition-all duration-300 transform hover:-translate-y-0.5 focus:ring-2 focus:ring-blue/50 focus:outline-none text-sm uppercase tracking-wider">
+          <i class="fa-solid fa-paper-plane mr-2"></i> Enviar Chamado
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
 <script>
-  CKEDITOR.replace( 'descricao' );
-</script>
+  CKEDITOR.replace('descricao', {
+    height: 180,
+    removeButtons: 'About,Maximize,Source,Image,Table,HorizontalRule,SpecialChar,PageBreak,Iframe'
+  });
 
-</html>
+  function confirmarEnvio(event) {
+    if (confirm("AMM Soluções agradece seu chamado. Confirmar o envio?")) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+</script>
+{% endblock %}
