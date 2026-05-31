@@ -1,407 +1,353 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <script src="https://kit.fontawesome.com/538f723e9c.js" crossorigin="anonymous"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://kit.fontawesome.com/538f723e9c.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-  <div align="right">
-    <a href="/logout">Sair</a>
-  </div>
-  <title>Home HELPDESK</title>
-  
 
+{% block title %}Lista de Chamados — AMM HelpDesk{% endblock %}
+
+{% block extra_head %}
   <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
   <style>
-    
-    body {
-      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-      padding: 20px;
+    .cke_chrome {
+      border-radius: 0.75rem !important;
+      border: 1px solid #334155 !important;
+      overflow: hidden;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border-bottom: 1px solid #857f7f;
-    }
-
-    th {
-      background-color: #505973;
-    }
-
-    tr {
-      background-color: #343d55;
-    }
-    tr:hover {
-      background-color: #cfcdcd4f;
-    }
- 
-    .badge {
-      font-size: 14px;
-      padding: 5px 10px;
-      border-radius: 20px;
-      display: inline-block;
-      margin-bottom: 5px;
-      text-decoration: none;
-    }
-
-    .badge-success {
-      background-color: #08fd00;
-      color: #000;
-      font-size: medium;
-    }
-
-    .badge-info {
-      background-color: #646464;
-      color: #ffffff;
-      font-size: medium;
-    }
-
-    .badge-danger {
-      background-color: #d60f0f;
-      color: #fff;
-      font-size: medium;
-    }
-
-    .text-white {
-      color: #ffffff !important;
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .pagination-item {
-      margin: 0 5px;
-    }
-    .badge-warning {
-      background-color: #ffd900;
-      color: #000000;
-      font-size:medium;
-    }
-    .badge-primary {
-      background-color: #03aef1;
-      color: #000000;
-      font-size: medium;
-    }
-    .badge-media {
-      background-color: #ff9900;
-      color: #0a0a0a;
-      font-size: medium;
-    }
-    .badge-red {
-      background-color: #ff0000;
-      color: #000000;
-      font-size: medium;
-    }
-    .a {
-      text-decoration: none;
-    }
-    .response-form {
-      margin-top: 30px;
-    }
-
-    .response-form textarea {
-      width: 100%;
-      height: 100px;
-      margin-bottom: 10px;
-    }
-
-    .response-form button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .response-form button:hover {
-      background-color: #45a049;
-    }
-
-    .response-form .hidden {
-      display: none;
-    }
-    .hidden {
-  display: none;
-}
-.custom-navbar {
-    height: 105px;
-    font-weight: 900;
-    box-sizing: border-box;
-    font-size: 20px;
-    line-height: inherit;
-    white-space: nowrap;
-    font-style: normal;
-    text-align: center;
-    box-sizing: border-box;
-}
-.flex-container {
-            display: grid;
-            justify-content: center;
-            align-items: center;
-  }
-
   </style>
-</head>
-<body style="background-color: #161D31;">
-  <nav style="background-color: #05091f;" class="navbar navbar-expand fixed-top navbar-dark custom-navbar">
-    <div><a style="text-decoration: none;" href="https://ammsolucoes.com.br/">
-        <img src="{% static 'img/AmmLOGO.webp' %}" alt="Logo - Empresa" style="margin-left: 15px;"> 
-        
-        <span style="color: #ffa41b; font-family: 'Barlow', sans-serif; font-size: 20px;">
-            <b> Soluções</b>
-        </span>
-    </a>
-    </div>
-   
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link active" href="/FAQ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspFAQ</a>
-        </li> 
-      </ul>
-      
-      
-        <button class="btn btn-outline-danger my-2 my-sm-0; textnone" ><span style="text-align: right;">        
-          <div align="right">
-            <a href="/logout">Sair</a>
-          </div>
-      </span></button>
-      
-    </div>
-</nav>
+{% endblock %}
 
-<div class="container"><br><br><br><br>
-  <h1 style="color: #B4B7BD;">Lista de Chamados</h1><br>
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>ASSUNTO</th>
-        <th>STATUS</th>
-        <th>DATA</th>
-        <th>NOME DO CLIENTE</th>
-        <th>PRIORIDADE</th>   
-        <th></th>     
-      </tr>
-    </thead>
-    <tbody>
-      {% for cliente in page_obj %}
-      <tr style="color: #B4B7BD;" id="row-{{cliente.idcliente}}" class="row-clickable" data-bs-toggle="collapse" data-bs-target="#contents-collapse-{{cliente.idcliente}}" aria-controls="contents-collapse-{{cliente.idcliente}}">
-        <td>
-          <span>{{cliente.idcliente}}</span>
-        </td>
-        <td>{{cliente.assunto}}</td>
-        <td>
-          <button class="btn btn-status" data-bs-toggle="modal" data-bs-target="#status-popup-{{cliente.idcliente}}">
-            <span class="{% if cliente.status == 'ABERTO' %}badge badge-success{% elif cliente.status == 'FECHADO' %}badge badge-info{% elif cliente.status == 'EM ANDAMENTO' %}badge badge-warning{% endif %}">{{cliente.status}}</span>
-          </button>
-        </td>
-        <td>{{cliente.get_data_criacao}}</td>
-        <td>{{cliente.nomecliente}}</td>
-        <td>
-          <button class="btn btn-prioridade" data-bs-toggle="modal" data-bs-target="#priority-popup-{{cliente.idcliente}}">
-            <span class="{% if cliente.prioridade == 'ALTA' %}badge badge-danger{% elif cliente.prioridade == 'MEDIA' %}badge badge-media{% elif cliente.prioridade == 'BAIXA' %}badge badge-primary{% elif cliente.prioridade == 'A DEFINIR' %}badge badge-info{% endif %}">{{cliente.prioridade}}</span>
-          </button>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="7" class="p-0">
-          <ul  class="list-unstyled ps-3 collapse" id="contents-collapse-{{cliente.idcliente}}" style="color: #f8f8f8;">
-            <li><br>
-              <div class="d-flex justify-content-between align-items-start">
-                <span class="fw-bold">Email: {{cliente.email_cliente}}</span>
-              </div>
-            </li><br>
-            <li>
-              <div class="d-flex justify-content-between align-items-start">
-                <span class="fw-bold">Telefone: {{cliente.telefone_cliente}}</span>
-              </div>
-            </li><br>
-            <li>
-              <div class="d-flex justify-content-between align-items-start">
-                <span class="fw-bold">CPF ou CNPJ: {{cliente.cpf_cnpj}}</span>
-              </div>
-            </li><br>
-            <li>
-              <div class="rounded border p-3">
-                <span class="fw-bold">Descrição:</span>
-                <br>
-                <div class="flex-container">
-                <span>{{cliente.descricao | safe}}</span>
-                </div>
-                <br>
-              </div>
-            </li>
-            <br>
+{% block content %}
+<div class="space-y-6">
+  <!-- Top bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-navy-light/40 border border-navy-border/40 rounded-2xl p-6 backdrop-blur-sm">
+    <div>
+      <h1 class="text-2xl font-bold text-white tracking-tight flex items-center space-x-2">
+        <i class="fa-solid fa-list-check text-blue"></i>
+        <span>Painel de Chamados</span>
+      </h1>
+      <p class="text-slate-400 text-xs sm:text-sm mt-1">Gerencie, acompanhe e responda a todas as solicitações de suporte.</p>
+    </div>
+    
+    <div class="flex items-center space-x-3">
+      <a href="/FAQ/" class="bg-navy/60 hover:bg-slate-800 text-slate-300 border border-navy-border/80 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center space-x-1.5 shadow-lg shadow-navy/20">
+        <i class="fa-regular fa-circle-question text-amber text-sm"></i>
+        <span>Visualizar FAQ</span>
+      </a>
+      <a href="/formshd/" target="_blank" class="bg-gradient-to-r from-blue to-sky-600 hover:from-blue/90 hover:to-sky-600/90 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-blue/20 flex items-center space-x-1.5">
+        <i class="fa-solid fa-plus text-sm"></i>
+        <span>Novo Chamado</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="bg-navy-light/20 border border-navy-border/30 rounded-2xl overflow-hidden shadow-xl">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-navy/70 border-b border-navy-border/50 text-slate-300 text-xs font-semibold uppercase tracking-wider">
+            <th class="py-4 px-6 text-center w-16">ID</th>
+            <th class="py-4 px-6">Assunto</th>
+            <th class="py-4 px-6 text-center">Status</th>
+            <th class="py-4 px-6 text-center">Prioridade</th>
+            <th class="py-4 px-6">Cliente</th>
+            <th class="py-4 px-6 text-center">Criado em</th>
+            <th class="py-4 px-6 text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-navy-border/30 text-sm text-slate-200">
+          {% for cliente in page_obj %}
+          <!-- Main Ticket Row -->
+          <tr x-data="{ open: false, showStatus: false, showPriority: false }"
+              class="hover:bg-navy-light/40 transition-colors duration-150">
+            <!-- ID -->
+            <td class="py-4 px-6 text-center font-mono font-semibold text-slate-400">
+              #{{ cliente.idcliente }}
+            </td>
             
-            <li id="resposta-section">
-              <div class="rounded border p-3"><br>
-                <span class="fw-bold">Resposta:</span>
-                <br>
-                {% if cliente.resposta_usuario %}
-                  <span>{{cliente.resposta_usuario | safe}}</span><br><br>
-                <div class="rounded border p-3">
-                  <span class="fw-bold">Enviar FAQ Amm</span>&nbsp&nbsp
-                  <a class="fa-solid fa-upload" href="updatecliente/{{cliente.idcliente}}/?faq_enviado=ENVIAR"></a> <br>
-
-                  <span class="fw-bold">Editar resposta</span>&nbsp&nbsp
-                  <a type="button" class="fa-solid fa-pen-to-square" style="color: #0861fd;" data-bs-toggle="collapse" data-bs-target="#reply-collapse-{{cliente.idcliente}}"></a>
-                  <div class="collapse" id="reply-collapse-{{cliente.idcliente}}">
-                    <form action="updatecliente/{{cliente.idcliente}}/" method="POST" enctype="multipart/form-data">
-                      {% csrf_token %}
-                      <div class="input-group mt-3">
-                        <textarea  name="resposta_usuario_{{cliente.idcliente}}" required></textarea>
-                        <br>
-                        <input type="file" name="anexo"><br>
-                        <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                
+            <!-- Subject -->
+            <td class="py-4 px-6 font-medium text-white max-w-xs truncate">
+              {{ cliente.assunto }}
+            </td>
+            
+            <!-- Status Badge -->
+            <td class="py-4 px-6 text-center">
+              <button @click="showStatus = true" 
+                      class="relative group transition-all duration-200 hover:scale-105 focus:outline-none">
+                {% if cliente.status == 'ABERTO' %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 group-hover:bg-emerald-500/30">
+                    Aberto
+                  </span>
+                {% elif cliente.status == 'EM ANDAMENTO' %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-500/20 text-sky-400 border border-sky-500/30 group-hover:bg-sky-500/30">
+                    Andamento
+                  </span>
+                {% elif cliente.status == 'FECHADO' %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-500/20 text-slate-300 border border-slate-500/30 group-hover:bg-slate-500/30">
+                    Fechado
+                  </span>
                 {% else %}
-                  <span>Nenhuma resposta enviada.</span>
-                  <br>
-                  <li><br>
-              <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#reply-collapse-{{cliente.idcliente}}">Responder</button>
-              <br>
-              <div class="collapse" id="reply-collapse-{{cliente.idcliente}}">
-                <form action="updatecliente/{{cliente.idcliente}}/" method="POST" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <div class="input-group mt-3">
-                    <textarea  name="resposta_usuario_{{cliente.idcliente}}" required></textarea>
-                    <input type="file" name="anexo"> <br>
-                    <button class="btn btn-primary" onclick="recarregarPagina()" type="submit">Enviar</button>
-                  </div>
-                </form>
-              </div>
-              
-            </li>
-            <!-- </li>   PARE AQUI  -->
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-navy border border-navy-border text-slate-400 group-hover:bg-slate-800">
+                    {{ cliente.status }}
+                  </span>
                 {% endif %}
+              </button>
+
+              <!-- Status Dialog Modal -->
+              <div x-show="showStatus" 
+                   class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                   x-transition:enter="transition ease-out duration-250"
+                   x-transition:enter-start="opacity-0 scale-95"
+                   x-transition:enter-end="opacity-100 scale-100"
+                   x-transition:leave="transition ease-in duration-150"
+                   x-transition:leave-start="opacity-100 scale-100"
+                   x-transition:leave-end="opacity-0 scale-95"
+                   style="display: none;">
+                <div @click.away="showStatus = false" 
+                     class="bg-navy-light/95 border border-navy-border/80 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-6 text-left">
+                  <div class="flex items-center justify-between border-b border-navy-border/40 pb-3">
+                    <h3 class="text-base font-bold text-white">Alterar Status #{{ cliente.idcliente }}</h3>
+                    <button @click="showStatus = false" class="text-slate-400 hover:text-white transition-colors">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+                  <div class="space-y-2">
+                    <a href="updatecliente/{{ cliente.idcliente }}/?status=ABERTO" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 transition-colors">
+                      Aberto
+                    </a>
+                    <a href="updatecliente/{{ cliente.idcliente }}/?status=EM ANDAMENTO" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-400 transition-colors">
+                      Em Andamento
+                    </a>
+                    <a href="updatecliente/{{ cliente.idcliente }}/?status=FECHADO" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-slate-500/10 hover:bg-slate-500/20 border border-slate-500/30 text-slate-300 transition-colors">
+                      Fechado
+                    </a>
+                    <a href="updatecliente/{{ cliente.idcliente }}/?status=EXCLUIR" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 transition-colors">
+                      Excluir Chamado
+                    </a>
+                  </div>
+                </div>
               </div>
-            </li>
+            </td>
             
-          </ul>
-        </td>
-      </tr>
+            <!-- Priority Badge -->
+            <td class="py-4 px-6 text-center">
+              <button @click="showPriority = true" 
+                      class="relative group transition-all duration-200 hover:scale-105 focus:outline-none">
+                {% if cliente.prioridade == 'ALTA' %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30 group-hover:bg-rose-500/30">
+                    Alta
+                  </span>
+                {% elif cliente.prioridade == 'MEDIA' %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber/20 text-amber border border-amber/30 group-hover:bg-amber/30">
+                    Média
+                  </span>
+                {% elif cliente.prioridade == 'BAIXA' %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 group-hover:bg-emerald-500/30">
+                    Baixa
+                  </span>
+                {% else %}
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-500/20 text-sky-400 border border-sky-500/30 group-hover:bg-sky-500/30">
+                    A Definir
+                  </span>
+                {% endif %}
+              </button>
 
-      <script>
-        CKEDITOR.replace('resposta_usuario_{{cliente.idcliente}}');
-      </script>
-      
-      
-      <!-- Status Popup -->
-      <div class="modal fade" id="status-popup-{{cliente.idcliente}}" tabindex="-1" aria-labelledby="status-popup-{{cliente.idcliente}}-label" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="status-popup-{{cliente.idcliente}}-label">Status atual: {{cliente.status}}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="status-btn-group">
-                <label for="status" style="font-size: larger;">Status:</label>
-                <div style="text-align: center;">
-                  <a class="badge badge-info" href="updatecliente/{{cliente.idcliente}}/?status=FECHADO">FECHADO</a>
-                  <a class="badge badge-warning" href="updatecliente/{{cliente.idcliente}}/?status=EM%20ANDAMENTO">EM ANDAMENTO</a>
-                  <a class="badge badge-success" href="updatecliente/{{cliente.idcliente}}/?status=ABERTO">ABERTO</a>
-                  <a class="badge badge-danger" href="updatecliente/{{cliente.idcliente}}/?status=EXCLUIR">EXCLUIR</a>
+              <!-- Priority Dialog Modal -->
+              <div x-show="showPriority" 
+                   class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                   x-transition:enter="transition ease-out duration-250"
+                   x-transition:enter-start="opacity-0 scale-95"
+                   x-transition:enter-end="opacity-100 scale-100"
+                   x-transition:leave="transition ease-in duration-150"
+                   x-transition:leave-start="opacity-100 scale-100"
+                   x-transition:leave-end="opacity-0 scale-95"
+                   style="display: none;">
+                <div @click.away="showPriority = false" 
+                     class="bg-navy-light/95 border border-navy-border/80 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-6 text-left">
+                  <div class="flex items-center justify-between border-b border-navy-border/40 pb-3">
+                    <h3 class="text-base font-bold text-white">Alterar Prioridade #{{ cliente.idcliente }}</h3>
+                    <button @click="showPriority = false" class="text-slate-400 hover:text-white transition-colors">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+                  <div class="space-y-2">
+                    <a href="updatecliente/{{ cliente.idcliente }}/?prioridade=ALTA" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 transition-colors">
+                      Alta
+                    </a>
+                    <a href="updatecliente/{{ cliente.idcliente }}/?prioridade=MEDIA" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-amber/10 hover:bg-amber/20 border border-amber/30 text-amber transition-colors">
+                      Média
+                    </a>
+                    <a href="updatecliente/{{ cliente.idcliente }}/?prioridade=BAIXA" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 transition-colors">
+                      Baixa
+                    </a>
+                    <a href="updatecliente/{{ cliente.idcliente }}/?prioridade=A%20DEFINIR" class="block w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-400 transition-colors">
+                      A Definir
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>            
-          </div>
-        </div>
-      </div>
-      
-      <!-- Priority Popup -->
-      <div class="modal fade" id="priority-popup-{{cliente.idcliente}}" tabindex="-1" aria-labelledby="priority-popup-{{cliente.idcliente}}-label" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="priority-popup-{{cliente.idcliente}}-label">Prioridade atual: {{cliente.prioridade}}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="priority-btn-group">
-                <label for="priority">Prioridade:</label>
-                <div style="text-align: center;">
-                  
-                  <a class="badge badge-danger" href="updatecliente/{{cliente.idcliente}}/?prioridade=ALTA">Alta</a>
-                  <a class="badge badge-media" href="updatecliente/{{cliente.idcliente}}/?prioridade=MEDIA">Média</a>
-                  <a class="badge badge-primary" href="updatecliente/{{cliente.idcliente}}/?prioridade=BAIXA">Baixa</a>
-                  <a class="badge badge-info" href="updatecliente/{{cliente.idcliente}}/?prioridade=A%20DEFINIR">A Definir</a>
+            </td>
+            
+            <!-- Customer Name -->
+            <td class="py-4 px-6 text-slate-300 font-medium">
+              {{ cliente.nomecliente }}
+            </td>
+            
+            <!-- Created Date -->
+            <td class="py-4 px-6 text-center text-xs text-slate-400 font-mono">
+              {{ cliente.get_data_criacao }}
+            </td>
+            
+            <!-- Action buttons -->
+            <td class="py-4 px-6 text-center">
+              <div class="flex items-center justify-center space-x-3">
+                <button @click="open = !open" 
+                        class="text-slate-400 hover:text-white p-1.5 rounded-lg border border-navy-border/60 hover:bg-navy transition-all duration-200"
+                        title="Detalhes rápidos">
+                  <i class="fa-solid" :class="open ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                </button>
+                <a href="pagecliente/?id={{ cliente.idcliente }}" 
+                   class="text-blue hover:text-white p-1.5 rounded-lg border border-blue/30 hover:bg-blue/20 transition-all duration-200"
+                   title="Atender Chamado">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Expandable Row Content -->
+          <tr x-show="open" 
+              x-transition:enter="transition ease-out duration-200"
+              x-transition:enter-start="opacity-0 -translate-y-2"
+              x-transition:enter-end="opacity-100 translate-y-0"
+              class="bg-navy/30 border-b border-navy-border/40"
+              style="display: none;">
+            <td colspan="7" class="py-6 px-8">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
+                <!-- Info cards (Left) -->
+                <div class="lg:col-span-5 space-y-4">
+                  <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-navy-border/30 pb-2 mb-3">
+                    Informações de Contato
+                  </h4>
+                  <div class="space-y-3 text-slate-300">
+                    <div class="flex items-center space-x-2">
+                      <span class="text-slate-400 text-xs w-24">Email:</span>
+                      <a href="mailto:{{ cliente.email_cliente }}" class="text-blue hover:underline break-all">{{ cliente.email_cliente }}</a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-slate-400 text-xs w-24">Telefone:</span>
+                      <span>{{ cliente.telefone_cliente }}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <span class="text-slate-400 text-xs w-24">CPF / CNPJ:</span>
+                      <span>{{ cliente.cpf_cnpj }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="border-t border-navy-border/30 pt-4 mt-4">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Descrição Original</span>
+                    <div class="bg-navy/80 border border-navy-border/60 rounded-xl p-4 text-xs sm:text-sm leading-relaxed text-slate-300 max-h-40 overflow-y-auto">
+                      {{ cliente.descricao|safe }}
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Response form (Right) -->
+                <div class="lg:col-span-7">
+                  <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-navy-border/30 pb-2 mb-3">
+                    Histórico & Envio de Respostas
+                  </h4>
+                  
+                  <div class="bg-navy/40 border border-navy-border/50 rounded-2xl p-5 space-y-4">
+                    {% if cliente.resposta_usuario %}
+                      <!-- Past Response info -->
+                      <div class="space-y-2">
+                        <span class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Resposta enviada:</span>
+                        <div class="bg-navy-light/40 border border-navy-border/40 rounded-xl p-4 text-xs sm:text-sm text-slate-300 max-h-40 overflow-y-auto">
+                          {{ cliente.resposta_usuario|safe }}
+                        </div>
+                      </div>
+
+                      <div class="flex items-center justify-between border-t border-navy-border/30 pt-4 mt-4">
+                        <div class="flex items-center space-x-2">
+                          <span class="text-xs text-slate-400">Enviar FAQ Amm:</span>
+                          <a href="updatecliente/{{ cliente.idcliente }}/?faq_enviado=ENVIAR" 
+                             class="bg-blue/20 hover:bg-blue/40 border border-blue/30 text-slate-100 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1">
+                            <i class="fa-solid fa-share-from-square"></i>
+                            <span>Enviar FAQ</span>
+                          </a>
+                        </div>
+
+                        <!-- Edit Response Collapse Toggle -->
+                        <button type="button" 
+                                @click="$refs.editPanel.style.display = $refs.editPanel.style.display === 'none' ? 'block' : 'none'"
+                                class="bg-navy/60 hover:bg-slate-800 border border-navy-border/80 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1">
+                          <i class="fa-solid fa-pen-to-square text-blue"></i>
+                          <span>Editar resposta</span>
+                        </button>
+                      </div>
+
+                      <!-- Edit Reply Area -->
+                      <div $ref="editPanel" id="reply-collapse-{{ cliente.idcliente }}" class="mt-4 border-t border-navy-border/30 pt-4" style="display: none;" x-ref="editPanel">
+                        <form action="updatecliente/{{ cliente.idcliente }}/" method="POST" enctype="multipart/form-data" class="space-y-4">
+                          {% csrf_token %}
+                          <textarea id="resposta_usuario_edit_{{ cliente.idcliente }}" name="resposta_usuario_{{ cliente.idcliente }}" required>{{ cliente.resposta_usuario|safe }}</textarea>
+                          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <input type="file" name="anexo" class="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-navy-light file:text-slate-300 hover:file:bg-slate-800 file:cursor-pointer">
+                            <button type="submit" class="bg-blue hover:bg-blue/90 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue/20 self-end">
+                              Enviar Atualização
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+
+                    {% else %}
+                      <!-- Reply editor directly (no response yet) -->
+                      <div class="space-y-2">
+                        <span class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Responder Chamado:</span>
+                        <span class="text-xs text-slate-500 italic block mb-2">Nenhuma resposta foi enviada para este chamado ainda.</span>
+                        
+                        <form action="updatecliente/{{ cliente.idcliente }}/" method="POST" enctype="multipart/form-data" class="space-y-4">
+                          {% csrf_token %}
+                          <textarea id="resposta_usuario_{{ cliente.idcliente }}" name="resposta_usuario_{{ cliente.idcliente }}" placeholder="Digite sua resposta técnica aqui..." required></textarea>
+                          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <input type="file" name="anexo" class="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-navy-light file:text-slate-300 hover:file:bg-slate-800 file:cursor-pointer">
+                            <button type="submit" class="bg-gradient-to-r from-amber to-amber/80 hover:from-amber hover:to-amber/90 text-navy px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-amber/10 self-end flex items-center space-x-1">
+                              <i class="fa-solid fa-paper-plane"></i>
+                              <span>Responder Cliente</span>
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </td>
+          </tr>
 
-      {% endfor %}
-    </tbody>
-    
-  </table>
+          <!-- Initialize CKEditor for this specific row's editors -->
+          <script>
+            if (document.getElementById('resposta_usuario_{{ cliente.idcliente }}')) {
+              CKEDITOR.replace('resposta_usuario_{{ cliente.idcliente }}', {
+                height: 120,
+                removeButtons: 'About,Maximize,Source,HorizontalRule,SpecialChar,PageBreak,Iframe'
+              });
+            }
+            if (document.getElementById('resposta_usuario_edit_{{ cliente.idcliente }}')) {
+              CKEDITOR.replace('resposta_usuario_edit_{{ cliente.idcliente }}', {
+                height: 120,
+                removeButtons: 'About,Maximize,Source,HorizontalRule,SpecialChar,PageBreak,Iframe'
+              });
+            }
+          </script>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination inclusion -->
+  {% include 'partials/pagination.html' %}
 </div>
-   
-    
-    {% if page_obj.has_other_pages %}
-<div class="btn-group; pagination" role="group" aria-label="Item pagination">
-    {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
-    {% endif %}
-
-    {% for page_number in page_obj.paginator.page_range %}
-        {% if page_obj.number == page_number %}
-            <button class="btn btn-outline-primary active">
-                <span>{{ page_number }} <span class="sr-only">(Atual)</span></span>
-            </button>
-        {% else %}
-            <a href="?page={{ page_number }}" class="btn btn-outline-primary">
-                {{ page_number }}
-            </a>
-        {% endif %}
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">&raquo;</a>
-    {% endif %}
-</div>
-{% endif %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  
- 
-  <script>
-    function recarregarPagina() {
-      location.reload();
-    }
-  </script>
-</body>
-
-
-</html>
+{% endblock %}
