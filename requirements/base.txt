@@ -3,3 +3,5 @@ asgiref==3.6.0
 sqlparse==0.4.4
 tzdata==2023.3
 python-decouple==3.8
+beautifulsoup4
+django-axes

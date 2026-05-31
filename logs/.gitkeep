@@ -1,0 +1,2 @@
+# This file ensures git tracks the empty logs/ directory.
+# Log files themselves are excluded via .gitignore.

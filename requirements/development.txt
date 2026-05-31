@@ -1,2 +1,2 @@
 -r base.txt
-psycopg2-binary==2.9.9
+django-axes==6.4.0

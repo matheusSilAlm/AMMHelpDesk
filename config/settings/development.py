@@ -13,4 +13,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Para enviar e-mails reais em desenvolvimento usando as credenciais do .env,
+# comente a linha abaixo (ou mude no seu .env para console se preferir simular):
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

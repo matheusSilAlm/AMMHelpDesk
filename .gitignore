@@ -1,30 +1,40 @@
-# Django / Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.sqlite3
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
 
-# Environments
-.env
-.env.local
-.env.*
-.venv/
-env/
+# Virtual environments
 venv/
-ENV/
+env/
+.venv/
+.env.local
 
-# OS/Editor
+# Django
+*.log
+logs/
+logs/*.log
+db.sqlite3
+staticfiles/
+media/
+
+# Environment variables — NEVER commit
+.env
+
+# IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
 Thumbs.db
-Desktop.ini
 
-# Project specific
-/static_collected/
-/media/
-/logs/
-*.log
-
-# Logs
-logs/*.log
-logs/helpdesk.log
+# Docker
+docker-compose.override.yml

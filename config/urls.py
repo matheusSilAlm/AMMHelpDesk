@@ -1,10 +1,13 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from app_helpdesk import views
 from django.views.generic import RedirectView
+from decouple import config as env_config
+
+ADMIN_URL = env_config('ADMIN_URL', default='admin')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{ADMIN_URL}/', admin.site.urls),
     path('home/', views.solicit_pages),
     path('', RedirectView.as_view(url='/home/')),
     path('login/', views.login_user),
@@ -13,7 +16,7 @@ urlpatterns = [
     path('formshd/', views.cliente_page),
     path('formshd/submit', views.cliente_page_submit),
     path('listpage/', views.cliente_novo),
-    path('home/pagecliente/', views.atender_cliente),  
-    path('home/updatecliente/<int:idcliente>/', views.update_cliente),   
+    path('home/pagecliente/', views.atender_cliente),
+    path('home/updatecliente/<int:idcliente>/', views.update_cliente),
     path('FAQ/', views.faq_amm, name='FAQ'),
 ]
