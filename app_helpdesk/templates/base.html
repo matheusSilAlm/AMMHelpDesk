@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AMM HelpDesk{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              DEFAULT: '#05091f',
+              light: '#161D31',
+              card: '#1e293b',
+              border: '#334155'
+            },
+            amber: {
+              DEFAULT: '#ffa41b'
+            },
+            blue: {
+              DEFAULT: '#3d86c9'
+            },
+            status: {
+              open: '#08fd00',
+              inprogress: '#03aef1',
+              closed: '#646464',
+              high: '#d60f0f',
+              medium: '#ffd900',
+              low: '#08fd00',
+              todo: '#ff9900',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-[#121829] min-h-screen text-slate-100 flex flex-col font-sans">
+  {% block navbar %}
+    {% include 'partials/navbar.html' %}
+  {% endblock %}
+
+  {% include 'partials/messages.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8 mt-16">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block footer %}
+    {% include 'partials/footer.html' %}
+  {% endblock %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

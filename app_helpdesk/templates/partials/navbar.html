@@ -1,0 +1,76 @@
+{% load static %}
+<nav x-data="{ open: false }" class="bg-navy border-b border-navy-border/50 fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-opacity-95">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo and Brand -->
+      <div class="flex items-center">
+        <a href="https://ammsolucoes.com.br/" class="flex items-center space-x-2 group">
+          <img class="h-8 w-auto transition-transform duration-300 group-hover:scale-105" src="{% static 'img/AmmLOGO.webp' %}" alt="AMM Logo">
+          <span class="text-amber font-bold text-xl tracking-wide font-sans transition-colors duration-300 group-hover:text-amber/90">
+            Soluções
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center space-x-4">
+        <a href="/FAQ" class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+          <i class="fa-regular fa-circle-question text-amber"></i>
+          <span>FAQ</span>
+        </a>
+        
+        {% if user.is_authenticated %}
+          <a href="/home/" class="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+            <i class="fa-solid fa-list-check text-blue"></i>
+            <span>Painel</span>
+          </a>
+          <a href="/logout/" class="bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-200 border border-red-500/30 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-lg shadow-red-950/20">
+            <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Sair
+          </a>
+        {% else %}
+          <a href="/login/" class="bg-blue/20 hover:bg-blue/40 text-slate-100 border border-blue/30 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-lg shadow-blue/20">
+            <i class="fa-solid fa-user-lock mr-1"></i> Entrar
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Hamburger button -->
+      <div class="flex md:hidden">
+        <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none transition-colors duration-200">
+          <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div x-show="open" 
+       x-transition:enter="transition ease-out duration-150"
+       x-transition:enter-start="opacity-0 -translate-y-2"
+       x-transition:enter-end="opacity-100 translate-y-0"
+       x-transition:leave="transition ease-in duration-100"
+       x-transition:leave-start="opacity-100 translate-y-0"
+       x-transition:leave-end="opacity-0 -translate-y-2"
+       class="md:hidden bg-navy-light border-b border-navy-border/50">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="/FAQ" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+        <i class="fa-regular fa-circle-question text-amber mr-2"></i>FAQ
+      </a>
+      {% if user.is_authenticated %}
+        <a href="/home/" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+          <i class="fa-solid fa-list-check text-blue mr-2"></i>Painel
+        </a>
+        <a href="/logout/" class="text-red-400 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+          <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>Sair
+        </a>
+      {% else %}
+        <a href="/login/" class="text-slate-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+          <i class="fa-solid fa-user-lock mr-2"></i>Entrar
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
