@@ -1,64 +1,68 @@
 import os
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout 
-from django.contrib import messages 
-from app_helpdesk.models import Cliente, Solicitacao, Solicitacaostatus, models
-from django.shortcuts import render
-from django.db import transaction
-from django.http import HttpResponse
-from django.core.paginator import Paginator
-from django.core.mail import send_mail
-from django.utils.html import strip_tags
-from django.core.mail import EmailMultiAlternatives
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-from django.conf import settings
-from bs4 import BeautifulSoup
-from django.templatetags.static import static
-from email.mime.image import MIMEImage
-from email.mime.base import MIMEBase
-from email import encoders
-from django.db.models import Q
-import base64
 import re
+import base64
 import logging
-logger = logging.getLogger('app_helpdesk')
-from app_helpdesk.forms import ClienteForm, LoginForm, RespostaForm
+from functools import partial
 
-# Usuário faz login na pagina.
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives
+from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from email.mime.image import MIMEImage
+
+from app_helpdesk.forms import ClienteForm, LoginForm, RespostaForm
+from app_helpdesk.models import Cliente, Solicitacao, Solicitacaostatus
+
+logger = logging.getLogger('app_helpdesk')
+
+
 def login_user(request):
+    """Render the login page."""
     return render(request, 'login.html')
 
-#Usuário faz logout na pagina.
+
 def logout_user(request):
+    """Log out the current user and redirect to root."""
     logout(request)
     return redirect('/')
 
+
 def submit_login(request):
-    if request.POST:
+    """Process login form submission."""
+    if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            usuario = authenticate(username=username, password=password)
+            usuario = authenticate(request, username=username, password=password)
             if usuario is not None:
                 login(request, usuario)
+                logger.info("Login bem-sucedido para o usuário: %s", username)
                 return redirect('/')
             else:
-                messages.error(request, "Usuário ou senha inválidos")
+                logger.warning("Tentativa de login falhou para o usuário: %s", username)
+                messages.error(request, 'Usuário ou senha inválidos')
         else:
-            messages.error(request, "Dados inválidos no formulário.")
-    return redirect('/')
+            messages.error(request, 'Dados inválidos no formulário.')
+    return redirect('/login/')
+
 
 @login_required(login_url='/login/')
 def solicit_pages(request):
-    usuario = request.user
-    statuscliente = request.GET.get('status')
-    prioridadecliente = request.GET.get('prioridade')
-    arr_cliente = list(Cliente.objects.order_by('-idcliente').prefetch_related(
-        'solicitacao_set__solicitacaostatus_set'
-    ))
+    """List all support tickets with status and priority from related models."""
+    arr_cliente = list(
+        Cliente.objects.order_by('-idcliente').prefetch_related(
+            'solicitacao_set__solicitacaostatus_set'
+        )
+    )
 
     for cliente in arr_cliente:
         solicitacao = cliente.solicitacao_set.first()
@@ -69,109 +73,47 @@ def solicit_pages(request):
         else:
             cliente.prioridade = 'A DEFINIR'
             cliente.status = 'ABERTO'
-    
-    cliente = {
-        'clientes': arr_cliente
-    }
 
     paginator = Paginator(arr_cliente, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'listpage.html', {'page_obj':page_obj})  
+    return render(request, 'listpage.html', {'page_obj': page_obj})
+
 
 def cliente_page(request):
+    """Render the public ticket submission form."""
     return render(request, 'FormsHD.html')
 
-def cliente_novo(request):
-    novo_cliente = Cliente()
-    novo_cliente.nomecliente = request.POST.get('nomecliente')
-    novo_cliente.assunto = request.POST.get('assunto')
 
-    cliente = {
-        'cliente': Cliente.objects.all()
-    }
-    return render(request, '/', cliente)
+def cliente_novo(request):
+    """Stub view — preserved for backward-compat URL routing."""
+    return redirect('/home/')
+
 
 @login_required(login_url='/login/')
 def atender_cliente(request):
+    """Show ticket detail page for staff to respond."""
     idcliente = request.GET.get('id')
     dados = {}
     if idcliente:
         dados['cliente'] = Cliente.objects.filter(idcliente=idcliente).first()
         if not dados['cliente']:
-            return HttpResponse("Chamado não encontrado.", status=404)
+            return HttpResponse('Chamado não encontrado.', status=404)
+    return render(request, 'pagecliente.html', dados)
 
-    return render(request, 'pagecliente.html',dados)
 
-@login_required(login_url='/login/')
-def update_cliente(request, idcliente):
-    statuscliente = request.GET.get('status')
-    prioridadecliente = request.GET.get('prioridade')
-    faq_enviar = request.GET.get('faq_enviado')
-    resposta_usuario = request.POST.get('resposta_usuario')
-    
-    if statuscliente:
-        v_solicitacao = Solicitacao.objects.filter(idcliente=idcliente).first()
-        if not v_solicitacao: return redirect('/')
-        v_solicitacaostatus = Solicitacaostatus.objects.filter(idsolicitacao=v_solicitacao.idsolicitacao).first()
-        if not v_solicitacaostatus: return redirect('/')
-        v_solicitacaostatus.idstatus = statuscliente
-        v_solicitacaostatus.save()
-        return redirect('/')
-    
-    elif prioridadecliente:
-        v_solicitacao = Solicitacao.objects.filter(idcliente=idcliente).first()
-        if not v_solicitacao: return redirect('/')
-        v_solicitacao.prioridade = prioridadecliente
-        v_solicitacao.save()
-        return redirect('/')
-    
-    elif faq_enviar:
-        v_faq_enviar = Cliente.objects.filter(idcliente=idcliente).first()
-        if not v_faq_enviar: return redirect('/')
-        v_faq_enviar.faq_enviar = faq_enviar
-        v_faq_enviar.save()
+def _send_response_email(cliente_id, resposta_usuario, anexo_name=None, anexo_data=None, anexo_type=None):
+    """Send the response email to the client. Called via transaction.on_commit."""
+    try:
+        cliente = Cliente.objects.filter(idcliente=cliente_id).first()
+        if not cliente:
+            logger.error("Email não enviado: cliente %s não encontrado após commit.", cliente_id)
+            return
 
-        return redirect('/')
-    
-    
-    elif request.method == 'POST':
-        cliente = Cliente.objects.filter(idcliente=idcliente).first()
-        if not cliente: return redirect('/')
-        resposta = request.POST.get('resposta_usuario_' + str(idcliente))
-        form = RespostaForm({'resposta_usuario': resposta})
-        
-        if form.is_valid():
-            resposta_usuario = form.cleaned_data.get('resposta_usuario') or ''
-            cliente.resposta_usuario = resposta_usuario
-        
-            pattern = r'<img src="([^"]+)" />'
-            matches = re.findall(pattern, resposta_usuario)
-    
-            image_email = []
-        for idx, src in enumerate(matches):
-            resp = resposta_usuario.split('"')
-            data = resp[1]    
-            image_id = f'cid:image_teste{idx + 1}'
-            
-            resposta_usuario = resposta_usuario.replace(src, image_id)
-
-            resp = src.split(",")
-
-            format_file = resp[0].split(";")[0].split('/')[1]
-
-            image = {
-                'binario': resp[1],
-                'format': format_file,
-                'file_name':f'image_teste{idx + 1}'
-            }
-    
-            image_email.append(image)
-
-        subject = f'Resposta ao seu chamado: {cliente.assunto}' 
-        from_email = 'teushiftz@gmail.com'  
-        to_email = cliente.email_cliente  
+        subject = f'Resposta ao seu chamado: {cliente.assunto}'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = cliente.email_cliente
 
         context = {
             'cliente': cliente,
@@ -179,106 +121,187 @@ def update_cliente(request, idcliente):
         }
 
         html_message = render_to_string('pageclienteX.html', context)
-        html_message = html_message.replace('src="logo_image"', f'src="cid:logo_image"')
+        html_message = html_message.replace('src="logo_image"', 'src="cid:logo_image"')
         text_message = strip_tags(html_message)
 
         email = EmailMultiAlternatives(subject, text_message, from_email, [to_email])
-        email.attach_alternative(html_message, "text/html")
+        email.attach_alternative(html_message, 'text/html')
 
-        image_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'amm-navbar-fnt.png')
-        with open(image_path, 'rb') as f:
-            image_data = f.read()
-        image = MIMEImage(image_data, _subtype='png')
-        image.add_header('Content-ID', '<logo_image>')
-        image.add_header('Content-Disposition', 'inline', filename='amm-navbar-fnt.png')
-        email.attach(image)
+        # Attach company logo
+        logo_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'amm-navbar-fnt.png')
+        if os.path.exists(logo_path):
+            with open(logo_path, 'rb') as f:
+                logo_data = f.read()
+            logo_img = MIMEImage(logo_data, _subtype='png')
+            logo_img.add_header('Content-ID', '<logo_image>')
+            logo_img.add_header('Content-Disposition', 'inline', filename='amm-navbar-fnt.png')
+            email.attach(logo_img)
 
-        for idx, src in enumerate(image_email):
-            image_data = base64.b64decode(src['binario'])
+        # Attach file if provided
+        if anexo_name and anexo_data:
+            email.attach(anexo_name, anexo_data, anexo_type)
 
-            image_path = os.path.join(settings.BASE_DIR, 'static', 'img', f'{src["file_name"]}.{src["format"]}')
-            img_file = open(image_path, 'wb')
-            img_file.write(image_data)
-            img_file.close()
+        email.send()
+        logger.info("Email de resposta enviado para %s (chamado %s)", to_email, cliente_id)
 
-            with open(image_path, 'rb') as f:
-                image_data = f.read()
-            image = MIMEImage(image_data)
-            image.add_header('Content-ID', f'<{src["file_name"]}>')
-            image.add_header('Content-Disposition', 'inline', filename=f'{src["file_name"]}.{src["format"]}')
-            email.attach(image)
-  
-        
-        anexo = request.FILES.get('anexo')
-        if anexo:
-            email.attach(anexo.name, anexo.read(), anexo.content_type)
+    except Exception as exc:
+        logger.error(
+            "Falha ao enviar email para cliente %s: %s",
+            cliente_id,
+            exc,
+            exc_info=True,
+        )
 
-        if os.path.exists(image_path):
-            os.remove(image_path)
 
-        try:
-            email.send()
-        except Exception as e:
-            logger.error("Falha ao enviar email para %s: %s", cliente.email_cliente, e)
+@login_required(login_url='/login/')
+def update_cliente(request, idcliente):
+    """Update ticket status, priority, FAQ flag, or save a staff response with email."""
+    statuscliente = request.GET.get('status')
+    prioridadecliente = request.GET.get('prioridade')
+    faq_enviar = request.GET.get('faq_enviado')
 
-        cliente.save()
-        # return render(request, 'teste.html', {'resposta_usuario':''.join(image_email)})
-        return redirect('/')
-        
-        else:
-            messages.error(request, "Erro no formulário de resposta.")
+    if statuscliente:
+        v_solicitacao = Solicitacao.objects.filter(idcliente=idcliente).first()
+        if not v_solicitacao:
             return redirect('/')
+        v_solicitacaostatus = Solicitacaostatus.objects.filter(
+            idsolicitacao=v_solicitacao.idsolicitacao
+        ).first()
+        if not v_solicitacaostatus:
+            return redirect('/')
+        v_solicitacaostatus.idstatus = statuscliente
+        v_solicitacaostatus.save()
+        logger.info("Status do chamado %s atualizado para: %s", idcliente, statuscliente)
+        return redirect('/')
+
+    elif prioridadecliente:
+        v_solicitacao = Solicitacao.objects.filter(idcliente=idcliente).first()
+        if not v_solicitacao:
+            return redirect('/')
+        v_solicitacao.prioridade = prioridadecliente
+        v_solicitacao.save()
+        logger.info("Prioridade do chamado %s atualizada para: %s", idcliente, prioridadecliente)
+        return redirect('/')
+
+    elif faq_enviar:
+        v_cliente = Cliente.objects.filter(idcliente=idcliente).first()
+        if not v_cliente:
+            return redirect('/')
+        v_cliente.faq_enviar = faq_enviar
+        v_cliente.save()
+        logger.info("FAQ marcado para envio no chamado %s", idcliente)
+        return redirect('/')
+
+    elif request.method == 'POST':
+        cliente = Cliente.objects.filter(idcliente=idcliente).first()
+        if not cliente:
+            return redirect('/')
+
+        resposta = request.POST.get(f'resposta_usuario_{idcliente}')
+        form = RespostaForm({'resposta_usuario': resposta})
+
+        if not form.is_valid():
+            messages.error(request, 'Erro no formulário de resposta.')
+            return redirect('/')
+
+        resposta_usuario = form.cleaned_data.get('resposta_usuario') or ''
+
+        # Process inline base64 images embedded by CKEditor — replace with cid: references
+        pattern = r'<img src="(data:[^;]+;base64,[^"]+)" />'
+        matches = re.findall(pattern, resposta_usuario)
+        image_refs = []
+
+        for idx, src in enumerate(matches):
+            cid_name = f'inline_image_{idcliente}_{idx + 1}'
+            image_id = f'cid:{cid_name}'
+            resposta_usuario = resposta_usuario.replace(src, image_id)
+
+            parts = src.split(',')
+            if len(parts) < 2:
+                continue
+            format_part = parts[0]  # e.g. data:image/png;base64
+            try:
+                fmt = format_part.split(';')[0].split('/')[1]
+            except IndexError:
+                fmt = 'png'
+
+            image_refs.append({
+                'binario': parts[1],
+                'format': fmt,
+                'cid_name': cid_name,
+            })
+
+        # Read file attachment before transaction commit (request is not available in callback)
+        anexo = request.FILES.get('anexo')
+        anexo_name = anexo.name if anexo else None
+        anexo_data = anexo.read() if anexo else None
+        anexo_type = anexo.content_type if anexo else None
+
+        with transaction.atomic():
+            cliente.resposta_usuario = resposta_usuario
+            cliente.save()
+            logger.info("Resposta salva no chamado %s", idcliente)
+
+            # Schedule email to send AFTER the DB transaction commits successfully
+            transaction.on_commit(
+                partial(
+                    _send_response_email,
+                    cliente.idcliente,
+                    resposta_usuario,
+                    anexo_name,
+                    anexo_data,
+                    anexo_type,
+                )
+            )
+
+        return redirect('/')
 
     return redirect(request.path_info)
 
 
 def cliente_page_submit(request):
+    """Process public ticket submission form."""
     if request.method == 'POST':
         form = ClienteForm(request.POST)
         if form.is_valid():
-            nomecliente = form.cleaned_data['nomecliente']
-            cpf_cnpj = form.cleaned_data['cpf_cnpj']
-            email_cliente = form.cleaned_data['email_cliente']
-            telefone_cliente = form.cleaned_data['telefone_cliente']
-            descricao = form.cleaned_data['descricao']
-            assunto = form.cleaned_data['assunto']
-
             with transaction.atomic():
                 cliente = Cliente.objects.create(
-                    nomecliente=nomecliente,
-                    cpf_cnpj=cpf_cnpj,
-                    email_cliente=email_cliente,
-                    telefone_cliente=telefone_cliente,
-                    descricao=descricao,
-                    assunto=assunto
+                    nomecliente=form.cleaned_data['nomecliente'],
+                    cpf_cnpj=form.cleaned_data['cpf_cnpj'],
+                    email_cliente=form.cleaned_data['email_cliente'],
+                    telefone_cliente=form.cleaned_data['telefone_cliente'],
+                    descricao=form.cleaned_data['descricao'],
+                    assunto=form.cleaned_data['assunto'],
                 )
-
                 solicitacao = Solicitacao.objects.create(
-                    assunto=assunto,
+                    assunto=form.cleaned_data['assunto'],
                     idcliente=cliente,
-                    prioridade='A DEFINIR'
+                    prioridade='A DEFINIR',
                 )
-                solicitacaostatus = Solicitacaostatus.objects.create(
+                Solicitacaostatus.objects.create(
                     idstatus='ABERTO',
-                    idsolicitacao=solicitacao
+                    idsolicitacao=solicitacao,
                 )
+            logger.info("Novo chamado criado: ID %s — %s", cliente.idcliente, cliente.assunto)
+            messages.success(request, 'Chamado aberto com sucesso! Entraremos em contato em breve.')
         else:
-            messages.error(request, "Por favor, corrija os erros no formulário.")
-            
-    return  render(request, 'formshd.html')
+            logger.warning("Formulário de chamado inválido: %s", form.errors)
+            messages.error(request, 'Por favor, corrija os erros no formulário.')
+
+    return render(request, 'FormsHD.html')
 
 
 def faq_amm(request):
-    query = request.GET.get('q')  # Obtém o parâmetro de pesquisa da URL
+    """Public FAQ page with optional keyword search."""
+    query = request.GET.get('q')
 
     if query:
-        # Realize a pesquisa no banco de dados usando a sua lógica
         clientes = Cliente.objects.filter(
-            Q(assunto__icontains=query) | Q(descricao__icontains=query)
+            Q(assunto__icontains=query) | Q(descricao__icontains=query),
+            faq_enviar__isnull=False,
         )
     else:
-        # Se nenhum parâmetro de pesquisa for fornecido, retorne todos os clientes
-        clientes = Cliente.objects.all()
+        clientes = Cliente.objects.filter(faq_enviar__isnull=False)
 
     dados = {'clientes': clientes, 'query': query}
     return render(request, 'FAQ.html', dados)
