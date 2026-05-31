@@ -80,7 +80,6 @@ class ClienteForm(forms.ModelForm):
     descricao = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 4}),
         label='Descrição',
-        max_length=300,
     )
 
     class Meta:
